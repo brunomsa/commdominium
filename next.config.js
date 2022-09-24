@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const withImages = require('next-images')
+
+module.exports = withImages({
   reactStrictMode: true,
   swcMinify: true,
-}
-
-module.exports = nextConfig
+  esModule: true
+})
