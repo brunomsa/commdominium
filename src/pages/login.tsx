@@ -21,14 +21,24 @@ const Login: React.FC = () => {
 
       <styled.LoginForm size="large" onFinish={handleSubmit}>
         <div>
-          <Form.Item name="email">
+          <Form.Item
+            name="email"
+            rules={[
+              { required: true, message: 'Por favor, informe um e-mail!' },
+            ]}
+          >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="E-mail"
             />
           </Form.Item>
 
-          <Form.Item name="password">
+          <Form.Item
+            name="password"
+            rules={[
+              { required: true, message: 'Por favor, informe uma senha!' },
+            ]}
+          >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               placeholder="Senha"
