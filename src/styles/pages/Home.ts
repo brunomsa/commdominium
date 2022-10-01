@@ -1,23 +1,21 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { Form } from 'antd';
+import theme from '../theme';
 
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  .spin {
+    width: 100%;
+    height: 100%;
+    background-color: ${theme.colors.background};
+    opacity: 50%;
 
-  h1 {
-    font-size: 54px;
-    color: ${props => props.theme.colors.primary};
-    margin-top: 40px;
+    .ant-spin {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
   }
-
-  p {
-    margin-top: 24px;
-    font-size: 24px;
-    line-height: 32px;
-  }
-`
+`;
