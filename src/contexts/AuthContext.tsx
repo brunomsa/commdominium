@@ -4,6 +4,7 @@ import Router from 'next/router';
 
 import { setCookie, parseCookies } from 'nookies';
 import { api } from '../services/api';
+import { SignInData } from './types';
 
 type User = {
   name: string;
@@ -15,11 +16,6 @@ type AuthContextType = {
   isAuthenticated: boolean;
   user?: User;
   signIn: (data: SignInData) => Promise<void>;
-};
-
-type SignInData = {
-  email: string;
-  password: string;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -37,9 +33,9 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  async function signIn({ email, password }: SignInData) {
+  async function signIn({ login, password }: SignInData) {
     const { token, user } = await signInRequest({
-      email,
+      login,
       password,
     });
 

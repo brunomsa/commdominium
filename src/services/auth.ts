@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { API_URL } from './constants';
 
 type SignInRequestData = {
-  email: string;
+  login: string;
   password: string;
 };
 
@@ -13,7 +13,7 @@ const delay = (amount = 750) =>
 export async function signInRequest(signInData: SignInRequestData) {
   try {
     const { status, data } = await axios.post<SignInRequestData>(
-      `${API_URL}/searchlogin`,
+      `${API_URL}/auth/searchlogin`,
       signInData
     );
     console.log({ status, data });
