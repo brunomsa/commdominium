@@ -4,11 +4,12 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 import * as styled from '../styles/pages/Login';
 import { AuthContext } from '../contexts/AuthContext';
+import { SignInData } from '../contexts/types';
 
 const Login: React.FC = () => {
   const { signIn } = useContext(AuthContext);
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (data: SignInData) => {
     await signIn(data);
   };
 
@@ -22,7 +23,7 @@ const Login: React.FC = () => {
       <styled.LoginForm size="large" onFinish={handleSubmit}>
         <div>
           <Form.Item
-            name="email"
+            name="login"
             rules={[
               { required: true, message: 'Por favor, informe um e-mail!' },
             ]}
