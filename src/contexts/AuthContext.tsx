@@ -4,18 +4,12 @@ import Router from 'next/router';
 
 import { setCookie, parseCookies } from 'nookies';
 import { api } from '../services/api';
-import { SignInData } from './types';
-
-type User = {
-  name: string;
-  email: string;
-  avatar_url: string;
-};
+import { SignInData, User } from './types';
 
 type AuthContextType = {
   isAuthenticated: boolean;
   user?: User;
-  signIn: (data: SignInData) => Promise<void>;
+  signIn: (data: SignInData) => Promise<{ ok: boolean; error: string }>;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -29,25 +23,29 @@ export function AuthProvider({ children }) {
     const { 'commdominium.token': token } = parseCookies();
 
     if (token) {
-      recoverUserInfo().then((reponse) => setUser(reponse.user));
+      recoverUserInfo().then((reponse) => setUser(reponse));
     }
   }, []);
 
   async function signIn({ login, password }: SignInData) {
-    const { token, user } = await signInRequest({
+    const { ok, data, error } = await signInRequest({
       login,
       password,
     });
 
-    setCookie(undefined, 'commdominium.token', token, {
+    if (!ok && !data && error) return { ok: false, ...error };
+
+    setCookie(undefined, 'commdominium.token', data.token, {
       maxAge: 60 * 60 * 1, // 1 hour
     });
 
-    api.defaults.headers['Authorization'] = `Bearer ${token}`;
+    api.defaults.headers['Authorization'] = `Bearer ${data.token}`;
 
-    setUser(user);
+    setUser(data.user);
 
     Router.push('/');
+
+    return { ok, error: undefined };
   }
 
   return (

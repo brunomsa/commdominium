@@ -1,6 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form, Input } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  ExclamationCircleOutlined,
+  LockOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 
 import * as styled from '../styles/pages/Login';
 import { AuthContext } from '../contexts/AuthContext';
@@ -8,9 +12,16 @@ import { SignInData } from '../contexts/types';
 
 const Login: React.FC = () => {
   const { signIn } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>();
 
   const handleSubmit = async (data: SignInData) => {
-    await signIn(data);
+    setIsLoading(true);
+    const { ok, error } = await signIn(data);
+    if (!ok && error) {
+      setIsLoading(false);
+      setError(error);
+    }
   };
 
   return (
@@ -20,7 +31,11 @@ const Login: React.FC = () => {
         <p>Faça seu login no sistema</p>
       </header>
 
-      <styled.LoginForm size="large" onFinish={handleSubmit}>
+      <styled.LoginForm
+        size="large"
+        onChange={() => setError(undefined)}
+        onFinish={handleSubmit}
+      >
         <div>
           <Form.Item
             name="login"
@@ -48,10 +63,27 @@ const Login: React.FC = () => {
         </div>
 
         <div className="login-button">
-          <Button type="primary" htmlType="submit" size="large">
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            loading={isLoading}
+          >
             Entrar
           </Button>
         </div>
+
+        {error && (
+          <div
+            className="ant-form-item-explain-error"
+            style={{ textAlign: 'center' }}
+          >
+            <ExclamationCircleOutlined
+              style={{ fontSize: 18, marginRight: 4 }}
+            />
+            {error}
+          </div>
+        )}
       </styled.LoginForm>
     </styled.Container>
   );
