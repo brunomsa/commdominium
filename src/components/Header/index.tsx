@@ -4,6 +4,7 @@ import { Avatar, Badge, Col, Menu, Row } from 'antd';
 import { BellOutlined, UserOutlined } from '@ant-design/icons';
 
 import * as styled from './styles';
+import theme from '../../styles/theme';
 
 const menuOptions = [
   { key: 'home', label: 'Início' },
@@ -30,10 +31,10 @@ function Header() {
 
         <Col span={2}>
           <div className="profile">
-            <Badge count={3}>
+            <Badge color={theme.colors.primary} count={3}>
               <BellOutlined />
             </Badge>
-            <Avatar size="large" icon={<UserOutlined />} />
+            <Avatar size={50} icon={<UserOutlined />} />
           </div>
         </Col>
       </Row>

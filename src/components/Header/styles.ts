@@ -7,7 +7,7 @@ export const Container = styled.header`
   top: 0;
   width: 100%;
   height: 100px;
-  padding: 32px;
+  padding: 32px 64px;
   background-color: #1c1c21;
   font-size: 20px;
   font-weight: 500;
@@ -41,14 +41,19 @@ export const Container = styled.header`
     }
 
     .profile {
-      justify-content: space-around;
+      justify-content: space-between;
+
+      svg {
+        color: ${theme.colors.text};
+        font-size: 25px;
+      }
 
       .ant-badge {
         align-self: center;
       }
 
-      svg {
-        font-size: 24px;
+      .ant-avatar {
+        background-color: ${theme.colors.background};
       }
     }
   }
