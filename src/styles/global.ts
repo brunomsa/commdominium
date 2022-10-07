@@ -10,4 +10,8 @@ export default createGlobalStyle`
 body{
   font: 400 16px Roboto, sans-serif;
 }
+
+nav ul {
+  list-style-type: none;
+}
 `;

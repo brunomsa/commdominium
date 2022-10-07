@@ -1,13 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
+
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
+import { Spin } from 'antd';
+
+import { AuthContext } from '../contexts/AuthContext';
+import { getApiClient } from '../services/axios';
+import { Header } from '../components';
 
 import * as styled from '../styles/pages/Home';
-import { AuthContext } from '../contexts/AuthContext';
-import { api } from '../services/api';
-import { Spin } from 'antd';
-import { GetServerSideProps } from 'next';
-import { getApiClient } from '../services/axios';
 
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
@@ -24,12 +26,7 @@ const Home: React.FC = () => {
             <title>Home</title>
           </Head>
 
-          <h1>Home</h1>
-          <div>
-            <p>{user?.name}</p>
-            <p>{user?.email}</p>
-            <img src={user?.avatar_url} />
-          </div>
+          <Header />
         </>
       )}
     </styled.Container>

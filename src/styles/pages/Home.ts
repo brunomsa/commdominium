@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { Form } from 'antd';
 import theme from '../theme';
 
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  padding: 16px;
+  background-color: ${theme.colors.background};
 
   .spin {
     width: 100%;

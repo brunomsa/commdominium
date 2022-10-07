@@ -81,5 +81,6 @@ export const LoginForm = styled(Form)`
   .error {
     color: red;
     text-align: center;
+    font-size: 16px;
   }
 `;
