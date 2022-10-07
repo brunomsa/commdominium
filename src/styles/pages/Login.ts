@@ -21,6 +21,16 @@ export const Container = styled.div`
   p {
     font-size: 35px;
   }
+
+  @media (max-width: 1080px) {
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+
+    p {
+      text-align: center;
+    }
+  }
 `;
 
 export const LoginForm = styled(Form)`
