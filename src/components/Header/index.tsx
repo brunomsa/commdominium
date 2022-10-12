@@ -17,15 +17,11 @@ const menuOptions = [
 function Header() {
   return (
     <styled.Container>
-      <Row align="middle">
+      <Row align="middle" style={{ height: '100%' }}>
         <Col span={22}>
           <div className="logo">Logo</div>
           <nav>
-            <Menu
-              mode="horizontal"
-              defaultSelectedKeys={['home']}
-              items={menuOptions}
-            />
+            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['home']} items={menuOptions} />
           </nav>
         </Col>
 

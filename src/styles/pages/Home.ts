@@ -4,7 +4,6 @@ import theme from '../theme';
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  padding: 32px 64px;
   background-color: ${theme.colors.background};
 
   .spin {
@@ -18,5 +17,9 @@ export const Container = styled.div`
       top: 50%;
       left: 50%;
     }
+  }
+
+  main {
+    padding: 32px ${theme.main.padding_x}px;
   }
 `;

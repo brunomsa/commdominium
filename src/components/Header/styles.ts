@@ -2,15 +2,12 @@ import styled from 'styled-components';
 import theme from '../../styles/theme';
 
 export const Container = styled.header`
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
-  height: 100px;
-  padding: 32px 64px;
-  background-color: #1c1c21;
+  padding: 0 ${theme.main.padding_x}px;
+  background-color: ${theme.colors.dark_grey};
   font-size: 20px;
   font-weight: 500;
+  height: ${theme.header.height}px;
 
   div:first-child {
     display: flex;
@@ -41,7 +38,7 @@ export const Container = styled.header`
     }
 
     .profile {
-      justify-content: space-between;
+      justify-content: space-around;
 
       svg {
         color: ${theme.colors.text};

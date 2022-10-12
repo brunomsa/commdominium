@@ -1,5 +1,5 @@
 export type SignInData = {
-  login: string;
+  email: string;
   password: string;
 };
 
@@ -8,16 +8,15 @@ export type SignInError = {
 };
 
 export type User = {
-  IDcondominio: number;
-  IDtipo_usuario: number;
-  IDusuario: number;
-  ativo: boolean;
-  bloco: string;
+  id: number;
+  id_condominium: number;
+  id_userType: number;
+  active: boolean;
+  block: string;
+  building: string;
   createdAt: string;
-  login: string;
-  nome: string;
-  numero: string;
-  predio: string;
-  senha: string;
+  email: string;
+  fullname: string;
+  number: string;
   updatedAt: string;
 };

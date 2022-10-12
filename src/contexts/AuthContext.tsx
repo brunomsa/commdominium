@@ -28,9 +28,9 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  async function signIn({ login, password }: SignInData) {
+  async function signIn({ email, password }: SignInData) {
     const { ok, data, error } = await signInRequest({
-      login,
+      email,
       password,
     });
 
@@ -48,10 +48,7 @@ export function AuthProvider({ children }) {
 
     return { ok, error: undefined };
   }
+  console.log(user);
 
-  return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>{children}</AuthContext.Provider>;
 }

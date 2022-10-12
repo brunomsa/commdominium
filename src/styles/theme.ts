@@ -3,6 +3,13 @@ const theme = {
     background: '#121214',
     text: '#e1e1e6',
     primary: '#00607a',
+    dark_grey: '#202024',
+  },
+  header: {
+    height: 96,
+  },
+  main: {
+    padding_x: 56,
   },
 };
 
