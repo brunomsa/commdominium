@@ -1,12 +1,6 @@
 import axios, { AxiosError } from 'axios';
-import { v4 as uuid } from 'uuid';
-import { SignInError, User } from '../contexts/types';
-import { API_URL } from './constants';
-
-type SignInRequestData = {
-  login: string;
-  password: string;
-};
+import { SignInData, SignInError, User } from '../contexts/types';
+import { BASE_API_URL } from './constants';
 
 type SignInResponseData = {
   token: string;
@@ -19,18 +13,12 @@ type SignInResponse = {
   error?: SignInError;
 };
 
-const delay = (amount = 750) =>
-  new Promise((resolve) => setTimeout(resolve, amount));
+const delay = (amount = 750) => new Promise((resolve) => setTimeout(resolve, amount));
 
-export async function signInRequest(
-  signInData: SignInRequestData
-): Promise<SignInResponse> {
+export async function signInRequest(signInData: SignInData): Promise<SignInResponse> {
   try {
-    const { status, data: user } = await axios.post<User>(
-      `${API_URL}/auth/searchlogin`,
-      signInData
-    );
-    if (status === 200) return { ok: true, data: { token: uuid(), user } };
+    const { status, data } = await axios.post<SignInResponseData>(`${BASE_API_URL}/auth/authenticate`, signInData);
+    if (status === 200) return { ok: true, data: { token: data.token, user: data.user } };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -48,16 +36,15 @@ export async function recoverUserInfo(): Promise<User> {
   await delay();
 
   return {
-    IDusuario: 1,
-    nome: 'Igor Sena',
-    bloco: '',
-    predio: '',
-    numero: 'Rua Suiça',
-    login: 'igorsenamarques@hotmail.com',
-    senha: '12345',
-    ativo: true,
-    IDtipo_usuario: 2,
-    IDcondominio: 1,
+    id: 1,
+    fullname: 'Igor Sena',
+    block: '',
+    building: '',
+    number: '2',
+    email: 'igorsenamarques@hotmail.com',
+    active: true,
+    id_userType: 3,
+    id_condominium: 1,
     createdAt: '2022-10-02T10:53:12.000Z',
     updatedAt: '2022-10-02T10:53:12.000Z',
   };

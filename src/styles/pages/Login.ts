@@ -41,7 +41,7 @@ export const LoginForm = styled(Form)`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background-color: #202024;
+  background-color: ${theme.colors.dark_grey};
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
   input:-webkit-autofill,

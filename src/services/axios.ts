@@ -3,7 +3,7 @@ import * as next from 'next';
 import * as express from 'express';
 
 import { parseCookies } from 'nookies';
-import { API_URL } from './constants';
+import { BASE_API_URL } from './constants';
 
 export function getApiClient(
   ctx?:
@@ -18,7 +18,7 @@ export function getApiClient(
   const { 'commdominium.token': token } = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: API_URL,
+    baseURL: BASE_API_URL,
   });
 
   api.interceptors.request.use((config) => {
