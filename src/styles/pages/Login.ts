@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Form } from 'antd';
+import { Form } from '../../components';
 
 import theme from '../theme';
 
@@ -43,29 +43,6 @@ export const LoginForm = styled(Form)`
   justify-content: space-evenly;
   background-color: ${theme.colors.dark_grey};
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  textarea:-webkit-autofill,
-  textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
-  select:-webkit-autofill,
-  select:-webkit-autofill:hover,
-  select:-webkit-autofill:focus {
-    caret-color: ${theme.colors.text};
-    -webkit-text-fill-color: ${theme.colors.text} !important;
-    -webkit-box-shadow: 0 0 0px 1000px ${theme.colors.background} inset;
-    transition: background-color 5000s ease-in-out 0s;
-  }
-
-  .ant-form-item-control-input-content {
-    > input,
-    > span {
-      height: 60px;
-      border: none;
-      background-color: ${theme.colors.background} !important;
-    }
-  }
 
   .login-button {
     display: flex;
