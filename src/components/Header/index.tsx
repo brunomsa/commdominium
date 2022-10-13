@@ -11,17 +11,28 @@ const menuOptions = [
   { key: 'condominium', label: 'Condomínio' },
   { key: 'payment', label: 'Pagamento' },
   { key: 'portal', label: 'Portal' },
-  { key: 'syndicate', label: 'Sindíco' },
+  { key: 'syndicate', label: 'Síndico' },
 ];
 
-function Header() {
+interface Props {
+  selectedKey: string;
+  onChange: (key: string) => void;
+}
+
+function Header({ selectedKey, onChange }: Props) {
   return (
-    <styled.Container>
+    <styled.Header>
       <Row align="middle" style={{ height: '100%' }}>
         <Col span={22}>
           <div className="logo">Logo</div>
           <nav>
-            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['home']} items={menuOptions} />
+            <Menu
+              theme="light"
+              mode="horizontal"
+              defaultSelectedKeys={[selectedKey]}
+              items={menuOptions}
+              onClick={({ key }) => onChange(key)}
+            />
           </nav>
         </Col>
 
@@ -34,7 +45,7 @@ function Header() {
           </div>
         </Col>
       </Row>
-    </styled.Container>
+    </styled.Header>
   );
 }
 

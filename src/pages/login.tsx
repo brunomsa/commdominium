@@ -6,7 +6,7 @@ import * as styled from '../styles/pages/Login';
 import { AuthContext } from '../contexts/AuthContext';
 import { SignInData } from '../contexts/types';
 
-const Login: React.FC = () => {
+function Login() {
   const { signIn } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <styled.Container>
+    <styled.Login>
       <header>
         <h1>Commdominium</h1>
         <p>Faça seu login no sistema</p>
@@ -51,8 +51,8 @@ const Login: React.FC = () => {
           </div>
         )}
       </styled.LoginForm>
-    </styled.Container>
+    </styled.Login>
   );
-};
+}
 
 export default Login;

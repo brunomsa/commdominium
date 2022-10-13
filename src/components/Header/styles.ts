@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import theme from '../../styles/theme';
 
-export const Container = styled.header`
+export const Header = styled.header`
   width: 100%;
   padding: 0 ${theme.main.padding_x}px;
   background-color: ${theme.colors.dark_grey};

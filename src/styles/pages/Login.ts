@@ -3,7 +3,7 @@ import { Form } from 'antd';
 
 import theme from '../theme';
 
-export const Container = styled.div`
+export const Login = styled.div`
   width: 100vw;
   height: 100vh;
 
