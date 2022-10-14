@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import theme from '../../styles/theme';
 
 export const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   padding: 0 ${theme.main.padding_x}px;
   background-color: ${theme.colors.dark_grey};
@@ -11,13 +13,17 @@ export const Header = styled.header`
 
   div:first-child {
     display: flex;
+    flex-grow: 1;
+    align-items: center;
 
     .logo {
-      width: 100px;
+      flex: 0;
+      margin-right: 56px;
     }
 
     nav {
-      max-width: 700px;
+      width: 100%;
+      flex: 1;
 
       .ant-menu {
         background-color: transparent;
@@ -36,22 +42,21 @@ export const Header = styled.header`
         }
       }
     }
+  }
 
-    .profile {
-      justify-content: space-around;
+  .profile {
+    min-width: 130px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-      svg {
-        color: ${theme.colors.text};
-        font-size: 25px;
-      }
+    svg {
+      color: ${theme.colors.text};
+      font-size: 25px;
+    }
 
-      .ant-badge {
-        align-self: center;
-      }
-
-      .ant-avatar {
-        background-color: ${theme.colors.background};
-      }
+    .ant-avatar {
+      background-color: ${theme.colors.background};
     }
   }
 `;

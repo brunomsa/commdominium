@@ -54,10 +54,4 @@ export const LoginForm = styled(Form)`
       text-transform: uppercase;
     }
   }
-
-  .error {
-    color: red;
-    text-align: center;
-    font-size: 16px;
-  }
 `;

@@ -11,7 +11,7 @@ const menuOptions = [
   { key: 'condominium', label: 'Condomínio' },
   { key: 'payment', label: 'Pagamento' },
   { key: 'portal', label: 'Portal' },
-  { key: 'syndicate', label: 'Síndico' },
+  { key: 'users', label: 'Usuários' },
 ];
 
 interface Props {
@@ -22,29 +22,25 @@ interface Props {
 function Header({ selectedKey, onChange }: Props) {
   return (
     <styled.Header>
-      <Row align="middle" style={{ height: '100%' }}>
-        <Col span={22}>
-          <div className="logo">Logo</div>
-          <nav>
-            <Menu
-              theme="light"
-              mode="horizontal"
-              defaultSelectedKeys={[selectedKey]}
-              items={menuOptions}
-              onClick={({ key }) => onChange(key)}
-            />
-          </nav>
-        </Col>
+      <div>
+        <div className="logo">Commdominium</div>
+        <nav>
+          <Menu
+            theme="light"
+            mode="horizontal"
+            defaultSelectedKeys={[selectedKey]}
+            items={menuOptions}
+            onClick={({ key }) => onChange(key)}
+          />
+        </nav>
+      </div>
 
-        <Col span={2}>
-          <div className="profile">
-            <Badge color={theme.colors.primary} count={3}>
-              <BellOutlined />
-            </Badge>
-            <Avatar size={50} icon={<UserOutlined />} />
-          </div>
-        </Col>
-      </Row>
+      <div className="profile">
+        <Badge color={theme.colors.primary} count={3}>
+          <BellOutlined />
+        </Badge>
+        <Avatar size={50} icon={<UserOutlined />} />
+      </div>
     </styled.Header>
   );
 }
