@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { SignInData, SignInError, User } from '../contexts/types';
+import { SignInData, ApiError, User } from '../contexts/types';
 import { BASE_API_URL } from './constants';
 
 type SignInResponseData = {
@@ -10,7 +10,7 @@ type SignInResponseData = {
 type SignInResponse = {
   ok: boolean;
   data?: SignInResponseData;
-  error?: SignInError;
+  error?: ApiError;
 };
 
 const delay = (amount = 750) => new Promise((resolve) => setTimeout(resolve, amount));
@@ -22,7 +22,7 @@ export async function signInRequest(signInData: SignInData): Promise<SignInRespo
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const err = error as AxiosError;
-      return { ok: false, error: err.response.data as SignInError };
+      return { ok: false, error: err.response.data as ApiError };
     } else {
       return {
         ok: false,

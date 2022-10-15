@@ -3,7 +3,7 @@ export type SignInData = {
   password: string;
 };
 
-export type SignInError = {
+export type ApiError = {
   error: string;
 };
 
@@ -18,5 +18,4 @@ export type User = {
   email: string;
   fullname: string;
   number: string;
-  updatedAt: string;
 };

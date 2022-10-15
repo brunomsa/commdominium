@@ -16,7 +16,7 @@ const BasicPage = ({ menuKey, children }: PropsWithChildren<Props>) => {
       condominium: '/condominio',
       payment: '/pagamento',
       portal: '/portal',
-      syndicate: '/sindico',
+      users: '/usuarios',
     };
     Router.push(navigate[key]);
   }, []);
@@ -24,7 +24,7 @@ const BasicPage = ({ menuKey, children }: PropsWithChildren<Props>) => {
   return (
     <styled.BasicPage>
       <Header selectedKey={menuKey} onChange={(key) => goTo(key)} />
-      {children}
+      <main>{children}</main>
     </styled.BasicPage>
   );
 };
