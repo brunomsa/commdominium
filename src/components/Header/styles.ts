@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import theme from '../../styles/theme';
 
 export const Header = styled.header`
+  position: fixed;
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 0 ${theme.main.padding_x}px;
   background-color: ${theme.colors.dark_grey};
-  font-size: 20px;
   font-weight: 500;
   height: ${theme.header.height}px;
 
@@ -28,7 +28,7 @@ export const Header = styled.header`
       .ant-menu {
         background-color: transparent;
         border: none;
-        font-size: 20px;
+        font-size: 16px;
         line-height: inherit;
 
         span {
@@ -37,7 +37,7 @@ export const Header = styled.header`
 
         .ant-menu-item-selected::after,
         .ant-menu-item:hover::after {
-          top: 30px;
+          top: 24px;
           border-width: 4px;
         }
       }
@@ -45,14 +45,14 @@ export const Header = styled.header`
   }
 
   .profile {
-    min-width: 130px;
+    min-width: 90px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     svg {
       color: ${theme.colors.text};
-      font-size: 25px;
+      font-size: 20px;
     }
 
     .ant-avatar {

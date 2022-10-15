@@ -2,11 +2,14 @@ import styled from 'styled-components';
 import theme from '../../styles/theme';
 
 export const BasicPage = styled.div`
-  width: 100vw;
   height: 100vh;
   background-color: ${theme.colors.background};
 
   main {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: calc(100vh - ${theme.header.height}px);
     padding: 32px ${theme.main.padding_x}px;
   }
 `;

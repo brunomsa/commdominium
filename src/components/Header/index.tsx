@@ -39,7 +39,7 @@ function Header({ selectedKey, onChange }: Props) {
         <Badge color={theme.colors.primary} count={3}>
           <BellOutlined />
         </Badge>
-        <Avatar size={50} icon={<UserOutlined />} />
+        <Avatar size={40} icon={<UserOutlined />} />
       </div>
     </styled.Header>
   );

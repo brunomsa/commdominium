@@ -21,7 +21,7 @@ function Home() {
         </Head>
 
         <BasicPage menuKey="home">
-          <main>Olá {user?.fullname ?? 'Bruno'}!</main>
+          <div>Olá {user?.fullname ?? 'Bruno'}!</div>
         </BasicPage>
       </>
     </>

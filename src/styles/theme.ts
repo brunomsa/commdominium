@@ -6,7 +6,7 @@ const theme = {
     dark_grey: '#202024',
   },
   header: {
-    height: 96,
+    height: 80,
   },
   main: {
     padding_x: 56,
