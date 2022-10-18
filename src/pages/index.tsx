@@ -1,18 +1,47 @@
-import React from 'react'
-import Head from 'next/head'
+import React, { useContext } from 'react';
 
-import { Container } from '../styles/pages/Home'
+import Head from 'next/head';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 
-const Home: React.FC = () => {
+import { AuthContext } from '../contexts/AuthContext';
+
+import { BasicPage, PageLoader } from '../components';
+
+function Home() {
+  const { user, isAuthenticated } = useContext(AuthContext);
+
   return (
-    <Container>
-      <Head>
-        <title>Homepage</title>
-      </Head>
+    <>
+      {!isAuthenticated && <PageLoader />}
+      <>
+        <Head>
+          <title>Home</title>
+        </Head>
 
-      <h1>Hello Word</h1>
-    </Container>
-  )
+        <BasicPage pageKey="home">
+          <div>Olá {user?.fullname ?? 'Bruno'}!</div>
+        </BasicPage>
+      </>
+    </>
+  );
 }
 
-export default Home
+export default Home;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { ['commdominium.token']: token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
