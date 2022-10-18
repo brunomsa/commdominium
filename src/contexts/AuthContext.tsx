@@ -5,7 +5,9 @@ import { setCookie, parseCookies } from 'nookies';
 
 import { recoverUserInfo, signInRequest } from '../services/auth';
 import { api } from '../services/api';
-import { SignInData, User } from './types';
+import { User } from '../services/user';
+
+import { SignInData } from './types';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -37,7 +39,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     if (!ok && !data && error) return { ok: false, ...error };
 
     setCookie(undefined, 'commdominium.token', data.token, {
-      maxAge: 60 * 60 * 1, // 1 hour
+      maxAge: 60 * 60 * 6, // 6 hours
     });
 
     api.defaults.headers['Authorization'] = `Bearer ${data.token}`;

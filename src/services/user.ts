@@ -1,8 +1,26 @@
 import axios, { AxiosError } from 'axios';
-import { ApiError, User } from '../contexts/types';
+import { ApiError } from '../contexts/types';
 import { BASE_API_URL } from './constants';
 
-export async function createUser(user: Omit<User, 'id'>) {
+export type User = {
+  id: number;
+  fullname: string;
+  email: string;
+  id_condominium: number;
+  id_userType: number;
+  block?: string;
+  building?: string;
+  number: string;
+  active: boolean;
+};
+
+type CreateUserResponse = {
+  ok: boolean;
+  data?: User;
+  error?: ApiError;
+};
+
+export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResponse> {
   try {
     const userData: Omit<User, 'id'> = {
       ...user,

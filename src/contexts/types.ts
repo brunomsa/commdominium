@@ -6,16 +6,3 @@ export type SignInData = {
 export type ApiError = {
   error: string;
 };
-
-export type User = {
-  id: number;
-  id_condominium: number;
-  id_userType: number;
-  active: boolean;
-  block: string;
-  building: string;
-  createdAt: string;
-  email: string;
-  fullname: string;
-  number: string;
-};

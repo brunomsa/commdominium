@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
-import { SignInData, ApiError, User } from '../contexts/types';
+import { SignInData, ApiError } from '../contexts/types';
 import { BASE_API_URL } from './constants';
+import { User } from './user';
 
 type SignInResponseData = {
   token: string;
@@ -45,7 +46,5 @@ export async function recoverUserInfo(): Promise<User> {
     active: true,
     id_userType: 3,
     id_condominium: 1,
-    createdAt: '2022-10-02T10:53:12.000Z',
-    updatedAt: '2022-10-02T10:53:12.000Z',
   };
 }
