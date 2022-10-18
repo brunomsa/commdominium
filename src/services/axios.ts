@@ -22,11 +22,6 @@ export function getApiClient(
     baseURL: BASE_API_URL,
   });
 
-  api.interceptors.request.use((config) => {
-    console.log(config);
-    return config;
-  });
-
   if (token) {
     api.defaults.headers['Authorization'] = `Bearer ${token}`;
   }
