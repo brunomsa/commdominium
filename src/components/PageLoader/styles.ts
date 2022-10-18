@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import theme from '../../styles/theme';
 
-export const Loader = styled.div`
+export const PageLoader = styled.div`
   .spin {
+    position: absolute;
     width: 100%;
     height: 100%;
     background-color: ${theme.colors.background};
-    opacity: 50%;
+    opacity: 80%;
+    z-index: 10;
 
     .ant-spin {
       position: absolute;

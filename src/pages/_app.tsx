@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import '../../custom-theme.css';
 
 import { AuthProvider } from '../contexts/AuthContext';
-import { Loader } from '../components';
+import { PageLoader } from '../components';
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
 
@@ -31,7 +31,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <>
-      {loading && <Loader />}
+      {loading && <PageLoader />}
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <Component {...pageProps} />

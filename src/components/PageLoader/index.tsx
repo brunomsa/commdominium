@@ -3,14 +3,14 @@ import { Spin } from 'antd';
 
 import * as styled from './styles';
 
-function Loader() {
+function PageLoader() {
   return (
-    <styled.Loader>
+    <styled.PageLoader>
       <div className="spin">
         <Spin size="large" />
       </div>
-    </styled.Loader>
+    </styled.PageLoader>
   );
 }
 
-export default Loader;
+export default PageLoader;
