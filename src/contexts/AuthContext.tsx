@@ -5,9 +5,10 @@ import { setCookie, parseCookies } from 'nookies';
 
 import { recoverUserInfo, signInRequest } from '../services/auth';
 import { api } from '../services/api';
-import { User } from '../services/user';
+import { getUserById, User } from '../services/user';
 
 import { SignInData } from './types';
+import { message } from 'antd';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -26,7 +27,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const { 'commdominium.token': token } = parseCookies();
 
     if (token) {
-      recoverUserInfo().then((reponse) => setUser(reponse));
+      recoverUserInfo(token).then(({ ok, data, error }) => {
+        if (!ok && error) return message.error(error.error);
+        setUser(data);
+      });
     }
   }, []);
 

@@ -1,5 +1,5 @@
-import axios, { AxiosError } from 'axios';
-import { ApiError } from '../contexts/types';
+import { api, ApiError, ApiResponse } from './api';
+import { catchError } from './axios';
 import { BASE_API_URL } from './constants';
 
 export type User = {
@@ -26,17 +26,18 @@ export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResp
       ...user,
       active: true,
     };
-    const { status, data } = await axios.post<User>(`${BASE_API_URL}/user/register`, userData);
-    if (status === 200) return { ok: true, data };
+    const { data } = await api.post<User>(`${BASE_API_URL}/user/register`, userData);
+    if (data) return { ok: true, data };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const err = error as AxiosError;
-      return { ok: false, error: err.response.data as ApiError };
-    } else {
-      return {
-        ok: false,
-        error: { error: `Um inesperado erro ocorreu: ${error}` },
-      };
-    }
+    catchError(error);
+  }
+}
+
+export async function getUserById(id: number): Promise<ApiResponse<User>> {
+  try {
+    const { data } = await api.post<User>(`${BASE_API_URL}/user/findById`, { id });
+    if (data) return { ok: true, data };
+  } catch (error) {
+    catchError(error);
   }
 }

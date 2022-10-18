@@ -13,16 +13,17 @@ function Home() {
 
   return (
     <>
-      {!isAuthenticated && <PageLoader />}
-      <>
-        <Head>
-          <title>Home</title>
-        </Head>
+      <Head>
+        <title>Home</title>
+      </Head>
 
+      {!isAuthenticated || !user ? (
+        <PageLoader />
+      ) : (
         <BasicPage pageKey="home">
-          <div>Olá {user?.fullname ?? 'Bruno'}!</div>
+          <div>Olá {user.fullname}!</div>
         </BasicPage>
-      </>
+      )}
     </>
   );
 }

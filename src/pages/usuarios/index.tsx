@@ -12,8 +12,8 @@ import { Condominuim } from '../../services/condominium';
 import { UserType } from '../../services/userType';
 import { BasicPage, TableList } from '../../components';
 import axios, { AxiosError } from 'axios';
-import { ApiError } from '../../contexts/types';
 import { parseCookies } from 'nookies';
+import { ApiError } from '../../services/api';
 
 interface DataType {
   key: string;

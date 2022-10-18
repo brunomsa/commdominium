@@ -1,9 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as next from 'next';
 import * as express from 'express';
 
 import { parseCookies } from 'nookies';
 import { BASE_API_URL } from './constants';
+import { ApiError } from './api';
 
 export function getApiClient(
   ctx?:
@@ -31,4 +32,16 @@ export function getApiClient(
   }
 
   return api;
+}
+
+export function catchError(error: any) {
+  if (axios.isAxiosError(error)) {
+    const err = error as AxiosError;
+    return { ok: false, error: err.response.data as ApiError };
+  } else {
+    return {
+      ok: false,
+      error: { error: `Um inesperado erro ocorreu: ${error}` },
+    };
+  }
 }
