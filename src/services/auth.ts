@@ -1,50 +1,36 @@
-import axios, { AxiosError } from 'axios';
-import { SignInData, ApiError } from '../contexts/types';
+import { SignInData } from '../contexts/types';
+import { api, ApiResponse } from './api';
+import { catchError } from './axios';
 import { BASE_API_URL } from './constants';
-import { User } from './user';
+import { getUserById, User } from './user';
 
-type SignInResponseData = {
+type SignInResponse = {
   token: string;
   user: User;
 };
 
-type SignInResponse = {
-  ok: boolean;
-  data?: SignInResponseData;
-  error?: ApiError;
-};
-
-const delay = (amount = 750) => new Promise((resolve) => setTimeout(resolve, amount));
-
-export async function signInRequest(signInData: SignInData): Promise<SignInResponse> {
+export async function signInRequest(values: SignInData): Promise<ApiResponse<SignInResponse>> {
   try {
-    const { status, data } = await axios.post<SignInResponseData>(`${BASE_API_URL}/auth/authenticate`, signInData);
-    if (status === 200) return { ok: true, data: { token: data.token, user: data.user } };
+    const { data } = await api.post<SignInResponse>(`${BASE_API_URL}/auth/authenticate`, values);
+    if (data) return { ok: true, data: { token: data.token, user: data.user } };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const err = error as AxiosError;
-      return { ok: false, error: err.response.data as ApiError };
-    } else {
-      return {
-        ok: false,
-        error: { error: `Um inesperado erro ocorreu: ${error}` },
-      };
-    }
+    catchError(error);
   }
 }
 
-export async function recoverUserInfo(): Promise<User> {
-  await delay();
-
-  return {
-    id: 1,
-    fullname: 'Igor Sena',
-    block: '',
-    building: '',
-    number: '2',
-    email: 'igorsenamarques@hotmail.com',
-    active: true,
-    id_userType: 3,
-    id_condominium: 1,
-  };
+export async function recoverUserInfo(token: string): Promise<ApiResponse<User>> {
+  const authorization = `Bearer ${token}`;
+  try {
+    const { data } = await api.get<User>(`${BASE_API_URL}/queryToken`, {
+      headers: { Authorization: authorization },
+    });
+    if (data) {
+      return getUserById(data.id).then(({ ok, data, error }) => {
+        if (!ok && error) return { ok: false, error };
+        if (data) return { ok: true, data };
+      });
+    }
+  } catch (error) {
+    catchError(error);
+  }
 }

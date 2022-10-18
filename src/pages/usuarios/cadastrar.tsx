@@ -35,10 +35,13 @@ function CreateUser({ condominiums, userTypes }: Props) {
     setIsLoading(true);
 
     const { id, confirm, ...userData } = values;
-    const { ok, error } = await createUser(userData);
+    const {
+      ok,
+      error: { error },
+    } = await createUser(userData);
     if (!ok && error) {
       message.error({
-        content: error.error,
+        content: error,
         style: {
           position: 'absolute',
           right: 10,
