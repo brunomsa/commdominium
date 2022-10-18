@@ -6,10 +6,10 @@ import Header from '../Header';
 import * as styled from './styles';
 
 interface Props {
-  menuKey: string;
+  pageKey: string;
 }
 
-const BasicPage = ({ menuKey, children }: PropsWithChildren<Props>) => {
+const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
   const goTo = useCallback((key: string) => {
     const navigate: Record<string, string> = {
       home: '/',
@@ -23,7 +23,7 @@ const BasicPage = ({ menuKey, children }: PropsWithChildren<Props>) => {
 
   return (
     <styled.BasicPage>
-      <Header selectedKey={menuKey} onChange={(key) => goTo(key)} />
+      <Header selectedKey={pageKey} onChange={(key) => goTo(key)} />
       <main>{children}</main>
     </styled.BasicPage>
   );

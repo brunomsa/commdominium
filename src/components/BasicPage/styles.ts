@@ -8,7 +8,7 @@ export const BasicPage = styled.div`
   main {
     position: absolute;
     bottom: 0;
-    width: 100vw;
+    width: 100%;
     height: calc(100vh - ${theme.header.height}px);
     padding: 32px ${theme.main.padding_x}px;
   }

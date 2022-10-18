@@ -10,6 +10,7 @@ export const Header = styled.header`
   background-color: ${theme.colors.dark_grey};
   font-weight: 500;
   height: ${theme.header.height}px;
+  z-index: 10;
 
   div:first-child {
     display: flex;

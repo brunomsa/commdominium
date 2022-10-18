@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar, Badge, Col, Menu, Row } from 'antd';
+import { Avatar, Badge, Menu } from 'antd';
 import { BellOutlined, UserOutlined } from '@ant-design/icons';
 
 import * as styled from './styles';
