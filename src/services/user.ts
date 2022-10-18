@@ -26,18 +26,18 @@ export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResp
       ...user,
       active: true,
     };
-    const { data } = await api.post<User>(`${BASE_API_URL}/user/register`, userData);
-    if (data) return { ok: true, data };
+    const { status, data } = await api.post<User>(`${BASE_API_URL}/user/register`, userData);
+    if (status.toString().startsWith('2') && data) return { ok: true, data };
   } catch (error) {
-    catchError(error);
+    return catchError(error);
   }
 }
 
 export async function getUserById(id: number): Promise<ApiResponse<User>> {
   try {
-    const { data } = await api.post<User>(`${BASE_API_URL}/user/findById`, { id });
-    if (data) return { ok: true, data };
+    const { status, data } = await api.post<User>(`${BASE_API_URL}/user/findById`, { id });
+    if (status.toString().startsWith('2') && data) return { ok: true, data };
   } catch (error) {
-    catchError(error);
+    return catchError(error);
   }
 }

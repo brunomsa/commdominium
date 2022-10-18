@@ -11,26 +11,26 @@ type SignInResponse = {
 
 export async function signInRequest(values: SignInData): Promise<ApiResponse<SignInResponse>> {
   try {
-    const { data } = await api.post<SignInResponse>(`${BASE_API_URL}/auth/authenticate`, values);
-    if (data) return { ok: true, data: { token: data.token, user: data.user } };
+    const { status, data } = await api.post<SignInResponse>(`${BASE_API_URL}/auth/authenticate`, values);
+    if (status.toString().startsWith('2') && data) return { ok: true, data: { token: data.token, user: data.user } };
   } catch (error) {
-    catchError(error);
+    return catchError(error);
   }
 }
 
 export async function recoverUserInfo(token: string): Promise<ApiResponse<User>> {
   const authorization = `Bearer ${token}`;
   try {
-    const { data } = await api.get<User>(`${BASE_API_URL}/queryToken`, {
+    const { status, data } = await api.get<User>(`${BASE_API_URL}/queryToken`, {
       headers: { Authorization: authorization },
     });
-    if (data) {
+    if (status.toString().startsWith('2') && data) {
       return getUserById(data.id).then(({ ok, data, error }) => {
         if (!ok && error) return { ok: false, error };
         if (data) return { ok: true, data };
       });
     }
   } catch (error) {
-    catchError(error);
+    return catchError(error);
   }
 }

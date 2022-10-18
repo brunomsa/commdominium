@@ -102,11 +102,11 @@ const columns: ColumnsType<DataType> = [
 
 function Users({ users, condominiums, userTypes, ok, messageError }: Props) {
   const getCondominiumById = useCallback((id: number) => condominiums?.find((cond) => cond.id === id), [condominiums]);
-  const getUserTypeById = useCallback((id: number) => userTypes?.find((cond) => cond.id === id), [userTypes]);
+  const getUserTypeById = useCallback((id: number) => userTypes?.find((type) => type.id === id), [userTypes]);
 
   useEffect(() => {
     if (!ok && messageError) {
-      message.error(messageError.error);
+      return message.error(messageError.error);
     }
   }, [ok, messageError]);
 
@@ -116,7 +116,7 @@ function Users({ users, condominiums, userTypes, ok, messageError }: Props) {
       name: user.fullname,
       email: user.email,
       condominium: getCondominiumById(user.id_condominium).name,
-      userType: getUserTypeById(user.id_condominium).type,
+      userType: getUserTypeById(user.id_userType).type,
       building: user.building ? user.building : '-',
       block: user.block ? user.block : '-',
       number: user.number,
