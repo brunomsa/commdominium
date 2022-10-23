@@ -6,3 +6,7 @@ export type Condominuim = {
   street: string;
   number: string;
 };
+
+export function getCondominiumById(condominiums: Condominuim[], id: number) {
+  return condominiums?.find((cond) => cond.id === id);
+}

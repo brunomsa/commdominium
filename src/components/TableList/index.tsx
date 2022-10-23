@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 
 import type { InputRef } from 'antd';
-import { Button, Input, Space, Table } from 'antd';
+import { Button, Input, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 
 import * as styled from './styles';
 import theme from '../../styles/theme';
@@ -11,9 +11,10 @@ import theme from '../../styles/theme';
 interface Props<T> {
   data: T[];
   columns: ColumnsType<T>;
+  action?: ColumnType<T>;
 }
 
-function TableList<T, K extends keyof T>({ data, columns }: Props<T>) {
+function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
   const searchInput = useRef<InputRef>(null);
 
   const getColumnTitleByKey = useCallback((key: K) => columns.find((col) => col.key === key), [columns]);
@@ -56,22 +57,7 @@ function TableList<T, K extends keyof T>({ data, columns }: Props<T>) {
       ...col,
       ...(col.key && getColumnSearchProps(col.key as K)),
     })),
-    {
-      key: 'actions',
-      align: 'center',
-      fixed: 'right',
-      width: 150,
-      render: () => (
-        <Space size="middle">
-          <Button type="primary">
-            <EditOutlined />
-          </Button>
-          <Button className="delete">
-            <DeleteOutlined />
-          </Button>
-        </Space>
-      ),
-    },
+    action,
   ];
 
   return (

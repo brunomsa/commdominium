@@ -1,22 +1,26 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
 
-import { Button, message } from 'antd';
+import { Button, message, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import { getApiClient } from '../../services/axios';
-import { User } from '../../services/user';
-import { Condominuim } from '../../services/condominium';
-import { UserType } from '../../services/userType';
+import { deleteUser, User } from '../../services/user';
+import { Condominuim, getCondominiumById } from '../../services/condominium';
+import { getUserTypeById, UserType } from '../../services/userType';
 import { BasicPage, TableList } from '../../components';
 import axios, { AxiosError } from 'axios';
 import { parseCookies } from 'nookies';
 import { ApiError } from '../../services/api';
+import theme from '../../styles/theme';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { ColumnType } from 'antd/lib/table';
+import { AuthContext } from '../../contexts/AuthContext';
 
 interface DataType {
-  key: string;
+  key: number;
   name: string;
   email: string;
   condominium: string;
@@ -42,7 +46,7 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'name',
     showSorterTooltip: false,
     width: 250,
-    sorter: (a, b) => a.name.length - b.name.length,
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: 'E-mail',
@@ -50,7 +54,7 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'email',
     showSorterTooltip: false,
     width: 250,
-    sorter: (a, b) => a.email.length - b.email.length,
+    sorter: (a, b) => a.email.localeCompare(b.email),
   },
   {
     title: 'Condomínio',
@@ -58,14 +62,14 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'condominium',
     showSorterTooltip: false,
     width: 200,
-    sorter: (a, b) => a.condominium.length - b.condominium.length,
+    sorter: (a, b) => a.condominium.localeCompare(b.condominium),
   },
   {
     title: 'Tipo de usuário',
     dataIndex: 'userType',
     showSorterTooltip: false,
     width: 180,
-    sorter: (a, b) => a.userType.length - b.userType.length,
+    sorter: (a, b) => a.userType.localeCompare(b.userType),
   },
   {
     title: 'Bloco',
@@ -73,7 +77,7 @@ const columns: ColumnsType<DataType> = [
     showSorterTooltip: false,
     width: 120,
     align: 'center',
-    sorter: (a, b) => a.block.length - b.block.length,
+    sorter: (a, b) => a.block.localeCompare(b.block),
   },
   {
     title: 'Prédio',
@@ -81,7 +85,7 @@ const columns: ColumnsType<DataType> = [
     showSorterTooltip: false,
     width: 120,
     align: 'center',
-    sorter: (a, b) => a.building.length - b.building.length,
+    sorter: (a, b) => a.building.localeCompare(b.building),
   },
   {
     title: 'Número',
@@ -89,20 +93,21 @@ const columns: ColumnsType<DataType> = [
     showSorterTooltip: false,
     width: 120,
     align: 'center',
-    sorter: (a, b) => a.number.length - b.number.length,
+    sorter: (a, b) => a.number.localeCompare(b.number),
   },
   {
     title: 'Status',
     dataIndex: 'status',
     showSorterTooltip: false,
     width: 120,
-    sorter: (a, b) => a.status.length - b.status.length,
+    sorter: (a, b) => a.status.localeCompare(b.status),
   },
 ];
 
-function Users({ users, condominiums, userTypes, ok, messageError }: Props) {
-  const getCondominiumById = useCallback((id: number) => condominiums?.find((cond) => cond.id === id), [condominiums]);
-  const getUserTypeById = useCallback((id: number) => userTypes?.find((type) => type.id === id), [userTypes]);
+function Users({ users: initialUsers, condominiums, userTypes, ok, messageError }: Props) {
+  const { user: loggedUser } = useContext(AuthContext);
+
+  const [users, setUsers] = useState<User[]>(initialUsers);
 
   useEffect(() => {
     if (!ok && messageError) {
@@ -111,18 +116,76 @@ function Users({ users, condominiums, userTypes, ok, messageError }: Props) {
   }, [ok, messageError]);
 
   const data: DataType[] = useMemo(() => {
-    return users?.map((user) => ({
-      key: user.fullname,
-      name: user.fullname,
-      email: user.email,
-      condominium: getCondominiumById(user.id_condominium).name,
-      userType: getUserTypeById(user.id_userType).type,
-      building: user.building ? user.building : '-',
-      block: user.block ? user.block : '-',
-      number: user.number,
-      status: user.active ? 'Ativo' : 'Desativo',
-    }));
-  }, [users]);
+    if (!users || !loggedUser) return;
+    return users
+      .filter((i) => i.id !== loggedUser.id)
+      .map((user) => ({
+        key: user.id,
+        name: user.fullname,
+        email: user.email,
+        condominium: getCondominiumById(condominiums, user.id_condominium).name,
+        userType: getUserTypeById(userTypes, user.id_userType).type,
+        building: user.building ? user.building : '-',
+        block: user.block ? user.block : '-',
+        number: user.number,
+        status: user.active ? 'Ativo' : 'Desativo',
+      }));
+  }, [condominiums, users, userTypes, loggedUser]);
+
+  const handleDelete = useCallback(async (id: number) => {
+    const { ok, data, error } = await deleteUser(id);
+    if (error) {
+      if (!ok) {
+        return message.error({
+          content: error.error,
+          style: {
+            position: 'absolute',
+            right: 10,
+            top: `${theme.header.height}px`,
+          },
+        });
+      }
+      if (ok) {
+        return message.warning({
+          content: error.error,
+          style: {
+            position: 'absolute',
+            right: 10,
+            top: `${theme.header.height}px`,
+          },
+        });
+      }
+    }
+    if (ok && data) {
+      setUsers((prev) => prev.filter((user) => user.id !== id));
+      return message.success({
+        content: 'Usuário excluído com sucesso',
+        style: {
+          position: 'absolute',
+          right: 10,
+          top: `${theme.header.height}px`,
+        },
+      });
+    }
+  }, []);
+
+  const actionsColumn: ColumnType<DataType> = useMemo(() => {
+    return {
+      align: 'center',
+      fixed: 'right',
+      width: 150,
+      render: (_, record) => (
+        <Space size="middle">
+          <Button type="primary">
+            <EditOutlined />
+          </Button>
+          <Button className="delete" onClick={() => handleDelete(record.key)}>
+            <DeleteOutlined />
+          </Button>
+        </Space>
+      ),
+    };
+  }, []);
 
   return (
     <>
@@ -136,7 +199,7 @@ function Users({ users, condominiums, userTypes, ok, messageError }: Props) {
             Novo Usuário
           </Button>
         </div>
-        <TableList columns={columns} data={data} />
+        <TableList columns={columns} data={data} action={actionsColumn} />
       </BasicPage>
     </>
   );

@@ -64,7 +64,7 @@ function CreateUser({ condominiums, userTypes }: Props) {
   return (
     <styled.Users>
       <Head>
-        <title>Usuários - Criar</title>
+        <title>Cadastrar Usuários</title>
       </Head>
 
       <BasicPage pageKey="create-user">
@@ -118,13 +118,11 @@ function CreateUser({ condominiums, userTypes }: Props) {
           </Form.Item>
           <Form.Item name="id_userType" rules={[{ required: true, message: 'Por favor, informe um tipo de usuário' }]}>
             <Select placeholder="Tipo do usuário">
-              {userTypes
-                .filter((i) => i.type !== 'admin')
-                .map((ut) => (
-                  <Select.Option key={ut.id} value={ut.id}>
-                    {toCapitalize(ut.type)}
-                  </Select.Option>
-                ))}
+              {userTypes.map((ut) => (
+                <Select.Option key={ut.id} value={ut.id}>
+                  {toCapitalize(ut.type)}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item name="id_condominium">

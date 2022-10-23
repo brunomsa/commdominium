@@ -27,7 +27,7 @@ export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResp
       active: true,
     };
     const { status, data } = await api.post<User>(`${BASE_API_URL}/user/register`, userData);
-    if (status.toString().startsWith('2') && data) return { ok: true, data };
+    if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);
   }
@@ -36,7 +36,18 @@ export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResp
 export async function getUserById(id: number): Promise<ApiResponse<User>> {
   try {
     const { status, data } = await api.post<User>(`${BASE_API_URL}/user/findById`, { id });
-    if (status.toString().startsWith('2') && data) return { ok: true, data };
+    if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
+    if (status === 200 && data) return { ok: true, data };
+  } catch (error) {
+    return catchError(error);
+  }
+}
+
+export async function deleteUser(id: number): Promise<ApiResponse<{ status: string }>> {
+  try {
+    const { status, data } = await api.delete<{ status: string }>(`${BASE_API_URL}/user/delete`, { data: { id } });
+    if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
+    if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);
   }

@@ -27,9 +27,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const { 'commdominium.token': token } = parseCookies();
 
     if (token) {
-      recoverUserInfo(token).then(({ ok, data, error }) => {
-        if (!ok && error) return message.error(error.error);
-        setUser(data);
+      recoverUserInfo(token).then((res) => {
+        if (!res?.ok && res?.error) return message.error(res?.error.error);
+        setUser(res?.data);
       });
     }
   }, []);
