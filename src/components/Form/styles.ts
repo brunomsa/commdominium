@@ -14,16 +14,19 @@ export const Form = styled(AntdForm)`
   select:-webkit-autofill:focus {
     caret-color: ${theme.colors.text};
     -webkit-text-fill-color: ${theme.colors.text} !important;
-    -webkit-box-shadow: 0 0 0px 1000px ${theme.colors.background} inset;
+    box-shadow: 0 0 0px 1000px ${theme.colors.background} inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  .ant-form-item-control-input-content {
+  .ant-form-item-control-input-content,
+  .ant-select {
     > input,
     > span {
-      height: 60px;
       border: none;
       background-color: ${theme.colors.background} !important;
     }
+  }
+  .ant-select-selector {
+    border: none !important;
   }
 `;

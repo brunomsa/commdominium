@@ -20,7 +20,11 @@ type CreateUserResponse = {
   error?: ApiError;
 };
 
-export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResponse> {
+export interface UserData extends Omit<User, 'id' | 'active'> {
+  confirm?: string;
+}
+
+export async function createUser(user: Omit<User, 'id' | 'active'>): Promise<CreateUserResponse> {
   try {
     const userData: Omit<User, 'id'> = {
       ...user,
@@ -36,6 +40,20 @@ export async function createUser(user: Omit<User, 'id'>): Promise<CreateUserResp
 export async function getUserById(id: number): Promise<ApiResponse<User>> {
   try {
     const { status, data } = await api.post<User>(`${BASE_API_URL}/user/findById`, { id });
+    if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
+    if (status === 200 && data) return { ok: true, data };
+  } catch (error) {
+    return catchError(error);
+  }
+}
+
+export async function updateUser(user: Omit<User, 'active'>): Promise<CreateUserResponse> {
+  try {
+    const userData: User = {
+      ...user,
+      active: true,
+    };
+    const { status, data } = await api.patch<User>(`${BASE_API_URL}/user/update`, userData);
     if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {

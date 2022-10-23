@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Users = styled.div`
   img.background-image {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     width: 40%;
@@ -18,15 +18,14 @@ export const Users = styled.div`
   .form {
     width: 40%;
 
-      .ant-form-item {
-        min-width: 350px;
-      }
-
+    .ant-form-item {
+      min-width: 350px;
+    }
 
     div.ant-form-item:last-child {
       text-align: end;
       button {
-        margin-top: 40px
+        margin-top: 40px;
         width: 150px;
       }
     }

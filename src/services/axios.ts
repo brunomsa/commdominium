@@ -36,7 +36,7 @@ export function catchError(error: any) {
   } else {
     return {
       ok: false,
-      error: { error: `Um inesperado erro ocorreu: ${error}` },
+      error: { error: `${error}` },
     };
   }
 }

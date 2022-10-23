@@ -27,7 +27,12 @@ export const Login = styled.div`
     gap: 50px;
     justify-content: center;
 
+    h1 {
+      font-size: 40px;
+    }
+
     p {
+      font-size: 25px;
       text-align: center;
     }
   }
@@ -44,6 +49,13 @@ export const LoginForm = styled(Form)`
   background-color: ${theme.colors.dark_grey};
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
+  .ant-form-item-control-input-content {
+    > input,
+    > span {
+      height: 60px;
+    }
+  }
+
   .login-button {
     display: flex;
     justify-content: center;
@@ -53,5 +65,10 @@ export const LoginForm = styled(Form)`
       height: 50px;
       text-transform: uppercase;
     }
+  }
+
+  @media (max-width: 1080px) {
+    width: 400px;
+    height: 400px;
   }
 `;

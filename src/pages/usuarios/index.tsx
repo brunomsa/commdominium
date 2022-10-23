@@ -1,23 +1,25 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
+import axios, { AxiosError } from 'axios';
+import { parseCookies } from 'nookies';
 
 import { Button, message, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { ColumnType } from 'antd/lib/table';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getApiClient } from '../../services/axios';
 import { deleteUser, User } from '../../services/user';
 import { Condominuim, getCondominiumById } from '../../services/condominium';
 import { getUserTypeById, UserType } from '../../services/userType';
-import { BasicPage, TableList } from '../../components';
-import axios, { AxiosError } from 'axios';
-import { parseCookies } from 'nookies';
-import { ApiError } from '../../services/api';
-import theme from '../../styles/theme';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { ColumnType } from 'antd/lib/table';
 import { AuthContext } from '../../contexts/AuthContext';
+import { BasicPage, TableList } from '../../components';
+import { ApiError } from '../../services/api';
+
+import theme from '../../styles/theme';
 
 interface DataType {
   key: number;
@@ -110,6 +112,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
   const [users, setUsers] = useState<User[]>(initialUsers);
 
   useEffect(() => {
+    console.log({ ok, messageError });
     if (!ok && messageError) {
       return message.error(messageError.error);
     }
@@ -123,8 +126,8 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
         key: user.id,
         name: user.fullname,
         email: user.email,
-        condominium: getCondominiumById(condominiums, user.id_condominium).name,
-        userType: getUserTypeById(userTypes, user.id_userType).type,
+        condominium: getCondominiumById(condominiums, user.id_condominium)?.name,
+        userType: getUserTypeById(userTypes, user.id_userType)?.type,
         building: user.building ? user.building : '-',
         block: user.block ? user.block : '-',
         number: user.number,
@@ -177,7 +180,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
       render: (_, record) => (
         <Space size="middle">
           <Button type="primary">
-            <EditOutlined />
+            <EditOutlined onClick={() => Router.push(`usuarios/${record.key}/editar`)} />
           </Button>
           <Button className="delete" onClick={() => handleDelete(record.key)}>
             <DeleteOutlined />
@@ -228,9 +231,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
       props: {
         ok: true,
-        users: users,
-        condominiums: condominiums,
-        userTypes: userTypes,
+        users,
+        condominiums,
+        userTypes,
       },
     };
   } catch (error) {
@@ -241,7 +244,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       return {
         props: {
           ok: false,
-          messageError: { error: `Um inesperado erro ocorreu: ${error}` },
+          messageError: { error: `${error}` },
         },
       };
     }

@@ -9,7 +9,7 @@ export const BasicPage = styled.div`
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: calc(100vh - ${theme.header.height}px);
+    height: calc(100% - ${theme.header.height}px);
     padding: 32px ${theme.main.padding_x}px;
   }
 `;

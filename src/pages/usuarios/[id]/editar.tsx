@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 
 import { message } from 'antd';
 
-import { BasicPage, UserSettings } from '../../components';
-import { createUser, UserData } from '../../services/user';
-import { getApiClient } from '../../services/axios';
-import { Condominuim } from '../../services/condominium';
-import { UserType } from '../../services/userType';
+import { BasicPage, UserSettings } from '../../../components';
+import { Condominuim } from '../../../services/condominium';
+import { UserType } from '../../../services/userType';
+import { getApiClient } from '../../../services/axios';
+import { getUserById, updateUser, User, UserData } from '../../../services/user';
 
-import theme from '../../styles/theme';
-import * as styled from '../../styles/pages/Users';
-
-const URL_BACKGROUND =
-  'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
+import * as styled from '../../../styles/pages/Users';
+import theme from '../../../styles/theme';
 
 interface Props {
+  user?: User;
   condominiums?: Condominuim[];
   userTypes?: UserType[];
 }
 
-function CreateUser({ condominiums, userTypes }: Props) {
+function EditUser({ user, condominiums, userTypes }: Props) {
+  const { id: itemId } = useRouter().query;
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values: UserData) => {
     setLoading(true);
 
     const { confirm, ...userData } = values;
-    const { ok, error } = await createUser(userData);
+    const { ok, error } = await updateUser({ ...userData, id: Number(itemId) });
     if (!ok && error) {
       setLoading(false);
 
@@ -59,18 +59,24 @@ function CreateUser({ condominiums, userTypes }: Props) {
   return (
     <styled.Users>
       <Head>
-        <title>Cadastrar Usuários</title>
+        <title>Editar Usuários</title>
       </Head>
 
       <BasicPage pageKey="create-user">
-        <h1>Cadastrar Novo Usuário</h1>
-        <UserSettings condominiums={condominiums} userTypes={userTypes} loading={loading} onSubmit={handleSubmit} />
+        <h1>Editar Usuário</h1>
+        <UserSettings
+          initialValues={user}
+          condominiums={condominiums}
+          userTypes={userTypes}
+          loading={loading}
+          onSubmit={handleSubmit}
+        />
       </BasicPage>
     </styled.Users>
   );
 }
 
-export default CreateUser;
+export default EditUser;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const apiClient = getApiClient(ctx);
@@ -85,11 +91,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
+  const { id } = ctx.query;
+  const { data: user } = await getUserById(Number(id));
   const { data: condominiums } = await apiClient.get<Condominuim[]>('/condominium/findAll');
   const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
 
   return {
     props: {
+      user,
       condominiums,
       userTypes,
     },
