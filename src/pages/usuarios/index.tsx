@@ -20,6 +20,7 @@ import { BasicPage, TableList } from '../../components';
 import { ApiError } from '../../services/api';
 
 import theme from '../../styles/theme';
+import { pageKey } from '../../utils/types';
 
 interface DataType {
   key: number;
@@ -47,7 +48,7 @@ const columns: ColumnsType<DataType> = [
     key: 'name',
     dataIndex: 'name',
     showSorterTooltip: false,
-    width: 250,
+    width: 200,
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
@@ -55,7 +56,7 @@ const columns: ColumnsType<DataType> = [
     key: 'email',
     dataIndex: 'email',
     showSorterTooltip: false,
-    width: 250,
+    width: 200,
     sorter: (a, b) => a.email.localeCompare(b.email),
   },
   {
@@ -176,15 +177,11 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
     return {
       align: 'center',
       fixed: 'right',
-      width: 150,
+      width: 115,
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary">
-            <EditOutlined onClick={() => Router.push(`usuarios/${record.key}/editar`)} />
-          </Button>
-          <Button className="delete" onClick={() => handleDelete(record.key)}>
-            <DeleteOutlined />
-          </Button>
+          <Button type="primary" onClick={() => Router.push(`usuarios/${record.key}/editar`)} icon={<EditOutlined />} />
+          <Button className="delete" onClick={() => handleDelete(record.key)} icon={<DeleteOutlined />} />
         </Space>
       ),
     };
@@ -196,7 +193,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
         <title>Usuários</title>
       </Head>
 
-      <BasicPage pageKey="users">
+      <BasicPage pageKey={pageKey.USERS}>
         <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
           <Button type="primary" onClick={() => Router.push('/usuarios/cadastrar')}>
             Novo Usuário

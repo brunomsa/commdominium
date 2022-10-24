@@ -14,6 +14,7 @@ import { UserType } from '../../services/userType';
 
 import theme from '../../styles/theme';
 import * as styled from '../../styles/pages/Users';
+import { pageKey } from '../../utils/types';
 
 const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
@@ -62,7 +63,7 @@ function CreateUser({ condominiums, userTypes }: Props) {
         <title>Cadastrar Usuários</title>
       </Head>
 
-      <BasicPage pageKey="create-user">
+      <BasicPage pageKey={pageKey.USERS}>
         <h1>Cadastrar Novo Usuário</h1>
         <UserSettings condominiums={condominiums} userTypes={userTypes} loading={loading} onSubmit={handleSubmit} />
       </BasicPage>

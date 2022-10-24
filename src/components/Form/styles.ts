@@ -26,7 +26,7 @@ export const Form = styled(AntdForm)`
       background-color: ${theme.colors.background} !important;
     }
   }
-  .ant-select-selector {
-    border: none !important;
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: none;
   }
 `;

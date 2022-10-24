@@ -3,15 +3,21 @@ import React from 'react';
 import { Avatar, Badge, Menu } from 'antd';
 import { BellOutlined, UserOutlined } from '@ant-design/icons';
 
-import * as styled from './styles';
+import { pageKey } from '../../utils/types';
 import theme from '../../styles/theme';
+import * as styled from './styles';
 
-const menuOptions = [
-  { key: 'home', label: 'Início' },
-  { key: 'condominium', label: 'Condomínio' },
-  { key: 'payment', label: 'Pagamento' },
-  { key: 'portal', label: 'Portal' },
-  { key: 'users', label: 'Usuários' },
+type menuOptionsType = {
+  key: pageKey;
+  label: string;
+};
+
+const menuOptions: menuOptionsType[] = [
+  { key: pageKey.HOME, label: 'Início' },
+  { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
+  { key: pageKey.PAYMENT, label: 'Pagamento' },
+  { key: pageKey.PORTAL, label: 'Portal' },
+  { key: pageKey.USERS, label: 'Usuários' },
 ];
 
 interface Props {

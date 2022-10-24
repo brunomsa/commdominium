@@ -7,6 +7,7 @@ import { parseCookies } from 'nookies';
 import { AuthContext } from '../contexts/AuthContext';
 
 import { BasicPage, PageLoader } from '../components';
+import { pageKey } from '../utils/types';
 
 function Home() {
   const { user, isAuthenticated } = useContext(AuthContext);
@@ -20,7 +21,7 @@ function Home() {
       {!isAuthenticated || !user ? (
         <PageLoader />
       ) : (
-        <BasicPage pageKey="home">
+        <BasicPage pageKey={pageKey.HOME}>
           <div>Olá {user.fullname}!</div>
         </BasicPage>
       )}

@@ -2,18 +2,19 @@ import React, { PropsWithChildren, useCallback } from 'react';
 import Router from 'next/router';
 
 import Header from '../Header';
+import { pageKey } from '../../utils/types';
 
 import * as styled from './styles';
 
 interface Props {
-  pageKey: string;
+  pageKey: pageKey;
 }
 
 const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
   const goTo = useCallback((key: string) => {
-    const navigate: Record<string, string> = {
+    const navigate: Record<pageKey, string> = {
       home: '/',
-      condominium: '/condominio',
+      condominiums: '/condominios',
       payment: '/pagamento',
       portal: '/portal',
       users: '/usuarios',

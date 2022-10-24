@@ -1,8 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { InputRef } from 'antd';
 import { Button, Input, Table } from 'antd';
-import type { ColumnsType, ColumnType } from 'antd/es/table';
+import type { ColumnsType, ColumnType, TableProps } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
 
 import * as styled from './styles';
@@ -15,6 +15,8 @@ interface Props<T> {
 }
 
 function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
+  const [loading, setLoading] = useState(true);
+
   const searchInput = useRef<InputRef>(null);
 
   const getColumnTitleByKey = useCallback((key: K) => columns.find((col) => col.key === key), [columns]);
@@ -60,13 +62,23 @@ function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
     action,
   ];
 
+  useEffect(() => {
+    if (data) setLoading(false);
+
+    if (loading) {
+      const loader = setTimeout(() => setLoading(false), 1000);
+      () => clearTimeout(loader);
+    }
+  }, [data, loading]);
+
   return (
     <styled.TableList>
       <Table
         className="user-table"
         columns={dataColumns as object[]}
         dataSource={data as object[]}
-        scroll={{ x: 1500 }}
+        scroll={{ x: 500 }}
+        loading={loading}
       />
     </styled.TableList>
   );

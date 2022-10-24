@@ -14,6 +14,7 @@ import { getUserById, updateUser, User, UserData } from '../../../services/user'
 
 import * as styled from '../../../styles/pages/Users';
 import theme from '../../../styles/theme';
+import { pageKey } from '../../../utils/types';
 
 interface Props {
   user?: User;
@@ -62,7 +63,7 @@ function EditUser({ user, condominiums, userTypes }: Props) {
         <title>Editar Usuários</title>
       </Head>
 
-      <BasicPage pageKey="create-user">
+      <BasicPage pageKey={pageKey.USERS}>
         <h1>Editar Usuário</h1>
         <UserSettings
           initialValues={user}
