@@ -6,9 +6,9 @@ import { ApiError } from 'next/dist/server/api-utils';
 import { parseCookies } from 'nookies';
 import axios, { AxiosError } from 'axios';
 
-import { Button, message, Space } from 'antd';
+import { Button, message, Modal, Space } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { BasicPage, TableList } from '../../components';
 import { pageKey } from '../../utils/types';
@@ -102,6 +102,18 @@ function Condominiums({ condominiums: initialCondominiums }: Props) {
     }
   }, []);
 
+  const confirmDeleteModal = (id: number) => {
+    Modal.confirm({
+      title: 'Excluir condomínio',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Tem certeza que deseja excluir este condomínio?',
+      okText: 'Sim',
+      cancelText: 'Não',
+      onOk: async () => await handleDelete(id),
+      onCancel: () => {},
+    });
+  };
+
   const actionsColumn: ColumnType<DataType> = useMemo(() => {
     return {
       align: 'center',
@@ -114,7 +126,7 @@ function Condominiums({ condominiums: initialCondominiums }: Props) {
             icon={<EditOutlined />}
             onClick={() => Router.push(`condominios/${record.key}/editar`)}
           />
-          <Button className="delete" icon={<DeleteOutlined />} onClick={() => handleDelete(record.key)} />
+          <Button className="delete" icon={<DeleteOutlined />} onClick={() => confirmDeleteModal(record.key)} />
         </Space>
       ),
     };
