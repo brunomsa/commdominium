@@ -14,17 +14,11 @@ export type User = {
   active: boolean;
 };
 
-type CreateUserResponse = {
-  ok: boolean;
-  data?: User;
-  error?: ApiError;
-};
-
 export interface UserData extends Omit<User, 'id' | 'active'> {
   confirm?: string;
 }
 
-export async function createUser(user: Omit<User, 'id' | 'active'>): Promise<CreateUserResponse> {
+export async function createUser(user: Omit<User, 'id' | 'active'>): Promise<ApiResponse<User>> {
   try {
     const userData: Omit<User, 'id'> = {
       ...user,
@@ -47,7 +41,7 @@ export async function getUserById(id: number): Promise<ApiResponse<User>> {
   }
 }
 
-export async function updateUser(user: Omit<User, 'active'>): Promise<CreateUserResponse> {
+export async function updateUser(user: Omit<User, 'active'>): Promise<ApiResponse<User>> {
   try {
     const userData: User = {
       ...user,

@@ -6,7 +6,7 @@ import { Button, Input, Form, Select } from 'antd';
 
 import { toCapitalize } from '../../utils/toCapitalize';
 import { getApiClient } from '../../services/axios';
-import { Condominuim } from '../../services/condominium';
+import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
 import { UserData } from '../../services/user';
 
@@ -14,7 +14,7 @@ const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
 
 interface Props {
-  condominiums?: Condominuim[];
+  condominiums?: Condominium[];
   userTypes?: UserType[];
   loading: boolean;
   initialValues?: UserData;
@@ -24,9 +24,9 @@ interface Props {
 function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmit }: Props) {
   return (
     <>
-      <Form className="form" initialValues={initialValues} onFinish={onSubmit}>
+      <Form className="form" initialValues={initialValues} onFinish={onSubmit} autoComplete="off">
         <Form.Item name="fullname" rules={[{ required: true, message: 'Por favor, informe um nome' }]} hasFeedback>
-          <Input value="Bruno" placeholder="Nome" />
+          <Input placeholder="Nome" />
         </Form.Item>
 
         <Form.Item
@@ -37,7 +37,7 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
           ]}
           hasFeedback
         >
-          <Input type="email" placeholder="E-mail" />
+          <Input type="search" placeholder="E-mail" />
         </Form.Item>
 
         {!initialValues && (
@@ -137,7 +137,7 @@ export default UserSettings;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const apiClient = getApiClient(ctx);
 
-  const { data: condominiums } = await apiClient.get<Condominuim[]>('/condominium/findAll');
+  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
   const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
 
   return {

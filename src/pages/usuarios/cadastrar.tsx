@@ -9,7 +9,7 @@ import { message } from 'antd';
 import { BasicPage, UserSettings } from '../../components';
 import { createUser, UserData } from '../../services/user';
 import { getApiClient } from '../../services/axios';
-import { Condominuim } from '../../services/condominium';
+import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
 
 import theme from '../../styles/theme';
@@ -20,7 +20,7 @@ const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
 
 interface Props {
-  condominiums?: Condominuim[];
+  condominiums?: Condominium[];
   userTypes?: UserType[];
 }
 
@@ -86,7 +86,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { data: condominiums } = await apiClient.get<Condominuim[]>('/condominium/findAll');
+  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
   const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
 
   return {

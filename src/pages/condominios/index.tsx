@@ -8,12 +8,12 @@ import axios, { AxiosError } from 'axios';
 
 import { Button, Space } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { BasicPage, TableList } from '../../components';
 import { pageKey } from '../../utils/types';
 import { getApiClient } from '../../services/axios';
-import { Condominuim } from '../../services/condominium';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Condominium } from '../../services/condominium';
 
 interface DataType {
   key: number;
@@ -25,7 +25,7 @@ interface DataType {
 }
 
 interface Props {
-  condominiums?: Condominuim[];
+  condominiums?: Condominium[];
 }
 
 const columns: ColumnsType<DataType> = [
@@ -136,7 +136,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: condominiums } = await apiClient.get<Condominuim[]>('/condominium/findAll');
+    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
 
     return {
       props: {

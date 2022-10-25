@@ -13,7 +13,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getApiClient } from '../../services/axios';
 import { deleteUser, User } from '../../services/user';
-import { Condominuim, getCondominiumById } from '../../services/condominium';
+import { Condominium, getCondominiumById } from '../../services/condominium';
 import { getUserTypeById, UserType } from '../../services/userType';
 import { AuthContext } from '../../contexts/AuthContext';
 import { BasicPage, TableList } from '../../components';
@@ -36,7 +36,7 @@ interface DataType {
 
 interface Props {
   users?: User[];
-  condominiums?: Condominuim[];
+  condominiums?: Condominium[];
   userTypes?: UserType[];
   ok: boolean;
   messageError?: ApiError;
@@ -222,7 +222,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const { data: users } = await apiClient.get<Omit<User, 'password'>[]>('/user/findAll');
-    const { data: condominiums } = await apiClient.get<Condominuim[]>('/condominium/findAll');
+    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
     const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
 
     return {
