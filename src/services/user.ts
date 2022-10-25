@@ -1,4 +1,4 @@
-import { api, ApiError, ApiResponse } from './api';
+import { api, ApiResponse } from './api';
 import { catchError } from './axios';
 import { BASE_API_URL } from './constants';
 

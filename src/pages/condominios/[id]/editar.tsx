@@ -6,32 +6,26 @@ import { parseCookies } from 'nookies';
 
 import { message } from 'antd';
 
-import { BasicPage, UserSettings } from '../../../components';
-import { Condominium } from '../../../services/condominium';
-import { UserType } from '../../../services/userType';
-import { getApiClient } from '../../../services/axios';
-import { getUserById, updateUser, User, UserData } from '../../../services/user';
+import { BasicPage, CondominiumSettings } from '../../../components';
+import { Condominium, getCondominiumById, updateCondominium } from '../../../services/condominium';
 
 import * as styled from '../../../styles/pages/Users';
 import theme from '../../../styles/theme';
 import { pageKey } from '../../../utils/types';
 
 interface Props {
-  user?: User;
-  condominiums?: Condominium[];
-  userTypes?: UserType[];
+  condominium?: Condominium;
 }
 
-function EditUser({ user, condominiums, userTypes }: Props) {
+function EditCondominium({ condominium }: Props) {
   const { id: itemId } = useRouter().query;
 
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (values: UserData) => {
+  const handleSubmit = async (values: Omit<Condominium, 'id'>) => {
     setLoading(true);
 
-    const { confirm, ...userData } = values;
-    const { ok, error } = await updateUser({ ...userData, id: Number(itemId) });
+    const { ok, error } = await updateCondominium({ ...values, id: Number(itemId) });
     if (!ok && error) {
       setLoading(false);
 
@@ -47,40 +41,33 @@ function EditUser({ user, condominiums, userTypes }: Props) {
 
     setLoading(false);
     message.success({
-      content: 'Usuário editado com sucesso!',
+      content: 'Condomínio editado com sucesso!',
       style: {
         position: 'absolute',
         right: 10,
         top: `${theme.header.height}px`,
       },
     });
-    Router.push('/usuarios');
+    Router.push('/condominios');
   };
 
   return (
     <styled.Users>
       <Head>
-        <title>Editar Usuários</title>
+        <title>Editar Condomínios</title>
       </Head>
 
       <BasicPage pageKey={pageKey.USERS}>
-        <h1>Editar Usuário</h1>
-        <UserSettings
-          initialValues={user}
-          condominiums={condominiums}
-          userTypes={userTypes}
-          loading={loading}
-          onSubmit={handleSubmit}
-        />
+        <h1>Editar Condomínio</h1>
+        <CondominiumSettings initialValues={condominium} loading={loading} onSubmit={handleSubmit} />
       </BasicPage>
     </styled.Users>
   );
 }
 
-export default EditUser;
+export default EditCondominium;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getApiClient(ctx);
   const { ['commdominium.token']: token } = parseCookies(ctx);
 
   if (!token) {
@@ -93,15 +80,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const { id } = ctx.query;
-  const { data: user } = await getUserById(Number(id));
-  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
-  const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+  const { data: condominium } = await getCondominiumById(Number(id));
 
   return {
     props: {
-      user,
-      condominiums,
-      userTypes,
+      condominium,
     },
   };
 };

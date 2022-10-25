@@ -13,8 +13,8 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { getApiClient } from '../../services/axios';
 import { deleteUser, User } from '../../services/user';
-import { Condominium, getCondominiumById } from '../../services/condominium';
-import { getUserTypeById, UserType } from '../../services/userType';
+import { Condominium, findCondominiumById } from '../../services/condominium';
+import { findUserTypeById, UserType } from '../../services/userType';
 import { AuthContext } from '../../contexts/AuthContext';
 import { BasicPage, TableList } from '../../components';
 import { ApiError } from '../../services/api';
@@ -127,8 +127,8 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
         key: user.id,
         name: user.fullname,
         email: user.email,
-        condominium: getCondominiumById(condominiums, user.id_condominium)?.name,
-        userType: getUserTypeById(userTypes, user.id_userType)?.type,
+        condominium: findCondominiumById(condominiums, user.id_condominium)?.name,
+        userType: findUserTypeById(userTypes, user.id_userType)?.type,
         building: user.building ? user.building : '-',
         block: user.block ? user.block : '-',
         number: user.number,
