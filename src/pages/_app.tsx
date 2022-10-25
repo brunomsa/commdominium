@@ -4,10 +4,11 @@ import { AppProps } from 'next/app';
 import Router from 'next/router';
 import { ThemeProvider } from 'styled-components';
 
+import { ConfigProvider } from 'antd';
 import '../../custom-theme.css';
 
 import { AuthProvider } from '../contexts/AuthContext';
-import { PageLoader } from '../components';
+import { EmptyState, PageLoader } from '../components';
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
 
@@ -34,8 +35,10 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
       {loading && <PageLoader />}
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <Component {...pageProps} />
-          <GlobalStyle />
+          <ConfigProvider renderEmpty={() => <EmptyState />}>
+            <Component {...pageProps} />
+            <GlobalStyle />
+          </ConfigProvider>
         </AuthProvider>
       </ThemeProvider>
     </>
