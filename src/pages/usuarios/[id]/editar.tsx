@@ -46,14 +46,7 @@ function EditUser({ user, condominiums, userTypes }: Props) {
     }
 
     setLoading(false);
-    message.success({
-      content: 'Usuário editado com sucesso!',
-      style: {
-        position: 'absolute',
-        right: 10,
-        top: `${theme.header.height}px`,
-      },
-    });
+    message.success('Usuário editado com sucesso!');
     Router.push('/usuarios');
   };
 

@@ -37,14 +37,7 @@ function CreateCondominium() {
     }
 
     setLoading(false);
-    message.success({
-      content: 'Condomínio adicionado com sucesso!',
-      style: {
-        position: 'absolute',
-        right: 10,
-        top: `${theme.header.height}px`,
-      },
-    });
+    message.success('Condomínio adicionado com sucesso!');
     Router.push('/condominios');
   };
 

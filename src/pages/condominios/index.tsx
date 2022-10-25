@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
@@ -6,14 +6,14 @@ import { ApiError } from 'next/dist/server/api-utils';
 import { parseCookies } from 'nookies';
 import axios, { AxiosError } from 'axios';
 
-import { Button, Space } from 'antd';
+import { Button, message, Space } from 'antd';
 import { ColumnsType, ColumnType } from 'antd/lib/table';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { BasicPage, TableList } from '../../components';
 import { pageKey } from '../../utils/types';
 import { getApiClient } from '../../services/axios';
-import { Condominium } from '../../services/condominium';
+import { Condominium, deleteCondominium } from '../../services/condominium';
 
 interface DataType {
   key: number;
@@ -71,7 +71,9 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-function Condominiums({ condominiums }: Props) {
+function Condominiums({ condominiums: initialCondominiums }: Props) {
+  const [condominiums, setCondominiums] = useState<Condominium[]>(initialCondominiums);
+
   const data: DataType[] = useMemo(() => {
     if (!condominiums) return;
     return condominiums.map((cond) => ({
@@ -84,6 +86,22 @@ function Condominiums({ condominiums }: Props) {
     }));
   }, [condominiums]);
 
+  const handleDelete = useCallback(async (id: number) => {
+    const { ok, data, error } = await deleteCondominium(id);
+    if (error) {
+      if (!ok) {
+        return message.error(error.error);
+      }
+      if (ok) {
+        return message.warning(error.error);
+      }
+    }
+    if (ok && data) {
+      setCondominiums((prev) => prev.filter((cond) => cond.id !== id));
+      return message.success('Condomínio excluído com sucesso');
+    }
+  }, []);
+
   const actionsColumn: ColumnType<DataType> = useMemo(() => {
     return {
       align: 'center',
@@ -93,10 +111,10 @@ function Condominiums({ condominiums }: Props) {
         <Space size="middle">
           <Button
             type="primary"
-            onClick={() => Router.push(`condominios/${record.key}/editar`)}
             icon={<EditOutlined />}
+            onClick={() => Router.push(`condominios/${record.key}/editar`)}
           />
-          <Button className="delete" icon={<DeleteOutlined />} />
+          <Button className="delete" icon={<DeleteOutlined />} onClick={() => handleDelete(record.key)} />
         </Space>
       ),
     };

@@ -46,14 +46,7 @@ function CreateUser({ condominiums, userTypes }: Props) {
     }
 
     setLoading(false);
-    message.success({
-      content: 'Usuário adicionado com sucesso!',
-      style: {
-        position: 'absolute',
-        right: 10,
-        top: `${theme.header.height}px`,
-      },
-    });
+    message.success('Usuário adicionado com sucesso!');
     Router.push('/usuarios');
   };
 

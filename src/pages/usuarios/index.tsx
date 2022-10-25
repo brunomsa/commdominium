@@ -19,7 +19,6 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { BasicPage, TableList } from '../../components';
 import { ApiError } from '../../services/api';
 
-import theme from '../../styles/theme';
 import { pageKey } from '../../utils/types';
 
 interface DataType {
@@ -140,36 +139,15 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
     const { ok, data, error } = await deleteUser(id);
     if (error) {
       if (!ok) {
-        return message.error({
-          content: error.error,
-          style: {
-            position: 'absolute',
-            right: 10,
-            top: `${theme.header.height}px`,
-          },
-        });
+        return message.error(error.error);
       }
       if (ok) {
-        return message.warning({
-          content: error.error,
-          style: {
-            position: 'absolute',
-            right: 10,
-            top: `${theme.header.height}px`,
-          },
-        });
+        return message.warning(error.error);
       }
     }
     if (ok && data) {
       setUsers((prev) => prev.filter((user) => user.id !== id));
-      return message.success({
-        content: 'Usuário excluído com sucesso',
-        style: {
-          position: 'absolute',
-          right: 10,
-          top: `${theme.header.height}px`,
-        },
-      });
+      return message.success('Usuário excluído com sucesso');
     }
   }, []);
 
@@ -180,8 +158,8 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
       width: 115,
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => Router.push(`usuarios/${record.key}/editar`)} icon={<EditOutlined />} />
-          <Button className="delete" onClick={() => handleDelete(record.key)} icon={<DeleteOutlined />} />
+          <Button type="primary" icon={<EditOutlined />} onClick={() => Router.push(`usuarios/${record.key}/editar`)} />
+          <Button className="delete" icon={<DeleteOutlined />} onClick={() => handleDelete(record.key)} />
         </Space>
       ),
     };

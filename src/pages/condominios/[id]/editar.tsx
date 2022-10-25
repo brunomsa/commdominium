@@ -8,10 +8,10 @@ import { message } from 'antd';
 
 import { BasicPage, CondominiumSettings } from '../../../components';
 import { Condominium, getCondominiumById, updateCondominium } from '../../../services/condominium';
+import { pageKey } from '../../../utils/types';
 
 import * as styled from '../../../styles/pages/Users';
 import theme from '../../../styles/theme';
-import { pageKey } from '../../../utils/types';
 
 interface Props {
   condominium?: Condominium;
@@ -40,14 +40,7 @@ function EditCondominium({ condominium }: Props) {
     }
 
     setLoading(false);
-    message.success({
-      content: 'Condomínio editado com sucesso!',
-      style: {
-        position: 'absolute',
-        right: 10,
-        top: `${theme.header.height}px`,
-      },
-    });
+    message.success('Condomínio editado com sucesso!');
     Router.push('/condominios');
   };
 

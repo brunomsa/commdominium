@@ -43,3 +43,15 @@ export async function updateCondominium(condominium: Omit<Condominium, 'active'>
     return catchError(error);
   }
 }
+
+export async function deleteCondominium(id: number): Promise<ApiResponse<{ status: string }>> {
+  try {
+    const { status, data } = await api.delete<{ status: string }>(`${BASE_API_URL}/condominium/delete`, {
+      data: { id },
+    });
+    if (status === 204) return { ok: true, error: { error: 'Condomínio inexistente' } };
+    if (status === 200 && data) return { ok: true, data };
+  } catch (error) {
+    return catchError(error);
+  }
+}
