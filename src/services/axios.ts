@@ -40,3 +40,17 @@ export function catchError(error: any) {
     };
   }
 }
+
+export function catchPageError(error: any) {
+  if (axios.isAxiosError(error)) {
+    const err = error as AxiosError;
+    return { props: { ok: false, messageError: err.response.data as ApiError } };
+  } else {
+    return {
+      props: {
+        ok: false,
+        messageError: { error: `${error}` },
+      },
+    };
+  }
+}

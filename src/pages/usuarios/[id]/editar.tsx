@@ -9,7 +9,7 @@ import { message } from 'antd';
 import { BasicPage, UserSettings } from '../../../components';
 import { Condominium } from '../../../services/condominium';
 import { UserType } from '../../../services/userType';
-import { getApiClient } from '../../../services/axios';
+import { catchPageError, getApiClient } from '../../../services/axios';
 import { getUserById, updateUser, User, UserData } from '../../../services/user';
 
 import * as styled from '../../../styles/pages/Users';
@@ -85,16 +85,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { id } = ctx.query;
-  const { data: user } = await getUserById(Number(id));
-  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
-  const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+  try {
+    const { id } = ctx.query;
+    const { data: user } = await getUserById(Number(id));
+    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
 
-  return {
-    props: {
-      user,
-      condominiums,
-      userTypes,
-    },
-  };
+    return {
+      props: {
+        user,
+        condominiums,
+        userTypes,
+      },
+    };
+  } catch (error) {
+    catchPageError(error);
+  }
 };

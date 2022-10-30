@@ -2,14 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
-import axios, { AxiosError } from 'axios';
 
 import { Button, Comment, Drawer, List, message, Radio } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 import { BasicPage, NoticeSettings } from '../../components';
-import { getApiClient } from '../../services/axios';
-import { ApiError } from '../../services/api';
+import { catchPageError, getApiClient } from '../../services/axios';
 import { createNotice, Notice } from '../../services/notice';
 import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noticeType';
 import { recoverUserInfo } from '../../services/auth';
@@ -140,16 +138,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const err = error as AxiosError;
-      return { props: { ok: false, messageError: err.response.data as ApiError } };
-    } else {
-      return {
-        props: {
-          ok: false,
-          messageError: { error: `${error}` },
-        },
-      };
-    }
+    catchPageError(error);
   }
 };

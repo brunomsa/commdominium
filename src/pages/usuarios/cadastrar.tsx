@@ -8,7 +8,7 @@ import { message } from 'antd';
 
 import { BasicPage, UserSettings } from '../../components';
 import { createUser, UserData } from '../../services/user';
-import { getApiClient } from '../../services/axios';
+import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
 
@@ -79,13 +79,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
-  const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+  try {
+    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
 
-  return {
-    props: {
-      condominiums,
-      userTypes,
-    },
-  };
+    return {
+      props: {
+        condominiums,
+        userTypes,
+      },
+    };
+  } catch (error) {
+    catchPageError(error);
+  }
 };

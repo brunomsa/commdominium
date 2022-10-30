@@ -8,6 +8,7 @@ import { message } from 'antd';
 
 import { BasicPage, CondominiumSettings } from '../../../components';
 import { Condominium, getCondominiumById, updateCondominium } from '../../../services/condominium';
+import { catchPageError } from '../../../services/axios';
 import { pageKey } from '../../../utils/types';
 
 import * as styled from '../../../styles/pages/Users';
@@ -72,12 +73,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const { id } = ctx.query;
-  const { data: condominium } = await getCondominiumById(Number(id));
+  try {
+    const { id } = ctx.query;
+    const { data: condominium } = await getCondominiumById(Number(id));
 
-  return {
-    props: {
-      condominium,
-    },
-  };
+    return {
+      props: {
+        condominium,
+      },
+    };
+  } catch (error) {
+    catchPageError(error);
+  }
 };

@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
-import axios, { AxiosError } from 'axios';
 import { parseCookies } from 'nookies';
 
 import { Button, message, Modal, Space } from 'antd';
@@ -11,7 +10,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { ColumnType } from 'antd/lib/table';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
-import { getApiClient } from '../../services/axios';
+import { catchPageError, getApiClient } from '../../services/axios';
 import { deleteUser, User } from '../../services/user';
 import { Condominium, findCondominiumById } from '../../services/condominium';
 import { findUserTypeById, UserType } from '../../services/userType';
@@ -224,16 +223,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const err = error as AxiosError;
-      return { props: { ok: false, messageError: err.response.data as ApiError } };
-    } else {
-      return {
-        props: {
-          ok: false,
-          messageError: { error: `${error}` },
-        },
-      };
-    }
+    catchPageError(error);
   }
 };
