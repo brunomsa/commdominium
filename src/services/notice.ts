@@ -7,7 +7,7 @@ export type Notice = {
   message: string;
   id_noticeType: number;
   id_condominium: number;
-  updatedAt: string;
+  updatedAt: string | Date;
 };
 
 export async function createNotice(notice: Omit<Notice, 'id'>): Promise<ApiResponse<Notice>> {

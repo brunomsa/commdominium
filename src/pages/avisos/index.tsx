@@ -73,7 +73,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId }: Props)
       setNotices((prev) =>
         prev.map((n) => {
           if (n.id === noticeSelected.id) {
-            n = { ...n, ...values };
+            n = { ...n, ...values, updatedAt: new Date() };
           }
           return n;
         })
