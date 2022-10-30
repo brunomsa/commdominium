@@ -24,14 +24,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { 'commdominium.token': token } = parseCookies();
+    (async () => {
+      const { 'commdominium.token': token } = parseCookies();
 
-    if (token) {
-      recoverUserInfo(token).then((res) => {
-        if (!res?.ok && res?.error) return message.error(res?.error.error);
-        setUser(res?.data);
-      });
-    }
+      if (token) {
+        const { ok, data, error } = await recoverUserInfo(token);
+        if (!ok && error) return message.error(error.error);
+        setUser(data);
+      }
+    })();
   }, []);
 
   async function signIn({ email, password }: SignInData) {

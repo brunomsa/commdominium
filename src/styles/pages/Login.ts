@@ -53,6 +53,7 @@ export const LoginForm = styled(Form)`
     > input,
     > span {
       height: 60px;
+      border: none;
     }
   }
 

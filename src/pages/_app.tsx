@@ -4,6 +4,12 @@ import { AppProps } from 'next/app';
 import Router from 'next/router';
 import { ThemeProvider } from 'styled-components';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import ptBr from 'dayjs/locale/pt-br';
+dayjs.extend(relativeTime);
+dayjs.locale(ptBr);
+
 import { ConfigProvider } from 'antd';
 import '../../custom-theme.css';
 

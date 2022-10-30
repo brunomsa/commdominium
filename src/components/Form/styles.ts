@@ -22,11 +22,7 @@ export const Form = styled(AntdForm)`
   .ant-select {
     > input,
     > span {
-      border: none;
       background-color: ${theme.colors.background} !important;
     }
-  }
-  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    border: none;
   }
 `;

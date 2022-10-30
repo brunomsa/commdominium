@@ -16,7 +16,7 @@ const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
       home: '/',
       condominiums: '/condominios',
       payment: '/pagamento',
-      portal: '/portal',
+      notices: '/avisos',
       users: '/usuarios',
     };
     Router.push(navigate[key]);

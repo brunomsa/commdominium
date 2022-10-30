@@ -1,12 +1,10 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
 import Router from 'next/router';
 
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form as AntdForm } from 'antd';
 
-import { getApiClient } from '../../services/axios';
 import { Condominium } from '../../services/condominium';
-import { UserType } from '../../services/userType';
+import Form from '../Form';
 
 const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
@@ -21,27 +19,27 @@ function CondominiumSettings({ initialValues, loading, onSubmit }: Props) {
   return (
     <>
       <Form className="form" initialValues={initialValues} onFinish={onSubmit} autoComplete="off">
-        <Form.Item name="name" rules={[{ required: true, message: 'Por favor, informe um nome' }]} hasFeedback>
+        <AntdForm.Item name="name" rules={[{ required: true, message: 'Por favor, informe um nome' }]} hasFeedback>
           <Input placeholder="Nome" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="state">
+        <AntdForm.Item name="state">
           <Input placeholder="Estado" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="city">
+        <AntdForm.Item name="city">
           <Input placeholder="Cidade" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="street" rules={[{ required: true, message: 'Por favor, informe uma rua' }]}>
+        <AntdForm.Item name="street" rules={[{ required: true, message: 'Por favor, informe uma rua' }]}>
           <Input placeholder="Rua" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="number" rules={[{ required: true, message: 'Por favor, informe um número' }]}>
+        <AntdForm.Item name="number" rules={[{ required: true, message: 'Por favor, informe um número' }]}>
           <Input placeholder="Número" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item>
+        <AntdForm.Item>
           <Button
             type="ghost"
             style={{ marginRight: 16, marginBottom: 16 }}
@@ -52,7 +50,7 @@ function CondominiumSettings({ initialValues, loading, onSubmit }: Props) {
           <Button type="primary" htmlType="submit" loading={loading}>
             Salvar
           </Button>
-        </Form.Item>
+        </AntdForm.Item>
       </Form>
 
       <img className="background-image" src={URL_BACKGROUND} />
@@ -61,17 +59,3 @@ function CondominiumSettings({ initialValues, loading, onSubmit }: Props) {
 }
 
 export default CondominiumSettings;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getApiClient(ctx);
-
-  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
-  const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
-
-  return {
-    props: {
-      condominiums,
-      userTypes,
-    },
-  };
-};

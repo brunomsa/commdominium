@@ -16,7 +16,7 @@ const menuOptions: menuOptionsType[] = [
   { key: pageKey.HOME, label: 'Início' },
   { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
   { key: pageKey.PAYMENT, label: 'Pagamento' },
-  { key: pageKey.PORTAL, label: 'Portal' },
+  { key: pageKey.NOTICES, label: 'Avisos ' },
   { key: pageKey.USERS, label: 'Usuários' },
 ];
 

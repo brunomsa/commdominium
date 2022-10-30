@@ -1,14 +1,13 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
 import Router from 'next/router';
 
-import { Button, Input, Form, Select } from 'antd';
+import { Button, Input, Form as AntdForm, Select } from 'antd';
 
 import { toCapitalize } from '../../utils/toCapitalize';
-import { getApiClient } from '../../services/axios';
 import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
 import { UserData } from '../../services/user';
+import Form from '../Form';
 
 const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
@@ -24,12 +23,12 @@ interface Props {
 function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmit }: Props) {
   return (
     <>
-      <Form className="form" initialValues={initialValues} onFinish={onSubmit} autoComplete="off">
-        <Form.Item name="fullname" rules={[{ required: true, message: 'Por favor, informe um nome' }]} hasFeedback>
+      <Form className="form" initialValues={initialValues} onFinish={onSubmit}>
+        <AntdForm.Item name="fullname" rules={[{ required: true, message: 'Por favor, informe um nome' }]} hasFeedback>
           <Input placeholder="Nome" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item
+        <AntdForm.Item
           name="email"
           rules={[
             { type: 'email', message: 'Informe um e-mail válido!' },
@@ -37,12 +36,12 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
           ]}
           hasFeedback
         >
-          <Input type="search" placeholder="E-mail" />
-        </Form.Item>
+          <Input type="email" placeholder="E-mail" />
+        </AntdForm.Item>
 
         {!initialValues && (
           <>
-            <Form.Item
+            <AntdForm.Item
               name="password"
               rules={[
                 {
@@ -53,8 +52,8 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
               hasFeedback
             >
               <Input.Password placeholder="Senha" />
-            </Form.Item>
-            <Form.Item
+            </AntdForm.Item>
+            <AntdForm.Item
               name="confirm"
               dependencies={['password']}
               hasFeedback
@@ -74,11 +73,14 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
               ]}
             >
               <Input.Password placeholder="Confirme a senha" />
-            </Form.Item>
+            </AntdForm.Item>
           </>
         )}
 
-        <Form.Item name="id_userType" rules={[{ required: true, message: 'Por favor, informe um tipo de usuário' }]}>
+        <AntdForm.Item
+          name="id_userType"
+          rules={[{ required: true, message: 'Por favor, informe um tipo de usuário' }]}
+        >
           <Select placeholder="Tipo do usuário">
             {userTypes?.map((ut) => (
               <Select.Option key={ut.id} value={ut.id}>
@@ -86,9 +88,9 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
               </Select.Option>
             ))}
           </Select>
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="id_condominium">
+        <AntdForm.Item name="id_condominium">
           <Select
             showSearch
             placeholder="Condomínio"
@@ -103,28 +105,28 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
               </Select.Option>
             ))}
           </Select>
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="block">
+        <AntdForm.Item name="block">
           <Input placeholder="Bloco" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="building">
+        <AntdForm.Item name="building">
           <Input placeholder="Prédio" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item name="number" rules={[{ required: true, message: 'Por favor, informe um número' }]}>
+        <AntdForm.Item name="number" rules={[{ required: true, message: 'Por favor, informe um número' }]}>
           <Input placeholder="Número" />
-        </Form.Item>
+        </AntdForm.Item>
 
-        <Form.Item>
+        <AntdForm.Item>
           <Button type="ghost" style={{ marginRight: 16, marginBottom: 16 }} onClick={() => Router.push('/usuarios')}>
             Cancelar
           </Button>
           <Button type="primary" htmlType="submit" loading={loading}>
             Salvar
           </Button>
-        </Form.Item>
+        </AntdForm.Item>
       </Form>
 
       <img className="background-image" src={URL_BACKGROUND} />
@@ -133,17 +135,3 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
 }
 
 export default UserSettings;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getApiClient(ctx);
-
-  const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
-  const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
-
-  return {
-    props: {
-      condominiums,
-      userTypes,
-    },
-  };
-};
