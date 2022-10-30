@@ -34,7 +34,7 @@ export async function getCondominiumById(id: number): Promise<ApiResponse<Condom
   }
 }
 
-export async function updateCondominium(condominium: Omit<Condominium, 'active'>): Promise<ApiResponse<Condominium>> {
+export async function updateCondominium(condominium: Condominium): Promise<ApiResponse<Condominium>> {
   try {
     const { status, data } = await api.patch<Condominium>(`${BASE_API_URL}/condominium/update`, condominium);
     if (status === 204) return { ok: true, error: { error: 'Condomínio inexistente' } };

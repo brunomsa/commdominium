@@ -10,12 +10,14 @@ import { toCapitalize } from '../../utils/toCapitalize';
 interface Props {
   loading: boolean;
   noticeTypes?: NoticeType[];
+  initialValues?: Notice;
   onSubmit: (values: Notice) => void;
+  onCancel: () => void;
 }
 
-function NoticeSettings({ loading, noticeTypes, onSubmit }: Props) {
+function NoticeSettings({ loading, noticeTypes, initialValues, onSubmit, onCancel }: Props) {
   return (
-    <Form layout="vertical" requiredMark={false} onFinish={onSubmit}>
+    <Form layout="vertical" initialValues={initialValues} requiredMark={false} onFinish={onSubmit}>
       <AntdForm.Item
         name="message"
         label="Mensagem"
@@ -38,9 +40,12 @@ function NoticeSettings({ loading, noticeTypes, onSubmit }: Props) {
         </Select>
       </AntdForm.Item>
 
-      <AntdForm.Item>
-        <Button type="primary" htmlType="submit" loading={loading}>
+      <AntdForm.Item style={{ marginTop: 48 }}>
+        <Button type="primary" htmlType="submit" loading={loading} style={{ marginBottom: 16 }} block>
           Salvar
+        </Button>
+        <Button type="ghost" block onClick={onCancel}>
+          Cancelar
         </Button>
       </AntdForm.Item>
     </Form>
