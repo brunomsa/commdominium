@@ -8,6 +8,7 @@ export type ApiResponse<T> = {
   ok: boolean;
   data?: T;
   error?: ApiError;
+  status?: number;
 };
 
 export const api = getApiClient();

@@ -1,17 +1,17 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { Button, message, Modal, Space } from 'antd';
-import { ColumnsType, ColumnType } from 'antd/lib/table';
+import { Button, message, Modal, Space, TableColumnsType, TableColumnType } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { BasicPage, TableList } from '../../components';
 import { pageKey } from '../../utils/types';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, deleteCondominium } from '../../services/condominium';
+import { ApiError } from '../../services/api';
 
 interface DataType {
   key: number;
@@ -24,9 +24,11 @@ interface DataType {
 
 interface Props {
   condominiums?: Condominium[];
+  ok: boolean;
+  messageError?: ApiError;
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: TableColumnsType<DataType> = [
   {
     title: 'Nome',
     key: 'name',
@@ -68,9 +70,17 @@ const columns: ColumnsType<DataType> = [
     sorter: (a, b) => a.number.localeCompare(b.number),
   },
 ];
+let showError = false;
 
-function Condominiums({ condominiums: initialCondominiums }: Props) {
+function Condominiums({ condominiums: initialCondominiums, ok, messageError }: Props) {
   const [condominiums, setCondominiums] = useState<Condominium[]>(initialCondominiums);
+
+  useEffect(() => {
+    if (!ok && messageError && !showError) {
+      showError = true;
+      return message.error(messageError.error);
+    }
+  }, [ok, messageError]);
 
   const data: DataType[] = useMemo(() => {
     if (!condominiums) return;
@@ -112,7 +122,7 @@ function Condominiums({ condominiums: initialCondominiums }: Props) {
     });
   };
 
-  const actionsColumn: ColumnType<DataType> = useMemo(() => {
+  const actionsColumn: TableColumnType<DataType> = useMemo(() => {
     return {
       align: 'center',
       fixed: 'right',
@@ -164,7 +174,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const { status, data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+
+    if (status === 204) {
+      return {
+        props: {
+          ok: false,
+          condominiums: [],
+          messageError: { error: 'Nenhum condomínio encontrado' },
+        },
+      };
+    }
 
     return {
       props: {

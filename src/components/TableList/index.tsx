@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { InputRef } from 'antd';
-import { Button, Input, Table } from 'antd';
-import type { ColumnsType, ColumnType } from 'antd/es/table';
+import { Button, Input, Table, TableColumnsType, TableColumnType } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import theme from '../../styles/theme';
 
 interface Props<T> {
   data: T[];
-  columns: ColumnsType<T>;
-  action?: ColumnType<T>;
+  columns: TableColumnsType<T>;
+  action?: TableColumnType<T>;
 }
 
 function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
@@ -20,7 +19,7 @@ function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
 
   const getColumnTitleByKey = useCallback((key: K) => columns.find((col) => col.key === key), [columns]);
 
-  const getColumnSearchProps = (key: K): ColumnType<T> => ({
+  const getColumnSearchProps = (key: K): TableColumnType<T> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
       <div style={{ padding: 8 }}>
         <Input
@@ -53,7 +52,7 @@ function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
     },
   });
 
-  const dataColumns: ColumnsType<T> = [
+  const dataColumns: TableColumnsType<T> = [
     ...columns.map((col) => ({
       ...col,
       ...(col.key && getColumnSearchProps(col.key as K)),

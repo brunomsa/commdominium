@@ -22,7 +22,7 @@ function Home() {
         <PageLoader />
       ) : (
         <BasicPage pageKey={pageKey.HOME}>
-          <div>Olá {user.fullname}!</div>
+          <h1>Olá {user.fullname}!</h1>
         </BasicPage>
       )}
     </>

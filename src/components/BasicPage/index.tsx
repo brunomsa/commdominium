@@ -15,7 +15,7 @@ const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
     const navigate: Record<pageKey, string> = {
       home: '/',
       condominiums: '/condominios',
-      payment: '/pagamento',
+      payment: '/financeiro',
       notices: '/avisos',
       users: '/usuarios',
     };

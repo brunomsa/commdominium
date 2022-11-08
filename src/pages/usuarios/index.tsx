@@ -5,9 +5,7 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { Button, message, Modal, Space } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { ColumnType } from 'antd/lib/table';
+import { Button, message, Modal, Space, TableColumnType, TableColumnsType } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { catchPageError, getApiClient } from '../../services/axios';
@@ -40,7 +38,7 @@ interface Props {
   messageError?: ApiError;
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: TableColumnsType<DataType> = [
   {
     title: 'Nome',
     key: 'name',
@@ -104,6 +102,7 @@ const columns: ColumnsType<DataType> = [
     sorter: (a, b) => a.status.localeCompare(b.status),
   },
 ];
+let showError = false;
 
 function Users({ users: initialUsers, condominiums, userTypes, ok, messageError }: Props) {
   const { user: loggedUser } = useContext(AuthContext);
@@ -111,8 +110,8 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
   const [users, setUsers] = useState<User[]>(initialUsers);
 
   useEffect(() => {
-    console.log({ ok, messageError });
-    if (!ok && messageError) {
+    if (!ok && messageError && !showError) {
+      showError = true;
       return message.error(messageError.error);
     }
   }, [ok, messageError]);
@@ -162,7 +161,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
     });
   };
 
-  const actionsColumn: ColumnType<DataType> = useMemo(() => {
+  const actionsColumn: TableColumnType<DataType> = useMemo(() => {
     return {
       align: 'center',
       fixed: 'right',
@@ -210,9 +209,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: users } = await apiClient.get<Omit<User, 'password'>[]>('/user/findAll');
+    const { status, data: users } = await apiClient.get<Omit<User, 'password'>[]>('/user/findAll');
     const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
     const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+
+    if (status === 204) {
+      return {
+        props: {
+          ok: false,
+          users: [],
+          messageError: { error: 'Nenhum usuário encontrado' },
+        },
+      };
+    }
 
     return {
       props: {

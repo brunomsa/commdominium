@@ -7,3 +7,4 @@ export { default as TableList } from './TableList';
 export { default as UserSettings } from './UserSettings';
 export { default as CondominiumSettings } from './CondominiumSettings';
 export { default as NoticeSettings } from './NoticeSettings';
+export { default as PaymentSettings } from './PaymentSettings';

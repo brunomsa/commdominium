@@ -18,8 +18,7 @@ export const Form = styled(AntdForm)`
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  .ant-form-item-control-input-content,
-  .ant-select {
+  .ant-form-item-control-input-content {
     > input,
     > span {
       background-color: ${theme.colors.background} !important;

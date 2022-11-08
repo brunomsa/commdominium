@@ -13,17 +13,21 @@ import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noti
 import { recoverUserInfo } from '../../services/auth';
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
+import { ApiError } from '../../services/api';
 
 interface Props {
   notices: Notice[];
   noticeTypes: NoticeType[];
   condominiumId: number;
+  ok: boolean;
+  messageError?: ApiError;
 }
 
 const MAX_NOTICES = 10;
 const NOTICE_MODE_DEFAULT = NoticeTypes.HANDOUT;
+let showError = false;
 
-function Notices({ notices: initialNotices, noticeTypes, condominiumId }: Props) {
+function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, messageError }: Props) {
   const initialFilteredNotices = initialNotices.filter(
     (n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === NOTICE_MODE_DEFAULT
   );
@@ -36,6 +40,13 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId }: Props)
 
   const [showNoticeSettings, setShowNoticeSettings] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!ok && messageError && !showError) {
+      showError = true;
+      return message.error(messageError.error);
+    }
+  }, [ok, messageError]);
 
   useEffect(() => {
     setFilteredNotices(notices.filter((n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === noticeMode));
@@ -90,12 +101,9 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId }: Props)
   const handleDelete = useCallback(async (id: number) => {
     const { ok, data, error } = await deleteNotice(id);
     if (error) {
-      if (!ok) {
-        return message.error(error.error);
-      }
-      if (ok) {
-        return message.warning(error.error);
-      }
+      if (!ok) return message.error(error.error);
+
+      if (ok) return message.warning(error.error);
     }
     if (ok && data) {
       setNotices((prev) => prev.filter((notice) => notice.id !== id));
@@ -114,7 +122,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId }: Props)
       onCancel: () => {},
     });
   };
-  console.log(noticeSelected);
+
   return (
     <>
       <Head>
@@ -202,10 +210,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: allNotices } = await apiClient.get<Notice[]>('/notices/findAll');
+    const { status, data: allNotices } = await apiClient.get<Notice[]>('/notices/findAll');
     const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
     const { data: user } = await recoverUserInfo(token);
     const notices = allNotices.filter((n) => n.id_condominium === user.id_condominium);
+
+    if (status === 204) {
+      return {
+        props: {
+          ok: false,
+          notices: [],
+          messageError: { error: 'Nenhum aviso encontrado' },
+        },
+      };
+    }
 
     return {
       props: {
