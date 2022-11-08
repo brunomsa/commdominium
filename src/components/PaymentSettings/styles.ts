@@ -5,10 +5,6 @@ export const PaymentSettings = styled.div`
   flex-direction: column;
   gap: 16px;
 
-  .datePicker {
-    width: 100%;
-  }
-
   .ant-upload.ant-upload-select.ant-upload-select-text {
     width: 100%;
   }

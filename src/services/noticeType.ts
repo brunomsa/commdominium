@@ -1,5 +1,5 @@
 export enum NoticeTypes {
-  HANDOUT = 'Comunicado',
+  HANDOUT = 'Aviso',
   MEETING = 'Reunião',
 }
 

@@ -1,18 +1,29 @@
+import { Moment } from 'moment';
 import { api, ApiResponse } from './api';
 import { catchError } from './axios';
 import { BASE_API_URL } from './constants';
 
 export type Notice = {
   id: number;
+  title: string;
   message: string;
+  eventDay?: string | Moment;
   id_noticeType: number;
   id_condominium: number;
-  updatedAt: string | Date;
+  updatedAt?: string | Date;
 };
 
-export async function createNotice(notice: Omit<Notice, 'id'>): Promise<ApiResponse<Notice>> {
+export type NoticeForm = Omit<Notice, 'id' | 'updatedAt'> & {
+  eventDay?: Moment;
+};
+
+export async function createNotice(notice: NoticeForm): Promise<ApiResponse<Notice>> {
+  const noticeData = {
+    ...notice,
+    eventDay: notice.eventDay?.format('YYYY-MM-DD'),
+  };
   try {
-    const { status, data } = await api.post<Notice>(`${BASE_API_URL}/notices/register`, notice);
+    const { status, data } = await api.post<Notice>(`${BASE_API_URL}/notices/register`, noticeData);
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);

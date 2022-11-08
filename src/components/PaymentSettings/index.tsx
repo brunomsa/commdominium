@@ -7,6 +7,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import Form from '../Form';
 import { FormPayment } from '../../services/payment';
 import * as styled from './styles';
+import { DATE_FORMAT_STRING } from '../../utils/constants';
 
 const getBase64 = (file: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -41,7 +42,7 @@ function PaymentSettings({ loading, onSubmit, onCancel }: Props) {
           name="dueDate"
           rules={[{ required: true, message: 'Por favor, informe uma data de vencimento' }]}
         >
-          <DatePicker placeholder="Data de vencimento" className="datePicker" />
+          <DatePicker placeholder="Data de vencimento" format={DATE_FORMAT_STRING} />
         </AntdForm.Item>
         <Upload
           maxCount={1}

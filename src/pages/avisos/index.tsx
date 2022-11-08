@@ -8,12 +8,14 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UserOutlined }
 
 import { BasicPage, NoticeSettings } from '../../components';
 import { catchPageError, getApiClient } from '../../services/axios';
-import { createNotice, deleteNotice, Notice, updateNotice } from '../../services/notice';
+import { createNotice, deleteNotice, Notice, NoticeForm, updateNotice } from '../../services/notice';
 import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noticeType';
 import { recoverUserInfo } from '../../services/auth';
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
 import { ApiError } from '../../services/api';
+import { DATE_FORMAT_STRING } from '../../utils/constants';
+import moment from 'moment';
 
 interface Props {
   notices: Notice[];
@@ -53,7 +55,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
   }, [notices, noticeTypes, noticeMode]);
 
   const handleCreate = useCallback(
-    async (values: Omit<Notice, 'id'>) => {
+    async (values: NoticeForm) => {
       setLoading(true);
       const { ok, error, data: newNotice } = await createNotice({ ...values, id_condominium: condominiumId });
       if (!ok && error) {
@@ -71,10 +73,15 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
   );
 
   const handleUpdate = useCallback(
-    async (values: Omit<Notice, 'id'>) => {
+    async (values: NoticeForm) => {
       setLoading(true);
+      const noticeData: Notice = {
+        ...values,
+        id: noticeSelected.id,
+        eventDay: values.eventDay.format('YYYY-MM-DD'),
+      };
 
-      const { ok, error } = await updateNotice({ ...values, id: noticeSelected.id });
+      const { ok, error } = await updateNotice(noticeData);
       if (!ok && error) {
         setLoading(false);
 
@@ -141,7 +148,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
           style={{ width: '100%', textAlign: 'center' }}
           onChange={(e) => setNoticeMode(e.target.value)}
         >
-          <Radio.Button value={NoticeTypes.HANDOUT}>Comunicados</Radio.Button>
+          <Radio.Button value={NoticeTypes.HANDOUT}>Avisos</Radio.Button>
           <Radio.Button value={NoticeTypes.MEETING}>Reuniões</Radio.Button>
         </Radio.Group>
         <List
@@ -165,7 +172,13 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
             >
               <Comment
                 avatar={<UserOutlined />}
-                content={<p>{notice.message}</p>}
+                content={
+                  <>
+                    <h2>{notice.title}</h2>
+                    {notice.eventDay && <p>Dia: {moment(notice.eventDay).utcOffset(3).format(DATE_FORMAT_STRING)}</p>}
+                    <p>{notice.message}</p>
+                  </>
+                }
                 datetime={<span>{toDayjs(notice.updatedAt).fromNow()}</span>}
               />
             </List.Item>
@@ -181,7 +194,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
           <NoticeSettings
             loading={loading}
             noticeTypes={noticeTypes}
-            initialValues={noticeSelected}
+            initialValues={{ ...noticeSelected, eventDay: moment(noticeSelected?.eventDay).utcOffset(3) }}
             onSubmit={noticeSelected ? handleUpdate : handleCreate}
             onCancel={() => {
               setNoticeSelected(undefined);
