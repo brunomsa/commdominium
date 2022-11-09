@@ -38,12 +38,14 @@ function PaymentSettings({ loading, onSubmit, onCancel }: Props) {
           <DatePicker placeholder="Data de vencimento" format={DATE_FORMAT_STRING} style={{ width: '50%' }} />
         </AntdForm.Item>
 
-        <Upload drag onChange={(file) => setBill(file)} uploadProps={{ beforeUpload: handleBeforeUpload }}>
-          <p>
-            <UploadOutlined style={{ fontSize: 28, color: theme.colors.primary, marginBottom: 16 }} />
-          </p>
-          <p>Clique ou arraste o boleto nesta area para enviar</p>
-        </Upload>
+        <AntdForm.Item name="billArchive" rules={[{ required: true, message: 'Por favor, informe um boleto' }]}>
+          <Upload drag onChange={(file) => setBill(file)} uploadProps={{ beforeUpload: handleBeforeUpload }}>
+            <p>
+              <UploadOutlined style={{ fontSize: 28, color: theme.colors.primary, marginBottom: 16 }} />
+            </p>
+            <p>Clique ou arraste o boleto nesta area para enviar</p>
+          </Upload>
+        </AntdForm.Item>
 
         <AntdForm.Item style={{ marginTop: 48 }}>
           <Button type="primary" htmlType="submit" loading={loading} style={{ marginBottom: 16 }} block>

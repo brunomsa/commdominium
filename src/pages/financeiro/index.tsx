@@ -1,11 +1,13 @@
-import { DollarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, message, Modal, TableColumnsType, TableColumnType } from 'antd';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { DollarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, message, Modal, TableColumnsType, TableColumnType } from 'antd';
+
 import { BasicPage, PaymentSettings, TableList } from '../../components';
-import { api, ApiError } from '../../services/api';
+import { ApiError } from '../../services/api';
 import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { BASE_API_URL } from '../../services/constants';
@@ -105,9 +107,10 @@ function Residents({ residents, ok, messageError }: Props) {
   }, []);
 
   const handleUpdate = useCallback(async (values: Payment) => {
-    const { ok, error } = await updatePayment({ ...values });
+    const { ok, error } = await updatePayment(values);
     if (!ok && error) return message.error(error.error);
 
+    setShowPaymentSettings(false);
     message.success('Boleto atualizado com sucesso!');
   }, []);
 
@@ -115,8 +118,12 @@ function Residents({ residents, ok, messageError }: Props) {
     Modal.confirm({
       title: 'Boleto existente',
       icon: <ExclamationCircleOutlined />,
-      content:
-        'Ja foi encontrado um boleto para esse usuário nesta data de vencimento. \n Gostaria de atualizar o boleto?',
+      content: (
+        <>
+          <p>Ja foi encontrado um boleto para esse usuário neste mês de vencimento.</p>
+          <p>Gostaria de atualizar o boleto?</p>
+        </>
+      ),
       okText: 'Sim',
       cancelText: 'Não',
       onOk: async () => await handleUpdate(values),
@@ -135,7 +142,11 @@ function Residents({ residents, ok, messageError }: Props) {
         if (!ok && error) return message.error(error.error);
       } else {
         setLoading(false);
-        return confirmUpadateModal({ ...billExistance, billArchive: values.billArchive });
+        const paymentData: Payment = {
+          ...billExistance[0],
+          billArchive: values.billArchive,
+        };
+        return confirmUpadateModal(paymentData);
       }
 
       setShowPaymentSettings(false);

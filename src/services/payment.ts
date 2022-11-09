@@ -30,12 +30,8 @@ export async function createPayment(payment: FormPayment): Promise<ApiResponse<P
 }
 
 export async function updatePayment(payment: Payment): Promise<ApiResponse<Payment>> {
-  const paymentData: Payment = {
-    ...payment,
-    paid: false,
-  };
   try {
-    const { status, data } = await api.patch<Payment>(`${BASE_API_URL}/payment/update`, paymentData);
+    const { status, data } = await api.patch<Payment>(`${BASE_API_URL}/payment/update`, payment);
     if (status === 204) return { ok: true, error: { error: 'Registo de boleto inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -45,9 +41,10 @@ export async function updatePayment(payment: Payment): Promise<ApiResponse<Payme
 
 export async function verifyBillExistance(id_user: number, dueDate: Moment): Promise<ApiResponse<Payment>> {
   try {
-    const { status, data } = await api.post<Payment>(`${BASE_API_URL}/services/verifyBillExistanc`, {
+    const { status, data } = await api.post<Payment>(`${BASE_API_URL}/services/verifyBillExistance`, {
       id_user,
-      dueDate: dueDate.format('YYYY-MM-DD'),
+      month: dueDate.get('month') + 1,
+      year: dueDate.get('year'),
     });
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
