@@ -12,9 +12,10 @@ export type User = {
   building?: string;
   number: string;
   active: boolean;
+  avatarArchive?: string;
 };
 
-export interface UserData extends Omit<User, 'id' | 'active'> {
+export interface UserForm extends Omit<User, 'id' | 'active'> {
   confirm?: string;
 }
 

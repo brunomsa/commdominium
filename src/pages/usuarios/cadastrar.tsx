@@ -7,7 +7,7 @@ import { parseCookies } from 'nookies';
 import { message } from 'antd';
 
 import { BasicPage, UserSettings } from '../../components';
-import { createUser, UserData } from '../../services/user';
+import { createUser, UserForm } from '../../services/user';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
@@ -27,7 +27,7 @@ interface Props {
 function CreateUser({ condominiums, userTypes }: Props) {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (values: UserData) => {
+  const handleSubmit = async (values: UserForm) => {
     setLoading(true);
 
     const { confirm, ...userData } = values;

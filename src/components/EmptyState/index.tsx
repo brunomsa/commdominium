@@ -1,8 +1,12 @@
 import React from 'react';
 import { Empty } from 'antd';
 
-function EmptyState() {
-  return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Nenhum dado encontrado" />;
+interface Props {
+  description?: string;
+}
+
+function EmptyState({ description }: Props) {
+  return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={description ?? 'Nenhum dado encontrado'} />;
 }
 
 export default EmptyState;

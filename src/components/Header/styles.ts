@@ -57,7 +57,30 @@ export const Header = styled.header`
     }
 
     .ant-avatar {
+      cursor: pointer;
       background-color: ${theme.colors.background};
+    }
+  }
+`;
+
+export const ProfileSettings = styled.div`
+  padding: 10px;
+
+  h3 {
+    margin: 0;
+  }
+
+  .email {
+    font-size: 11px;
+    opacity: 0.3;
+  }
+
+  li.ant-menu-item {
+    padding: 0 !important;
+    background-color: transparent !important;
+
+    :hover {
+      color: ${theme.colors.primary};
     }
   }
 `;

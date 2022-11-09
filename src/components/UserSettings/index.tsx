@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Router from 'next/router';
 
-import { Button, Input, Form as AntdForm, Select } from 'antd';
+import { Button, Input, Form as AntdForm, Select, message, Upload as AntdUpload } from 'antd';
+import { RcFile } from 'antd/lib/upload';
+import { UploadOutlined } from '@ant-design/icons';
 
 import { toCapitalize } from '../../utils/toCapitalize';
 import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
-import { UserData } from '../../services/user';
+import { UserForm } from '../../services/user';
 import Form from '../Form';
+import Upload from '../Upload';
 
 const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
@@ -16,14 +19,28 @@ interface Props {
   condominiums?: Condominium[];
   userTypes?: UserType[];
   loading: boolean;
-  initialValues?: UserData;
-  onSubmit: (values: UserData) => void;
+  initialValues?: UserForm;
+  onSubmit: (values: UserForm) => void;
 }
 
 function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmit }: Props) {
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+
+  const handleBeforeUpload = useCallback((file: RcFile) => {
+    const isValid = file.type === 'image/png';
+    if (!isValid) {
+      message.error(`${file.name} não é um arquivo do tipo PNG`);
+    }
+    return isValid || AntdUpload.LIST_IGNORE;
+  }, []);
+
   return (
     <>
-      <Form className="form" initialValues={initialValues} onFinish={onSubmit}>
+      <Form
+        className="form"
+        initialValues={initialValues}
+        onFinish={(values) => onSubmit({ ...values, avatarArchive: avatarUrl ?? initialValues.avatarArchive })}
+      >
         <AntdForm.Item name="fullname" rules={[{ required: true, message: 'Por favor, informe um nome' }]} hasFeedback>
           <Input placeholder="Nome" />
         </AntdForm.Item>
@@ -117,6 +134,18 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, onSubmi
 
         <AntdForm.Item name="number" rules={[{ required: true, message: 'Por favor, informe um número' }]}>
           <Input placeholder="Número" />
+        </AntdForm.Item>
+
+        <AntdForm.Item name="avatarArchive">
+          <Upload
+            onChange={(file) => setAvatarUrl(file)}
+            uploadProps={{
+              listType: 'picture',
+              beforeUpload: handleBeforeUpload,
+            }}
+          >
+            <Button icon={<UploadOutlined />}>Carregar foto de perfil</Button>
+          </Upload>
         </AntdForm.Item>
 
         <AntdForm.Item>

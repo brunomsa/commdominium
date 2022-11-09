@@ -10,7 +10,7 @@ import { BasicPage, UserSettings } from '../../../components';
 import { Condominium } from '../../../services/condominium';
 import { UserType } from '../../../services/userType';
 import { catchPageError, getApiClient } from '../../../services/axios';
-import { getUserById, updateUser, User, UserData } from '../../../services/user';
+import { getUserById, updateUser, User, UserForm } from '../../../services/user';
 
 import * as styled from '../../../styles/pages/Users';
 import theme from '../../../styles/theme';
@@ -27,7 +27,7 @@ function EditUser({ user, condominiums, userTypes }: Props) {
 
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (values: UserData) => {
+  const handleSubmit = async (values: UserForm) => {
     setLoading(true);
 
     const { confirm, ...userData } = values;
@@ -46,7 +46,7 @@ function EditUser({ user, condominiums, userTypes }: Props) {
     }
 
     setLoading(false);
-    message.success('Usuário editado com sucesso!');
+    message.success('Usuário atualizado com sucesso!');
     Router.push('/usuarios');
   };
 
