@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
 
-import { Button, Comment, Drawer, List, message, Modal, Radio } from 'antd';
+import { Button, Comment, List, message, Modal, Radio } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 
 import { BasicPage, NoticeSettings } from '../../components';
@@ -100,7 +100,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
       setShowNoticeSettings(false);
       setLoading(false);
       setNoticeSelected(undefined);
-      message.success('Aviso editado com sucesso!');
+      message.success('Aviso atualizado com sucesso!');
     },
     [noticeSelected]
   );
@@ -184,12 +184,15 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
             </List.Item>
           )}
         />
-        <Drawer
-          title="Novo Aviso"
-          placement="right"
+        <Modal
+          title={!noticeSelected ? 'Novo Aviso' : 'Editar Aviso'}
           destroyOnClose
+          footer={null}
           open={showNoticeSettings}
-          onClose={() => setShowNoticeSettings(false)}
+          onCancel={() => {
+            setNoticeSelected(undefined);
+            setShowNoticeSettings(false);
+          }}
         >
           <NoticeSettings
             loading={loading}
@@ -201,7 +204,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
               setShowNoticeSettings(false);
             }}
           />
-        </Drawer>
+        </Modal>
       </BasicPage>
     </>
   );

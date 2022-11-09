@@ -1,5 +1,5 @@
 import { DollarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Modal, TableColumnsType, TableColumnType } from 'antd';
+import { Button, message, Modal, TableColumnsType, TableColumnType } from 'antd';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
@@ -153,12 +153,12 @@ function Residents({ residents, ok, messageError }: Props) {
         <h1>Moradores</h1>
         <TableList columns={columns} data={data} action={actionsColumn} />
 
-        <Drawer
+        <Modal
           title="Cadastrar Boleto"
-          placement="right"
           destroyOnClose
+          footer={null}
           open={showPaymentSettings}
-          onClose={() => setShowPaymentSettings(false)}
+          onCancel={() => setShowPaymentSettings(false)}
         >
           <PaymentSettings
             loading={loading}
@@ -168,7 +168,7 @@ function Residents({ residents, ok, messageError }: Props) {
               setSelectedResidentId(undefined);
             }}
           />
-        </Drawer>
+        </Modal>
       </BasicPage>
     </>
   );

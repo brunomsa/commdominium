@@ -41,7 +41,7 @@ function EditCondominium({ condominium }: Props) {
     }
 
     setLoading(false);
-    message.success('Condomínio editado com sucesso!');
+    message.success('Condomínio atualizado com sucesso!');
     Router.push('/condominios');
   };
 
