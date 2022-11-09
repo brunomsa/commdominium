@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 
 import Router from 'next/router';
-import { setCookie, parseCookies } from 'nookies';
+import { setCookie, parseCookies, destroyCookie } from 'nookies';
 
 import { recoverUserInfo, signInRequest } from '../services/auth';
 import { api } from '../services/api';
@@ -14,7 +14,10 @@ type AuthContextType = {
   isAuthenticated: boolean;
   user?: User;
   signIn: (data: SignInData) => Promise<{ ok: boolean; error: string }>;
+  signOut: () => void;
 };
+
+const TOKEN_KEY = 'commdominium.token';
 
 export const AuthContext = createContext({} as AuthContextType);
 
@@ -25,7 +28,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     (async () => {
-      const { 'commdominium.token': token } = parseCookies();
+      const { TOKEN_KEY: token } = parseCookies();
 
       if (token) {
         const { ok, data, error } = await recoverUserInfo(token);
@@ -43,7 +46,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     if (!ok && !data && error) return { ok: false, ...error };
 
-    setCookie(undefined, 'commdominium.token', data.token, {
+    setCookie(undefined, TOKEN_KEY, data.token, {
       maxAge: 60 * 60 * 6, // 6 hours
     });
 
@@ -56,5 +59,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return { ok, error: undefined };
   }
 
-  return <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>{children}</AuthContext.Provider>;
+  function signOut() {
+    destroyCookie(undefined, TOKEN_KEY);
+    Router.push('/login');
+  }
+
+  return <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>{children}</AuthContext.Provider>;
 }

@@ -42,7 +42,7 @@ interface Props {
 }
 
 function Header({ selectedKey, onChange }: Props) {
-  const { user } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
@@ -50,7 +50,7 @@ function Header({ selectedKey, onChange }: Props) {
     edit: () => console.log('edit'),
     myCond: () => console.log('myCond'),
     changePassword: () => console.log('changePassword'),
-    logout: () => console.log('logout'),
+    logout: () => signOut(),
   };
 
   const profileSettings = useMemo(() => {
