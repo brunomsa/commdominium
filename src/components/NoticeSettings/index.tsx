@@ -52,9 +52,10 @@ function NoticeSettings({ loading, noticeTypes, initialValues, onSubmit, onCance
         {type === NoticeTypes.MEETING && (
           <AntdForm.Item
             name="eventDay"
+            label="Data da reunião"
             rules={[{ required: type === NoticeTypes.MEETING, message: 'Por favor, informe uma data para a reunião' }]}
           >
-            <DatePicker placeholder="Data da reunião" format={DATE_FORMAT_STRING} />
+            <DatePicker placeholder="Informe uma data" format={DATE_FORMAT_STRING} style={{ width: '50%' }} />
           </AntdForm.Item>
         )}
 

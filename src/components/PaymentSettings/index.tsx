@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
-import { Button, DatePicker, Form as AntdForm, Upload } from 'antd';
-import { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload';
+import { Button, DatePicker, Form as AntdForm, message, Upload as AntdUpload } from 'antd';
+import { RcFile } from 'antd/lib/upload';
 import { UploadOutlined } from '@ant-design/icons';
 
 import Form from '../Form';
+import Upload from '../Upload';
 import { FormPayment } from '../../services/payment';
-import * as styled from './styles';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
-
-const getBase64 = (file: RcFile, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result as string));
-  reader.readAsDataURL(file);
-};
+import * as styled from './styles';
+import theme from '../../styles/theme';
 
 interface Props {
   loading: boolean;
@@ -24,16 +20,13 @@ interface Props {
 function PaymentSettings({ loading, onSubmit, onCancel }: Props) {
   const [bill, setBill] = useState<string>();
 
-  const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
-    if (info.file.status === 'uploading') {
-      return;
+  const handleBeforeUpload = useCallback((file: RcFile) => {
+    const isPDF = file.type === 'application/pdf';
+    if (!isPDF) {
+      message.error(`${file.name} não é um arquivo do tipo PDF`);
     }
-    if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setBill(url);
-      });
-    }
-  };
+    return isPDF || AntdUpload.LIST_IGNORE;
+  }, []);
 
   return (
     <styled.PaymentSettings>
@@ -42,24 +35,14 @@ function PaymentSettings({ loading, onSubmit, onCancel }: Props) {
           name="dueDate"
           rules={[{ required: true, message: 'Por favor, informe uma data de vencimento' }]}
         >
-          <DatePicker placeholder="Data de vencimento" format={DATE_FORMAT_STRING} />
+          <DatePicker placeholder="Data de vencimento" format={DATE_FORMAT_STRING} style={{ width: '50%' }} />
         </AntdForm.Item>
-        <Upload
-          maxCount={1}
-          onChange={handleChange}
-          onRemove={() => setBill(undefined)}
-          progress={{
-            strokeColor: {
-              '0%': '#108ee9',
-              '100%': '#87d068',
-            },
-            strokeWidth: 3,
-            format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-          }}
-        >
-          <Button block icon={<UploadOutlined />} style={{ height: 50 }}>
-            Enviar boleto
-          </Button>
+
+        <Upload drag onChange={(file) => setBill(file)} uploadProps={{ beforeUpload: handleBeforeUpload }}>
+          <p>
+            <UploadOutlined style={{ fontSize: 28, color: theme.colors.primary, marginBottom: 16 }} />
+          </p>
+          <p>Clique ou arraste o boleto nesta area para enviar</p>
         </Upload>
 
         <AntdForm.Item style={{ marginTop: 48 }}>
