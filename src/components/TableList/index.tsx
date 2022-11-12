@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { InputRef } from 'antd';
-import { Button, Input, Table, TableColumnsType, TableColumnType } from 'antd';
+import { Input, Table, TableColumnsType, TableColumnType } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
+import Button from '../Button';
 import theme from '../../styles/theme';
 
 interface Props<T> {

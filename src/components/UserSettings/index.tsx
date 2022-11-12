@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Router from 'next/router';
 
-import { Button, Input, Form as AntdForm, Select, message, Upload as AntdUpload } from 'antd';
+import { Input, Form as AntdForm, Select, message, Upload as AntdUpload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -11,6 +11,7 @@ import { UserType } from '../../services/userType';
 import { UserForm } from '../../services/user';
 import Form from '../Form';
 import Upload from '../Upload';
+import Button from '../Button';
 
 const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';

@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 
 import { Upload as AntdUpload, UploadProps } from 'antd';
 import { RcFile, UploadChangeParam, UploadFile } from 'antd/lib/upload';
+import theme from '../../styles/theme';
 
 const getBase64 = (file: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -32,8 +33,8 @@ function Upload({ children, uploadProps, drag, onChange }: PropsWithChildren<Pro
     onRemove: () => onChange?.(),
     progress: {
       strokeColor: {
-        '0%': '#108ee9',
-        '100%': '#87d068',
+        '0%': theme.colors.light_blue,
+        '100%': theme.colors.green,
       },
       strokeWidth: 3,
       format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,

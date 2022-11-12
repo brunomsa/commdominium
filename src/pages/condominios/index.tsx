@@ -4,10 +4,10 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { Button, message, Modal, Space, TableColumnsType, TableColumnType } from 'antd';
+import { message, Modal, Space, TableColumnsType, TableColumnType } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
-import { BasicPage, TableList } from '../../components';
+import { BasicPage, Button, TableList } from '../../components';
 import { pageKey } from '../../utils/types';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, deleteCondominium } from '../../services/condominium';
@@ -117,6 +117,7 @@ function Condominiums({ condominiums: initialCondominiums, ok, messageError }: P
       content: 'Tem certeza que deseja excluir este condomínio?',
       okText: 'Sim',
       cancelText: 'Não',
+      autoFocusButton: 'cancel',
       onOk: async () => await handleDelete(id),
       onCancel: () => {},
     });

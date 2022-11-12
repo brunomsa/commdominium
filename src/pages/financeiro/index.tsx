@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { parseCookies } from 'nookies';
 
 import { DollarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Button, message, Modal, TableColumnsType, TableColumnType } from 'antd';
+import { message, Modal, TableColumnsType, TableColumnType } from 'antd';
 
-import { BasicPage, PaymentSettings, TableList } from '../../components';
+import { BasicPage, Button, PaymentSettings, TableList } from '../../components';
 import { ApiError } from '../../services/api';
 import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
@@ -14,6 +14,7 @@ import { BASE_API_URL } from '../../services/constants';
 import { createPayment, FormPayment, Payment, updatePayment, verifyBillExistance } from '../../services/payment';
 import { User } from '../../services/user';
 import { pageKey } from '../../utils/types';
+import theme from '../../styles/theme';
 
 interface DataType {
   key: number;
@@ -95,6 +96,7 @@ function Residents({ residents, ok, messageError }: Props) {
       width: 120,
       render: (_, record) => (
         <Button
+          backgroundColor={theme.colors.green}
           type="primary"
           icon={<DollarOutlined />}
           onClick={() => {

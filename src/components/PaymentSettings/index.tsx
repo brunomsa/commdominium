@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react';
 
-import { Button, DatePicker, Form as AntdForm, message, Upload as AntdUpload } from 'antd';
+import { DatePicker, Form as AntdForm, message, Upload as AntdUpload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import { UploadOutlined } from '@ant-design/icons';
 
-import Form from '../Form';
-import Upload from '../Upload';
 import { FormPayment } from '../../services/payment';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
+import Form from '../Form';
+import Upload from '../Upload';
+import Button from '../Button';
+
 import * as styled from './styles';
 import theme from '../../styles/theme';
 

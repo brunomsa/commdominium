@@ -1,21 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
+import moment from 'moment';
 
-import { Button, Comment, List, message, Modal, Radio } from 'antd';
+import { Comment, List, message, Modal, Radio } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 
-import { BasicPage, NoticeSettings } from '../../components';
+import { BasicPage, Button, NoticeSettings } from '../../components';
 import { catchPageError, getApiClient } from '../../services/axios';
+import { ApiError } from '../../services/api';
+import { recoverUserInfo } from '../../services/auth';
 import { createNotice, deleteNotice, Notice, NoticeForm, updateNotice } from '../../services/notice';
 import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noticeType';
-import { recoverUserInfo } from '../../services/auth';
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
-import { ApiError } from '../../services/api';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
-import moment from 'moment';
 
 interface Props {
   notices: Notice[];
@@ -125,6 +126,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
       content: 'Tem certeza que deseja excluir este usuário?',
       okText: 'Sim',
       cancelText: 'Não',
+      autoFocusButton: 'cancel',
       onOk: async () => await handleDelete(id),
       onCancel: () => {},
     });

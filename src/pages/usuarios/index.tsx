@@ -5,17 +5,16 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { Button, message, Modal, Space, TableColumnType, TableColumnsType } from 'antd';
+import { message, Modal, Space, TableColumnType, TableColumnsType } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
+import { BasicPage, Button, TableList } from '../../components';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { deleteUser, User } from '../../services/user';
 import { Condominium, findCondominiumById } from '../../services/condominium';
 import { findUserTypeById, UserType } from '../../services/userType';
 import { AuthContext } from '../../contexts/AuthContext';
-import { BasicPage, TableList } from '../../components';
 import { ApiError } from '../../services/api';
-
 import { pageKey } from '../../utils/types';
 
 interface DataType {
@@ -156,6 +155,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
       content: 'Tem certeza que deseja excluir este usuário?',
       okText: 'Sim',
       cancelText: 'Não',
+      autoFocusButton: 'cancel',
       onOk: async () => await handleDelete(id),
       onCancel: () => {},
     });

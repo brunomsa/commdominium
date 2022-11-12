@@ -1,10 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { Button, Form, Input } from 'antd';
+
+import { Form, Input } from 'antd';
 import { ExclamationCircleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 
-import * as styled from '../styles/pages/Login';
+import { Button } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import { SignInData } from '../contexts/types';
+
+import * as styled from '../styles/pages/Login';
 
 function Login() {
   const { signIn } = useContext(AuthContext);
