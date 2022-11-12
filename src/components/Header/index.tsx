@@ -10,9 +10,11 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
-import { pageKey } from '../../utils/types';
-import EmptyState from '../EmptyState';
 import { AuthContext } from '../../contexts/AuthContext';
+import { pageKey } from '../../utils/types';
+
+import EmptyState from '../EmptyState';
+
 import theme from '../../styles/theme';
 import * as styled from './styles';
 
@@ -26,6 +28,7 @@ const menuOptions: menuOptionsType[] = [
   { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
   { key: pageKey.PAYMENT, label: 'Financeiro' },
   { key: pageKey.NOTICES, label: 'Avisos ' },
+  { key: pageKey.COMPLAINTS, label: 'Reclamações' },
   { key: pageKey.USERS, label: 'Usuários' },
 ];
 

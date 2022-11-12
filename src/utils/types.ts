@@ -3,5 +3,6 @@ export enum pageKey {
   CONDOMINIUMS = 'condominiums',
   PAYMENT = 'payment',
   NOTICES = 'notices',
+  COMPLAINTS = 'complaints',
   USERS = 'users',
 }

@@ -8,5 +8,6 @@ export { default as UserSettings } from './UserSettings';
 export { default as CondominiumSettings } from './CondominiumSettings';
 export { default as NoticeSettings } from './NoticeSettings';
 export { default as PaymentSettings } from './PaymentSettings';
+export { default as ComplaintSettings } from './ComplaintSettings';
 export { default as Upload } from './Upload';
 export { default as Button } from './Button';

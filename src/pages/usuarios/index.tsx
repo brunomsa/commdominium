@@ -5,15 +5,15 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { message, Modal, Space, TableColumnType, TableColumnsType } from 'antd';
+import { message, Modal, Space, TableColumnType, TableColumnsType, Divider } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { BasicPage, Button, TableList } from '../../components';
+import { AuthContext } from '../../contexts/AuthContext';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { deleteUser, User } from '../../services/user';
 import { Condominium, findCondominiumById } from '../../services/condominium';
 import { findUserTypeById, UserType } from '../../services/userType';
-import { AuthContext } from '../../contexts/AuthContext';
 import { ApiError } from '../../services/api';
 import { pageKey } from '../../utils/types';
 
@@ -165,10 +165,11 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
     return {
       align: 'center',
       fixed: 'right',
-      width: 115,
+      width: 130,
       render: (_, record) => (
         <Space size="middle">
           <Button type="primary" icon={<EditOutlined />} onClick={() => Router.push(`usuarios/${record.key}/editar`)} />
+          <Divider type="vertical" style={{ margin: 0 }} />
           <Button className="delete" icon={<DeleteOutlined />} onClick={() => confirmDeleteModal(record.key)} />
         </Space>
       ),

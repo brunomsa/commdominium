@@ -4,14 +4,14 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { message, Modal, Space, TableColumnsType, TableColumnType } from 'antd';
+import { Divider, message, Modal, Space, TableColumnsType, TableColumnType } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { BasicPage, Button, TableList } from '../../components';
-import { pageKey } from '../../utils/types';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, deleteCondominium } from '../../services/condominium';
 import { ApiError } from '../../services/api';
+import { pageKey } from '../../utils/types';
 
 interface DataType {
   key: number;
@@ -127,7 +127,7 @@ function Condominiums({ condominiums: initialCondominiums, ok, messageError }: P
     return {
       align: 'center',
       fixed: 'right',
-      width: 120,
+      width: 90,
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -135,6 +135,7 @@ function Condominiums({ condominiums: initialCondominiums, ok, messageError }: P
             icon={<EditOutlined />}
             onClick={() => Router.push(`condominios/${record.key}/editar`)}
           />
+          <Divider type="vertical" style={{ margin: 0 }} />
           <Button className="delete" icon={<DeleteOutlined />} onClick={() => confirmDeleteModal(record.key)} />
         </Space>
       ),

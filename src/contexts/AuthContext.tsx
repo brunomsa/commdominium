@@ -3,12 +3,12 @@ import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { setCookie, parseCookies, destroyCookie } from 'nookies';
 
+import { message } from 'antd';
+
 import { recoverUserInfo, signInRequest } from '../services/auth';
 import { api } from '../services/api';
-import { getUserById, User } from '../services/user';
-
+import { User } from '../services/user';
 import { SignInData } from './types';
-import { message } from 'antd';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -30,7 +30,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       if (token) {
         const { ok, data, error } = await recoverUserInfo(token);
-        console.log(ok, data);
         if (!ok && error) return message.error(error.error);
         setUser(data);
       }

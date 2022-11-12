@@ -6,6 +6,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 import { FormPayment } from '../../services/payment';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
+
 import Form from '../Form';
 import Upload from '../Upload';
 import Button from '../Button';

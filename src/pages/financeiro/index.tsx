@@ -14,6 +14,7 @@ import { BASE_API_URL } from '../../services/constants';
 import { createPayment, FormPayment, Payment, updatePayment, verifyBillExistance } from '../../services/payment';
 import { User } from '../../services/user';
 import { pageKey } from '../../utils/types';
+
 import theme from '../../styles/theme';
 
 interface DataType {
@@ -30,7 +31,7 @@ const columns: TableColumnsType<DataType> = [
     key: 'name',
     dataIndex: 'name',
     showSorterTooltip: false,
-    width: 200,
+    width: 150,
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
@@ -93,7 +94,7 @@ function Residents({ residents, ok, messageError }: Props) {
     return {
       align: 'center',
       fixed: 'right',
-      width: 120,
+      width: 50,
       render: (_, record) => (
         <Button
           backgroundColor={theme.colors.green}
@@ -163,7 +164,7 @@ function Residents({ residents, ok, messageError }: Props) {
       <Head>Financeiro</Head>
 
       <BasicPage pageKey={pageKey.PAYMENT}>
-        <h1>Moradores</h1>
+        <h1 style={{ marginBottom: 32 }}>Moradores</h1>
         <TableList columns={columns} data={data} action={actionsColumn} />
 
         <Modal

@@ -7,8 +7,8 @@ import { parseCookies } from 'nookies';
 import { message } from 'antd';
 
 import { BasicPage, CondominiumSettings } from '../../components';
-import { pageKey } from '../../utils/types';
 import { Condominium, createCondominium } from '../../services/condominium';
+import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 import * as styled from '../../styles/pages/Condominiums';

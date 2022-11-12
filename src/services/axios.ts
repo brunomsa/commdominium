@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import * as next from 'next';
 import * as express from 'express';
-
 import { parseCookies } from 'nookies';
+
 import { BASE_API_URL } from './constants';
 import { ApiError } from './api';
 

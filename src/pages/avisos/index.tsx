@@ -17,6 +17,7 @@ import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noti
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
+import { orderByDate } from '../../utils/orderByDate';
 
 interface Props {
   notices: Notice[];
@@ -147,7 +148,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
         <Radio.Group
           defaultValue={NOTICE_MODE_DEFAULT}
           buttonStyle="solid"
-          style={{ width: '100%', textAlign: 'center' }}
+          style={{ width: '100%', textAlign: 'center', marginBottom: 24 }}
           onChange={(e) => setNoticeMode(e.target.value)}
         >
           <Radio.Button value={NoticeTypes.HANDOUT}>Avisos</Radio.Button>
@@ -156,7 +157,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
         <List
           size="large"
           itemLayout="horizontal"
-          dataSource={filteredNotices}
+          dataSource={orderByDate(filteredNotices)}
           pagination={filteredNotices.length > MAX_NOTICES ? { pageSize: MAX_NOTICES } : undefined}
           renderItem={(notice) => (
             <List.Item
@@ -228,10 +229,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { status, data: allNotices } = await apiClient.get<Notice[]>('/notices/findAll');
-    const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
     const { data: user } = await recoverUserInfo(token);
-    const notices = allNotices.filter((n) => n.id_condominium === user.id_condominium);
+    const { status, data: notices } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
+      id_condominium: user.id_condominium,
+    });
+    const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
 
     if (status === 204) {
       return {

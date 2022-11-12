@@ -1,8 +1,9 @@
 import React, { PropsWithChildren, useCallback } from 'react';
 import Router from 'next/router';
 
-import Header from '../Header';
 import { pageKey } from '../../utils/types';
+
+import Header from '../Header';
 
 import * as styled from './styles';
 
@@ -17,6 +18,7 @@ const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
       condominiums: '/condominios',
       payment: '/financeiro',
       notices: '/avisos',
+      complaints: '/reclamacoes',
       users: '/usuarios',
     };
     Router.push(navigate[key]);

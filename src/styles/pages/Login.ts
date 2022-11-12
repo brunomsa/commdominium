@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Form } from '../../components';
 
+import { Form } from '../../components';
 import theme from '../theme';
 
 export const Login = styled.div`
