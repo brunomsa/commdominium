@@ -17,8 +17,6 @@ type AuthContextType = {
   signOut: () => void;
 };
 
-const TOKEN_KEY = 'commdominium.token';
-
 export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: PropsWithChildren) {
@@ -28,10 +26,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     (async () => {
-      const { TOKEN_KEY: token } = parseCookies();
+      const { ['commdominium.token']: token } = parseCookies();
 
       if (token) {
         const { ok, data, error } = await recoverUserInfo(token);
+        console.log(ok, data);
         if (!ok && error) return message.error(error.error);
         setUser(data);
       }
@@ -46,7 +45,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     if (!ok && !data && error) return { ok: false, ...error };
 
-    setCookie(undefined, TOKEN_KEY, data.token, {
+    setCookie(undefined, 'commdominium.token', data.token, {
       maxAge: 60 * 60 * 6, // 6 hours
     });
 
@@ -60,7 +59,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   function signOut() {
-    destroyCookie(undefined, TOKEN_KEY);
+    destroyCookie(undefined, 'commdominium.token');
     Router.push('/login');
   }
 

@@ -21,8 +21,6 @@ interface Props {
 function NoticeSettings({ loading, noticeTypes, initialValues, onSubmit, onCancel }: Props) {
   const initialType = findNoticeTypeById(noticeTypes, initialValues.id_noticeType)?.type;
   const [type, setType] = useState<NoticeTypes>(initialType);
-  console.log(initialValues);
-  console.log(initialType);
 
   return (
     <styled.NoticeSettings>

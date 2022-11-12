@@ -50,7 +50,7 @@ function Header({ selectedKey, onChange }: Props) {
     edit: () => console.log('edit'),
     myCond: () => console.log('myCond'),
     changePassword: () => console.log('changePassword'),
-    logout: () => signOut(),
+    logout: signOut,
   };
 
   const profileSettings = useMemo(() => {
