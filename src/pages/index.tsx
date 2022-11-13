@@ -6,11 +6,11 @@ import { parseCookies } from 'nookies';
 
 import { AuthContext } from '../contexts/AuthContext';
 
-import { BasicPage, PageLoader } from '../components';
+import { BasicPage } from '../components';
 import { pageKey } from '../utils/types';
 
 function Home() {
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <>
@@ -18,13 +18,9 @@ function Home() {
         <title>Home</title>
       </Head>
 
-      {!isAuthenticated || !user ? (
-        <PageLoader />
-      ) : (
-        <BasicPage pageKey={pageKey.HOME}>
-          <h1>Olá {user.fullname}!</h1>
-        </BasicPage>
-      )}
+      <BasicPage pageKey={pageKey.HOME}>
+        <h1>Olá {user?.fullname}!</h1>
+      </BasicPage>
     </>
   );
 }

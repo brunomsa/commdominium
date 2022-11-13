@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useEffect, useState } from 'react';
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 
 import Router from 'next/router';
 import { setCookie, parseCookies, destroyCookie } from 'nookies';
@@ -13,6 +13,7 @@ import { SignInData } from './types';
 type AuthContextType = {
   isAuthenticated: boolean;
   user?: User;
+  setUser: Dispatch<SetStateAction<User | undefined>>;
   signIn: (data: SignInData) => Promise<{ ok: boolean; error: string }>;
   signOut: () => void;
 };
@@ -62,5 +63,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     Router.push('/login');
   }
 
-  return <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, isAuthenticated, setUser, signIn, signOut }}>{children}</AuthContext.Provider>
+  );
 }

@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Form, Input } from 'antd';
 import { ExclamationCircleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 
-import { Button } from '../components';
+import { Button, TextInput } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import { SignInData } from '../contexts/types';
 
@@ -33,7 +33,7 @@ function Login() {
       <styled.LoginForm size="large" onChange={() => setError(undefined)} onFinish={handleSubmit}>
         <div>
           <Form.Item name="email" rules={[{ required: true, message: 'Por favor, informe um e-mail!' }]}>
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="E-mail" />
+            <TextInput prefix={<UserOutlined className="site-form-item-icon" />} placeholder="E-mail" />
           </Form.Item>
 
           <Form.Item name="password" rules={[{ required: true, message: 'Por favor, informe uma senha!' }]}>

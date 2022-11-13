@@ -11,10 +11,10 @@ import { Condominium } from '../../../services/condominium';
 import { UserType } from '../../../services/userType';
 import { catchPageError, getApiClient } from '../../../services/axios';
 import { getUserById, updateUser, User, UserForm } from '../../../services/user';
-
-import * as styled from '../../../styles/pages/Users';
-import theme from '../../../styles/theme';
 import { pageKey } from '../../../utils/types';
+
+import * as styled from '../../../styles/pages/FormSettings';
+import theme from '../../../styles/theme';
 
 interface Props {
   user?: User;
@@ -51,7 +51,7 @@ function EditUser({ user, condominiums, userTypes }: Props) {
   };
 
   return (
-    <styled.Users>
+    <styled.FormSettings>
       <Head>
         <title>Editar Usuários</title>
       </Head>
@@ -66,7 +66,7 @@ function EditUser({ user, condominiums, userTypes }: Props) {
           onSubmit={handleSubmit}
         />
       </BasicPage>
-    </styled.Users>
+    </styled.FormSettings>
   );
 }
 

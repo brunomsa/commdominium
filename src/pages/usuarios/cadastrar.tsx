@@ -11,10 +11,10 @@ import { createUser, UserForm } from '../../services/user';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium } from '../../services/condominium';
 import { UserType } from '../../services/userType';
+import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
-import * as styled from '../../styles/pages/Users';
-import { pageKey } from '../../utils/types';
+import * as styled from '../../styles/pages/FormSettings';
 
 const URL_BACKGROUND =
   'https://images.unsplash.com/photo-1554469384-e58fac16e23a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
@@ -51,7 +51,7 @@ function CreateUser({ condominiums, userTypes }: Props) {
   };
 
   return (
-    <styled.Users>
+    <styled.FormSettings>
       <Head>
         <title>Cadastrar Usuários</title>
       </Head>
@@ -60,7 +60,7 @@ function CreateUser({ condominiums, userTypes }: Props) {
         <h1>Cadastrar Novo Usuário</h1>
         <UserSettings condominiums={condominiums} userTypes={userTypes} loading={loading} onSubmit={handleSubmit} />
       </BasicPage>
-    </styled.Users>
+    </styled.FormSettings>
   );
 }
 

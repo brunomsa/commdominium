@@ -11,7 +11,7 @@ import { Condominium, getCondominiumById, updateCondominium } from '../../../ser
 import { catchPageError } from '../../../services/axios';
 import { pageKey } from '../../../utils/types';
 
-import * as styled from '../../../styles/pages/Users';
+import * as styled from '../../../styles/pages/FormSettings';
 import theme from '../../../styles/theme';
 
 interface Props {
@@ -46,16 +46,16 @@ function EditCondominium({ condominium }: Props) {
   };
 
   return (
-    <styled.Users>
+    <styled.FormSettings>
       <Head>
         <title>Editar Condomínios</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.USERS}>
+      <BasicPage pageKey={pageKey.CONDOMINIUMS}>
         <h1>Editar Condomínio</h1>
         <CondominiumSettings initialValues={condominium} loading={loading} onSubmit={handleSubmit} />
       </BasicPage>
-    </styled.Users>
+    </styled.FormSettings>
   );
 }
 

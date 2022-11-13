@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import Router from 'next/router';
 
 import { Avatar, Badge, Menu, Popover } from 'antd';
 import {
@@ -33,7 +34,7 @@ const menuOptions: menuOptionsType[] = [
 ];
 
 const profileMenuOptions = [
-  { key: 'edit', label: 'Editar perfil', icon: <SettingOutlined /> },
+  { key: 'myProfile', label: 'Editar perfil', icon: <SettingOutlined /> },
   { key: 'myCond', label: 'Meu condomínio', icon: <HomeOutlined /> },
   { key: 'changePassword', label: 'Alterar a senha', icon: <LockOutlined /> },
   { key: 'logout', label: 'Sair', icon: <LogoutOutlined /> },
@@ -50,7 +51,7 @@ function Header({ selectedKey, onChange }: Props) {
   const [showProfile, setShowProfile] = useState(false);
 
   const onProfileMenuClick: Record<string, () => void> = {
-    edit: () => console.log('edit'),
+    myProfile: () => Router.push('/meu-perfil'),
     myCond: () => console.log('myCond'),
     changePassword: () => console.log('changePassword'),
     logout: signOut,
@@ -59,12 +60,8 @@ function Header({ selectedKey, onChange }: Props) {
   const profileSettings = useMemo(() => {
     return (
       <styled.ProfileSettings>
-        {user && (
-          <>
-            <h3>{user.fullname}</h3>
-            <div className="email">{user.email}</div>
-          </>
-        )}
+        <h3>{user?.fullname}</h3>
+        <div className="email">{user?.email}</div>
         <Menu
           theme="dark"
           mode="inline"

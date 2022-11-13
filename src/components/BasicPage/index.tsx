@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback } from 'react';
+import React, { PropsWithChildren, useCallback, useContext } from 'react';
 import Router from 'next/router';
 
 import { pageKey } from '../../utils/types';
@@ -6,12 +6,16 @@ import { pageKey } from '../../utils/types';
 import Header from '../Header';
 
 import * as styled from './styles';
+import { AuthContext } from '../../contexts/AuthContext';
+import PageLoader from '../PageLoader';
 
 interface Props {
-  pageKey: pageKey;
+  pageKey?: pageKey;
 }
 
 const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
+  const { user } = useContext(AuthContext);
+
   const goTo = useCallback((key: string) => {
     const navigate: Record<pageKey, string> = {
       home: '/',
@@ -24,7 +28,9 @@ const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
     Router.push(navigate[key]);
   }, []);
 
-  return (
+  return !user ? (
+    <PageLoader />
+  ) : (
     <styled.BasicPage>
       <Header selectedKey={pageKey} onChange={(key) => goTo(key)} />
       <main>{children}</main>

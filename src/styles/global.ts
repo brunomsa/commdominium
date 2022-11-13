@@ -33,4 +33,8 @@ nav ul {
   .ant-popover-inner {
     box-shadow: 0 3px 6px -4px rgb(0 0 0 / 48%), 0 6px 16px 0 rgb(0 0 0 / 32%), 0 9px 28px 8px rgb(0 0 0 / 60%);
   }
+
+  .ant-form-item-label > label .ant-form-item-tooltip {
+    margin-left: 10px;
+  }
 `;

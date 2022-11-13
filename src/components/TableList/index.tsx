@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import Button from '../Button';
 
 import theme from '../../styles/theme';
+import TextInput from '../TextInput';
 
 interface Props<T> {
   data: T[];
@@ -24,7 +25,7 @@ function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
   const getColumnSearchProps = (key: K): TableColumnType<T> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
       <div style={{ padding: 8 }}>
-        <Input
+        <TextInput
           ref={searchInput}
           placeholder={`Pesquisar ${getColumnTitleByKey(key).title}`}
           value={selectedKeys[0]}

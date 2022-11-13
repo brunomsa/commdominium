@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Users = styled.div`
+export const FormSettings = styled.div`
   img.background-image {
     position: fixed;
     right: 0;
@@ -26,6 +26,7 @@ export const Users = styled.div`
       text-align: end;
       button {
         margin-top: 40px;
+        margin-bottom: 20px;
         width: 150px;
       }
     }

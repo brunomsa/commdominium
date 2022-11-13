@@ -9,6 +9,7 @@ import { DATE_FORMAT_STRING } from '../../utils/constants';
 
 import Form from '../Form';
 import Button from '../Button';
+import TextInput from '../TextInput';
 
 import * as styled from './styles';
 
@@ -46,7 +47,7 @@ function NoticeSettings({ loading, noticeTypes, initialValues, onSubmit, onCance
           label="Título"
           rules={[{ required: true, message: 'Por favor, informe um título' }]}
         >
-          <Input />
+          <TextInput />
         </AntdForm.Item>
 
         {type === NoticeTypes.MEETING && (

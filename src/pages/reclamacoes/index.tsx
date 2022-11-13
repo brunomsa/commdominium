@@ -242,7 +242,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const { data: user } = await recoverUserInfo(token);
-
     const { status, data: complaints } = await apiClient.get<Complaint[]>('/complaint/findAll');
 
     if (status === 204) {
