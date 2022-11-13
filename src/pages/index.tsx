@@ -35,7 +35,7 @@ function Home({ loggedUserType, ok, messageError }: Props) {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Início</title>
       </Head>
 
       <BasicPage pageKey={pageKey.HOME} loggedUserType={loggedUserType}>
@@ -64,15 +64,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
-
-    if (loggedUserType !== UserTypes.ADMIN) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
 
     return {
       props: {

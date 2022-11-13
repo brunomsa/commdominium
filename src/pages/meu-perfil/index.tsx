@@ -93,15 +93,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
-    if (loggedUserType !== UserTypes.ADMIN) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-
     return {
       props: {
         ok: true,
