@@ -156,18 +156,20 @@ function Notices({
       </Head>
 
       <BasicPage pageKey={pageKey.NOTICES} loggedUserType={loggedUserType}>
-        <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
-          <Button type="primary" onClick={() => setShowNoticeSettings(true)}>
-            Criar Aviso
-          </Button>
-        </div>
+        {loggedUserType !== UserTypes.RESIDENT && (
+          <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
+            <Button type="primary" onClick={() => setShowNoticeSettings(true)}>
+              Criar Aviso
+            </Button>
+          </div>
+        )}
         <Radio.Group
           defaultValue={NOTICE_MODE_DEFAULT}
           buttonStyle="solid"
           style={{ width: '100%', textAlign: 'center', marginBottom: 24 }}
           onChange={(e) => setNoticeMode(e.target.value)}
         >
-          <Radio.Button value={NoticeTypes.HANDOUT}>Avisos</Radio.Button>
+          <Radio.Button value={NoticeTypes.HANDOUT}>Comunicados</Radio.Button>
           <Radio.Button value={NoticeTypes.MEETING}>Reuniões</Radio.Button>
         </Radio.Group>
         <List
@@ -177,21 +179,23 @@ function Notices({
           pagination={filteredNotices.length > MAX_NOTICES ? { pageSize: MAX_NOTICES } : undefined}
           renderItem={(notice) => (
             <List.Item
-              actions={[
-                <Button
-                  type="primary"
-                  icon={<EditOutlined />}
-                  onClick={() => {
-                    setShowNoticeSettings(true);
-                    setNoticeSelected(notice);
-                  }}
-                />,
-                <Button
-                  backgroundColor={theme.colors.RED}
-                  icon={<DeleteOutlined />}
-                  onClick={() => confirmDeleteModal(notice.id)}
-                />,
-              ]}
+              actions={
+                loggedUserType !== UserTypes.RESIDENT && [
+                  <Button
+                    type="primary"
+                    icon={<EditOutlined />}
+                    onClick={() => {
+                      setShowNoticeSettings(true);
+                      setNoticeSelected(notice);
+                    }}
+                  />,
+                  <Button
+                    backgroundColor={theme.colors.RED}
+                    icon={<DeleteOutlined />}
+                    onClick={() => confirmDeleteModal(notice.id)}
+                  />,
+                ]
+              }
             >
               <Comment
                 avatar={assignee?.avatarArchive ? <Avatar src={assignee.avatarArchive} /> : <UserOutlined />}
