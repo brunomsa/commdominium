@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 
 import { BasicPage, Button, ComplaintSettings } from '../../components';
+import { AuthContext } from '../../contexts/AuthContext';
 import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { ApiError } from '../../services/api';
@@ -27,16 +28,15 @@ import {
   updateComplaint,
 } from '../../services/complaint';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
+import { orderByDate } from '../../utils/orderByDate';
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
-import { AuthContext } from '../../contexts/AuthContext';
-import { orderByDate } from '../../utils/orderByDate';
 
 import theme from '../../styles/theme';
 
 interface Props {
+  loggedUserType?: UserTypes;
   complaints?: Complaint[];
-  userType?: UserTypes;
   ok: boolean;
   messageError?: ApiError;
 }
@@ -44,7 +44,7 @@ interface Props {
 const MAX_COMPLAINTS = 10;
 let showError = false;
 
-function Complaints({ complaints: initialComplaints, userType, ok, messageError }: Props) {
+function Complaints({ loggedUserType, complaints: initialComplaints, ok, messageError }: Props) {
   const { user } = useContext(AuthContext);
 
   const initialFilteredComplaints = initialComplaints.filter((c) => !c.resolved);
@@ -174,10 +174,10 @@ function Complaints({ complaints: initialComplaints, userType, ok, messageError 
         <title>Reclamações</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.COMPLAINTS}>
-        {userType !== UserTypes.ASSIGNEE && (
+      <BasicPage pageKey={pageKey.COMPLAINTS} loggedUserType={loggedUserType}>
+        {loggedUserType !== UserTypes.ASSIGNEE && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
-            {userType === UserTypes.RESIDENT && <h1 style={{ minWidth: 'max-content' }}>Minhas Reclamações</h1>}
+            {loggedUserType === UserTypes.RESIDENT && <h1 style={{ minWidth: 'max-content' }}>Minhas Reclamações</h1>}
             <div style={{ width: '100%', textAlign: 'end' }}>
               <Button type="primary" onClick={() => setShowComplaintSettings(true)}>
                 Criar Reclamação
@@ -211,7 +211,7 @@ function Complaints({ complaints: initialComplaints, userType, ok, messageError 
             >
               <List.Item
                 actions={
-                  userType !== UserTypes.ASSIGNEE
+                  loggedUserType !== UserTypes.ASSIGNEE
                     ? [
                         <Button
                           type="primary"
@@ -297,15 +297,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const userType = findUserTypeById(userTypes, user.id_userType)?.type;
+    const loggedUserType = findUserTypeById(userTypes, user.id_userType)?.type;
     const filteredComplaints =
-      userType === UserTypes.RESIDENT ? complaints.filter((c) => c.id_user === user.id) : complaints;
+      loggedUserType === UserTypes.RESIDENT ? complaints.filter((c) => c.id_user === user.id) : complaints;
 
     return {
       props: {
         ok: true,
+        loggedUserType,
         complaints: filteredComplaints,
-        userType,
       },
     };
   } catch (error) {

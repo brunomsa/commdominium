@@ -3,8 +3,8 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
 
-import { DollarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { message, Modal, TableColumnsType, TableColumnType } from 'antd';
+import { DollarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { BasicPage, Button, PaymentSettings, TableList } from '../../components';
 import { ApiError } from '../../services/api';
@@ -13,6 +13,7 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { BASE_API_URL } from '../../services/constants';
 import { createPayment, FormPayment, Payment, updatePayment, verifyBillExistance } from '../../services/payment';
 import { User } from '../../services/user';
+import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
@@ -26,6 +27,7 @@ interface DataType {
 }
 
 interface Props {
+  loggedUserType?: UserTypes;
   residents?: User[];
   ok: boolean;
   messageError?: ApiError;
@@ -67,7 +69,7 @@ const columns: TableColumnsType<DataType> = [
 ];
 let showError = false;
 
-function Residents({ residents, ok, messageError }: Props) {
+function Residents({ loggedUserType, residents, ok, messageError }: Props) {
   const [showPaymentSettings, setShowPaymentSettings] = useState(false);
   const [selectedResidentId, setSelectedResidentId] = useState<number>();
 
@@ -163,7 +165,7 @@ function Residents({ residents, ok, messageError }: Props) {
     <>
       <Head>Financeiro</Head>
 
-      <BasicPage pageKey={pageKey.PAYMENT}>
+      <BasicPage pageKey={pageKey.PAYMENT} loggedUserType={loggedUserType}>
         <h1 style={{ marginBottom: 32 }}>Moradores</h1>
         <TableList columns={columns} data={data} action={actionsColumn} />
 
@@ -204,10 +206,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: user } = await recoverUserInfo(token);
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: loggedUser } = await recoverUserInfo(token);
+    const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
+
+    if (loggedUserType === UserTypes.RESIDENT) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
 
     const { status, data: residents } = await apiClient.post<User>(`${BASE_API_URL}/services/findUserList`, {
-      id_condominium: user.id_condominium,
+      id_condominium: loggedUser.id_condominium,
     });
 
     if (status === 204) {
@@ -223,6 +236,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
       props: {
         ok: true,
+        loggedUserType,
         residents,
       },
     };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
@@ -7,21 +7,36 @@ import { parseCookies } from 'nookies';
 import { message } from 'antd';
 
 import { BasicPage, CondominiumSettings } from '../../../components';
+import { ApiError } from '../../../services/api';
+import { recoverUserInfo } from '../../../services/auth';
+import { catchPageError, getApiClient } from '../../../services/axios';
 import { Condominium, getCondominiumById, updateCondominium } from '../../../services/condominium';
-import { catchPageError } from '../../../services/axios';
+import { findUserTypeById, UserType, UserTypes } from '../../../services/userType';
 import { pageKey } from '../../../utils/types';
 
 import * as styled from '../../../styles/pages/FormSettings';
 import theme from '../../../styles/theme';
 
 interface Props {
+  loggedUserType?: UserTypes;
   condominium?: Condominium;
+  ok: boolean;
+  messageError?: ApiError;
 }
 
-function EditCondominium({ condominium }: Props) {
+let showError = false;
+
+function EditCondominium({ loggedUserType, condominium, ok, messageError }: Props) {
   const { id: itemId } = useRouter().query;
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!ok && messageError && !showError) {
+      showError = true;
+      return message.error(messageError.error);
+    }
+  }, [ok, messageError]);
 
   const handleSubmit = async (values: Omit<Condominium, 'id'>) => {
     setLoading(true);
@@ -51,7 +66,7 @@ function EditCondominium({ condominium }: Props) {
         <title>Editar Condomínios</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.CONDOMINIUMS}>
+      <BasicPage pageKey={pageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
         <h1>Editar Condomínio</h1>
         <CondominiumSettings initialValues={condominium} loading={loading} onSubmit={handleSubmit} />
       </BasicPage>
@@ -62,6 +77,7 @@ function EditCondominium({ condominium }: Props) {
 export default EditCondominium;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const apiClient = getApiClient(ctx);
   const { ['commdominium.token']: token } = parseCookies(ctx);
 
   if (!token) {
@@ -74,11 +90,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: loggedUser } = await recoverUserInfo(token);
+    const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
+
+    if (loggedUserType !== UserTypes.ADMIN) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
     const { id } = ctx.query;
     const { data: condominium } = await getCondominiumById(Number(id));
 
     return {
       props: {
+        ok: true,
+        loggedUserType,
         condominium,
       },
     };

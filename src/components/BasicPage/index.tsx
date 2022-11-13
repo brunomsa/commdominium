@@ -1,19 +1,21 @@
 import React, { PropsWithChildren, useCallback, useContext } from 'react';
 import Router from 'next/router';
 
+import Header from '../Header';
+import PageLoader from '../PageLoader';
+
+import { AuthContext } from '../../contexts/AuthContext';
+import { UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 
-import Header from '../Header';
-
 import * as styled from './styles';
-import { AuthContext } from '../../contexts/AuthContext';
-import PageLoader from '../PageLoader';
 
 interface Props {
   pageKey?: pageKey;
+  loggedUserType: UserTypes;
 }
 
-const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
+const BasicPage = ({ pageKey, loggedUserType, children }: PropsWithChildren<Props>) => {
   const { user } = useContext(AuthContext);
 
   const goTo = useCallback((key: string) => {
@@ -32,7 +34,7 @@ const BasicPage = ({ pageKey, children }: PropsWithChildren<Props>) => {
     <PageLoader />
   ) : (
     <styled.BasicPage>
-      <Header selectedKey={pageKey} onChange={(key) => goTo(key)} />
+      <Header selectedKey={pageKey} loggedUserType={loggedUserType} onChange={(key) => goTo(key)} />
       <main>{children}</main>
     </styled.BasicPage>
   );

@@ -9,20 +9,23 @@ import { Avatar, Comment, List, message, Modal, Radio } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 
 import { BasicPage, Button, NoticeSettings } from '../../components';
-import { catchPageError, getApiClient } from '../../services/axios';
 import { ApiError } from '../../services/api';
 import { recoverUserInfo } from '../../services/auth';
+import { catchPageError, getApiClient } from '../../services/axios';
+import { Condominium, getCondominiumById } from '../../services/condominium';
 import { createNotice, deleteNotice, Notice, NoticeForm, updateNotice } from '../../services/notice';
 import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noticeType';
-import { pageKey } from '../../utils/types';
-import { toDayjs } from '../../utils/toDayjs';
+import { User } from '../../services/user';
+import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
 import { orderByDate } from '../../utils/orderByDate';
-import { User } from '../../services/user';
-import { Condominium, getCondominiumById } from '../../services/condominium';
+import { toDayjs } from '../../utils/toDayjs';
+import { pageKey } from '../../utils/types';
+
 import theme from '../../styles/theme';
 
 interface Props {
+  loggedUserType?: UserTypes;
   notices?: Notice[];
   noticeTypes?: NoticeType[];
   condominium?: Condominium;
@@ -35,7 +38,15 @@ const MAX_NOTICES = 10;
 const NOTICE_MODE_DEFAULT = NoticeTypes.HANDOUT;
 let showError = false;
 
-function Notices({ notices: initialNotices, noticeTypes, condominium, assignee, ok, messageError }: Props) {
+function Notices({
+  loggedUserType,
+  notices: initialNotices,
+  noticeTypes,
+  condominium,
+  assignee,
+  ok,
+  messageError,
+}: Props) {
   const initialFilteredNotices = initialNotices.filter(
     (n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === NOTICE_MODE_DEFAULT
   );
@@ -144,7 +155,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominium, assignee, 
         <title>Avisos</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.NOTICES}>
+      <BasicPage pageKey={pageKey.NOTICES} loggedUserType={loggedUserType}>
         <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
           <Button type="primary" onClick={() => setShowNoticeSettings(true)}>
             Criar Aviso
@@ -239,14 +250,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: user } = await recoverUserInfo(token);
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: loggedUser } = await recoverUserInfo(token);
+    const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
+
+    if (loggedUserType !== UserTypes.ADMIN) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
     const { status, data: notices } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
-      id_condominium: user.id_condominium,
+      id_condominium: loggedUser.id_condominium,
     });
     const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
-    const { data: condominium } = await getCondominiumById(user.id_condominium);
+    const { data: condominium } = await getCondominiumById(loggedUser.id_condominium);
     const { data: assignee } = await apiClient.post<User[]>('services/searchCondominiumAssignee', {
-      id_condominium: user.id_condominium,
+      id_condominium: loggedUser.id_condominium,
     });
 
     if (status === 204) {
@@ -262,6 +284,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
       props: {
         ok: true,
+        loggedUserType,
         notices,
         noticeTypes,
         condominium: condominium,

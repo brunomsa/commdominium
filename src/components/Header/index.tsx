@@ -12,26 +12,13 @@ import {
 } from '@ant-design/icons';
 
 import { AuthContext } from '../../contexts/AuthContext';
+import { UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 
 import EmptyState from '../EmptyState';
 
 import theme from '../../styles/theme';
 import * as styled from './styles';
-
-type menuOptionsType = {
-  key: pageKey;
-  label: string;
-};
-
-const menuOptions: menuOptionsType[] = [
-  { key: pageKey.HOME, label: 'Início' },
-  { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
-  { key: pageKey.PAYMENT, label: 'Financeiro' },
-  { key: pageKey.NOTICES, label: 'Avisos ' },
-  { key: pageKey.COMPLAINTS, label: 'Reclamações' },
-  { key: pageKey.USERS, label: 'Usuários' },
-];
 
 const profileMenuOptions = [
   { key: 'myProfile', label: 'Editar perfil', icon: <SettingOutlined /> },
@@ -42,13 +29,25 @@ const profileMenuOptions = [
 
 interface Props {
   selectedKey: string;
+  loggedUserType: UserTypes;
   onChange: (key: string) => void;
 }
 
-function Header({ selectedKey, onChange }: Props) {
+function Header({ selectedKey, loggedUserType, onChange }: Props) {
   const { user, signOut } = useContext(AuthContext);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+
+  const menuOptions = useMemo(() => {
+    return [
+      { key: pageKey.HOME, label: 'Início' },
+      loggedUserType === UserTypes.ADMIN && { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
+      loggedUserType !== UserTypes.RESIDENT && { key: pageKey.PAYMENT, label: 'Financeiro' },
+      { key: pageKey.NOTICES, label: 'Avisos ' },
+      { key: pageKey.COMPLAINTS, label: 'Reclamações' },
+      loggedUserType === UserTypes.ADMIN && { key: pageKey.USERS, label: 'Usuários' },
+    ];
+  }, [loggedUserType]);
 
   const onProfileMenuClick: Record<string, () => void> = {
     myProfile: () => Router.push('/meu-perfil'),
@@ -71,7 +70,7 @@ function Header({ selectedKey, onChange }: Props) {
         />
       </styled.ProfileSettings>
     );
-  }, [user]);
+  }, [onProfileMenuClick, profileMenuOptions, user]);
 
   return (
     <styled.Header>

@@ -10,11 +10,12 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-de
 
 import { BasicPage, Button, TableList } from '../../components';
 import { AuthContext } from '../../contexts/AuthContext';
-import { catchPageError, getApiClient } from '../../services/axios';
-import { deleteUser, User } from '../../services/user';
-import { Condominium, findCondominiumById } from '../../services/condominium';
-import { findUserTypeById, UserType } from '../../services/userType';
 import { ApiError } from '../../services/api';
+import { recoverUserInfo } from '../../services/auth';
+import { catchPageError, getApiClient } from '../../services/axios';
+import { Condominium, findCondominiumById } from '../../services/condominium';
+import { deleteUser, User } from '../../services/user';
+import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
@@ -32,6 +33,7 @@ interface DataType {
 }
 
 interface Props {
+  loggedUserType?: UserTypes;
   users?: User[];
   condominiums?: Condominium[];
   userTypes?: UserType[];
@@ -105,7 +107,7 @@ const columns: TableColumnsType<DataType> = [
 ];
 let showError = false;
 
-function Users({ users: initialUsers, condominiums, userTypes, ok, messageError }: Props) {
+function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, ok, messageError }: Props) {
   const { user: loggedUser } = useContext(AuthContext);
 
   const [users, setUsers] = useState<User[]>(initialUsers);
@@ -180,7 +182,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
         </Space>
       ),
     };
-  }, []);
+  }, [confirmDeleteModal]);
 
   return (
     <>
@@ -188,7 +190,7 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
         <title>Usuários</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.USERS}>
+      <BasicPage pageKey={pageKey.USERS} loggedUserType={loggedUserType}>
         <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
           <Button type="primary" onClick={() => Router.push('/usuarios/cadastrar')}>
             Novo Usuário
@@ -216,9 +218,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { status, data: users } = await apiClient.get<Omit<User, 'password'>[]>('/user/findAll');
-    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
     const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: loggedUser } = await recoverUserInfo(token);
+    const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
+
+    if (loggedUserType !== UserTypes.ADMIN) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    const { status, data: users } = await apiClient.get<User[]>('/user/findAll');
+    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
 
     if (status === 204) {
       return {
@@ -233,6 +247,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
       props: {
         ok: true,
+        loggedUserType,
         users,
         condominiums,
         userTypes,

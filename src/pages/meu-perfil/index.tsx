@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
@@ -7,15 +7,34 @@ import { message } from 'antd';
 
 import { BasicPage, UserSettings } from '../../components';
 import { AuthContext } from '../../contexts/AuthContext';
+import { recoverUserInfo } from '../../services/auth';
+import { ApiError } from '../../services/api';
+import { catchPageError, getApiClient } from '../../services/axios';
 import { updateUser, UserForm } from '../../services/user';
+import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 
 import * as styled from '../../styles/pages/FormSettings';
 import theme from '../../styles/theme';
 
-function MyProfile() {
+interface Props {
+  loggedUserType?: UserTypes;
+  ok: boolean;
+  messageError?: ApiError;
+}
+
+let showError = false;
+
+function MyProfile({ loggedUserType, ok, messageError }: Props) {
   const { user, setUser } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!ok && messageError && !showError) {
+      showError = true;
+      return message.error(messageError.error);
+    }
+  }, [ok, messageError]);
 
   const handleSubmit = async (values: UserForm) => {
     if (!user) return;
@@ -46,7 +65,7 @@ function MyProfile() {
         <title>Meu Perfil</title>
       </Head>
 
-      <BasicPage>
+      <BasicPage loggedUserType={loggedUserType}>
         <h1>Meu Perfil</h1>
         <UserSettings initialValues={user} loading={loading} onSubmit={handleSubmit} adminMode={false} />
       </BasicPage>
@@ -57,6 +76,7 @@ function MyProfile() {
 export default MyProfile;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const apiClient = getApiClient(ctx);
   const { ['commdominium.token']: token } = parseCookies(ctx);
 
   if (!token) {
@@ -68,7 +88,27 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  return {
-    props: {},
-  };
+  try {
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: loggedUser } = await recoverUserInfo(token);
+    const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
+
+    if (loggedUserType !== UserTypes.ADMIN) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        ok: true,
+        loggedUserType,
+      },
+    };
+  } catch (error) {
+    catchPageError(error);
+  }
 };
