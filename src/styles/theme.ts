@@ -1,17 +1,18 @@
 const theme = {
   colors: {
-    background: '#121214',
-    text: '#e1e1e6',
-    primary: '#00607a',
-    dark_grey: '#202024',
-    light_blue: '#008f9e',
-    green: '#009c4f',
+    BACKGROUND: '#121214',
+    TEXT: '#e1e1e6',
+    PRIMARY: '#00607a',
+    DARK_GREY: '#202024',
+    LIGHT_BLUE: '#008f9e',
+    GREEN: '#009c4f',
+    RED: '#c01616',
   },
   header: {
-    height: 80,
+    HEIGHT: 80,
   },
   main: {
-    padding_x: 56,
+    PADDING_X: 56,
   },
 };
 

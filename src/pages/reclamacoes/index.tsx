@@ -1,15 +1,23 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
 
-import { Avatar, Card, Comment, List, message, Modal, Radio } from 'antd';
-import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Avatar, Card, Comment, List, message, Modal, Radio, Tooltip } from 'antd';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 
 import { BasicPage, Button, ComplaintSettings } from '../../components';
 import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
+import { ApiError } from '../../services/api';
 import {
   Complaint,
   ComplaintForm,
@@ -18,14 +26,17 @@ import {
   deleteComplaint,
   updateComplaint,
 } from '../../services/complaint';
-import { ApiError } from '../../services/api';
+import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
 import { AuthContext } from '../../contexts/AuthContext';
 import { orderByDate } from '../../utils/orderByDate';
 
+import theme from '../../styles/theme';
+
 interface Props {
-  complaints: Complaint[];
+  complaints?: Complaint[];
+  userType?: UserTypes;
   ok: boolean;
   messageError?: ApiError;
 }
@@ -33,10 +44,10 @@ interface Props {
 const MAX_COMPLAINTS = 10;
 let showError = false;
 
-function Complaints({ complaints: initialComplaints, ok, messageError }: Props) {
+function Complaints({ complaints: initialComplaints, userType, ok, messageError }: Props) {
   const { user } = useContext(AuthContext);
 
-  const initialFilteredComplaints = initialComplaints.filter((c) => c.resolved === false);
+  const initialFilteredComplaints = initialComplaints.filter((c) => !c.resolved);
 
   const [complaints, setComplaints] = useState<Complaint[]>(initialComplaints);
   const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>(initialFilteredComplaints);
@@ -56,16 +67,35 @@ function Complaints({ complaints: initialComplaints, ok, messageError }: Props) 
 
   useEffect(() => {
     const resolved = complaintMode === ComplaintTypes.RESOLVED;
-    setFilteredComplaints(complaints.filter((c) => c.resolved === resolved));
+    setFilteredComplaints(complaints.filter((c) => Number(c.resolved) === Number(resolved)));
   }, [complaints, complaintMode]);
+
+  const updateStatusButton = useMemo(() => {
+    if (complaintMode === ComplaintTypes.UNRESOLVED) {
+      return (
+        <Tooltip title="Marcar como resolvida">
+          <Button backgroundColor={theme.colors.GREEN} type="primary" icon={<CheckCircleOutlined />} />
+        </Tooltip>
+      );
+    }
+
+    return (
+      <Tooltip title="Marcar como não resolvida">
+        <Button backgroundColor={theme.colors.RED} type="primary" icon={<CloseCircleOutlined />} />
+      </Tooltip>
+    );
+  }, [complaintMode]);
 
   const handleCreate = useCallback(
     async (values: ComplaintForm) => {
+      if (!user) return;
       setLoading(true);
       const complaintData = {
         ...values,
-        id_condominium: user?.id_condominium,
-        id_user: user?.id,
+        id_condominium: user.id_condominium,
+        id_user: user.id,
+        fullname: user.fullname,
+        avatarArchive: user.avatarArchive,
         resolved: false,
       };
       const { ok, error, data: newComplaint } = await createComplaint(complaintData);
@@ -145,11 +175,17 @@ function Complaints({ complaints: initialComplaints, ok, messageError }: Props) 
       </Head>
 
       <BasicPage pageKey={pageKey.COMPLAINTS}>
-        <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
-          <Button type="primary" onClick={() => setShowComplaintSettings(true)}>
-            Criar Reclamação
-          </Button>
-        </div>
+        {userType !== UserTypes.ASSIGNEE && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+            {userType === UserTypes.RESIDENT && <h1 style={{ minWidth: 'max-content' }}>Minhas Reclamações</h1>}
+            <div style={{ width: '100%', textAlign: 'end' }}>
+              <Button type="primary" onClick={() => setShowComplaintSettings(true)}>
+                Criar Reclamação
+              </Button>
+            </div>
+          </div>
+        )}
+
         <Radio.Group
           defaultValue={ComplaintTypes.UNRESOLVED}
           buttonStyle="solid"
@@ -174,25 +210,29 @@ function Complaints({ complaints: initialComplaints, ok, messageError }: Props) 
               bordered={false}
             >
               <List.Item
-                actions={[
-                  <Button
-                    type="primary"
-                    icon={<EditOutlined />}
-                    onClick={() => {
-                      setShowComplaintSettings(true);
-                      setComplaintSelected(complaint);
-                    }}
-                  />,
-                  <Button
-                    className="delete"
-                    icon={<DeleteOutlined />}
-                    onClick={() => confirmDeleteModal(complaint.id)}
-                  />,
-                ]}
+                actions={
+                  userType !== UserTypes.ASSIGNEE
+                    ? [
+                        <Button
+                          type="primary"
+                          icon={<EditOutlined />}
+                          onClick={() => {
+                            setShowComplaintSettings(true);
+                            setComplaintSelected(complaint);
+                          }}
+                        />,
+                        <Button
+                          backgroundColor={theme.colors.RED}
+                          icon={<DeleteOutlined />}
+                          onClick={() => confirmDeleteModal(complaint.id)}
+                        />,
+                      ]
+                    : [updateStatusButton]
+                }
               >
                 <Comment
-                  author={user?.fullname}
-                  avatar={user?.avatarArchive && <Avatar src={user?.avatarArchive} />}
+                  author={complaint.fullname}
+                  avatar={complaint.avatarArchive ? <Avatar src={complaint.avatarArchive} /> : <UserOutlined />}
                   content={<p>{complaint.message}</p>}
                   datetime={<span>{toDayjs(complaint.updatedAt).fromNow()}</span>}
                 />
@@ -242,7 +282,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const { data: user } = await recoverUserInfo(token);
-    const { status, data: complaints } = await apiClient.get<Complaint[]>('/complaint/findAll');
+    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { status, data: complaints } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
+      id_condominium: user.id_condominium,
+    });
 
     if (status === 204) {
       return {
@@ -254,10 +297,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
+    const userType = findUserTypeById(userTypes, user.id_userType)?.type;
+    const filteredComplaints =
+      userType === UserTypes.RESIDENT ? complaints.filter((c) => c.id_user === user.id) : complaints;
+
     return {
       props: {
         ok: true,
-        complaints: complaints.filter((c) => c.id_condominium === user.id_condominium),
+        complaints: filteredComplaints,
+        userType,
       },
     };
   } catch (error) {

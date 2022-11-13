@@ -6,10 +6,10 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 0 ${theme.main.padding_x}px;
-  background-color: ${theme.colors.dark_grey};
+  padding: 0 ${theme.main.PADDING_X}px;
+  background-color: ${theme.colors.DARK_GREY};
   font-weight: 500;
-  height: ${theme.header.height}px;
+  height: ${theme.header.HEIGHT}px;
   z-index: 10;
 
   div:first-child {
@@ -33,7 +33,7 @@ export const Header = styled.header`
         line-height: inherit;
 
         span {
-          color: ${theme.colors.text};
+          color: ${theme.colors.TEXT};
         }
 
         .ant-menu-item-selected::after,
@@ -52,13 +52,13 @@ export const Header = styled.header`
     align-items: center;
 
     svg {
-      color: ${theme.colors.text};
+      color: ${theme.colors.TEXT};
       font-size: 20px;
     }
 
     .ant-avatar {
       cursor: pointer;
-      background-color: ${theme.colors.background};
+      background-color: ${theme.colors.BACKGROUND};
     }
   }
 `;
@@ -80,7 +80,7 @@ export const ProfileSettings = styled.div`
     background-color: transparent !important;
 
     :hover {
-      color: ${theme.colors.primary};
+      color: ${theme.colors.PRIMARY};
     }
   }
 `;

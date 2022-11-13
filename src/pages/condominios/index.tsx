@@ -12,6 +12,7 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, deleteCondominium } from '../../services/condominium';
 import { ApiError } from '../../services/api';
 import { pageKey } from '../../utils/types';
+import theme from '../../styles/theme';
 
 interface DataType {
   key: number;
@@ -127,7 +128,7 @@ function Condominiums({ condominiums: initialCondominiums, ok, messageError }: P
     return {
       align: 'center',
       fixed: 'right',
-      width: 90,
+      width: 125,
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -136,7 +137,11 @@ function Condominiums({ condominiums: initialCondominiums, ok, messageError }: P
             onClick={() => Router.push(`condominios/${record.key}/editar`)}
           />
           <Divider type="vertical" style={{ margin: 0 }} />
-          <Button className="delete" icon={<DeleteOutlined />} onClick={() => confirmDeleteModal(record.key)} />
+          <Button
+            backgroundColor={theme.colors.RED}
+            icon={<DeleteOutlined />}
+            onClick={() => confirmDeleteModal(record.key)}
+          />
         </Space>
       ),
     };

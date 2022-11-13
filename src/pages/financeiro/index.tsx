@@ -25,6 +25,12 @@ interface DataType {
   number: string;
 }
 
+interface Props {
+  residents?: User[];
+  ok: boolean;
+  messageError?: ApiError;
+}
+
 const columns: TableColumnsType<DataType> = [
   {
     title: 'Nome',
@@ -59,12 +65,6 @@ const columns: TableColumnsType<DataType> = [
     sorter: (a, b) => a.number.localeCompare(b.number),
   },
 ];
-
-interface Props {
-  residents: User[];
-  ok: boolean;
-  messageError?: ApiError;
-}
 let showError = false;
 
 function Residents({ residents, ok, messageError }: Props) {
@@ -97,7 +97,7 @@ function Residents({ residents, ok, messageError }: Props) {
       width: 50,
       render: (_, record) => (
         <Button
-          backgroundColor={theme.colors.green}
+          backgroundColor={theme.colors.GREEN}
           type="primary"
           icon={<DollarOutlined />}
           onClick={() => {

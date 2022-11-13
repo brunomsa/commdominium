@@ -46,7 +46,7 @@ export const LoginForm = styled(Form)`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background-color: ${theme.colors.dark_grey};
+  background-color: ${theme.colors.DARK_GREY};
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
   .ant-form-item-control-input-content {

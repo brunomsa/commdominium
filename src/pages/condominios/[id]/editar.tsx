@@ -35,7 +35,7 @@ function EditCondominium({ condominium }: Props) {
         style: {
           position: 'absolute',
           right: 10,
-          top: `${theme.header.height}px`,
+          top: `${theme.header.HEIGHT}px`,
         },
       });
     }

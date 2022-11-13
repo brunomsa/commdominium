@@ -97,7 +97,7 @@ function Header({ selectedKey, onChange }: Props) {
           open={showNotifications}
           onOpenChange={(visible) => setShowNotifications(visible)}
         >
-          <Badge color={theme.colors.primary}>
+          <Badge color={theme.colors.PRIMARY}>
             <BellOutlined style={{ cursor: 'pointer' }} />
           </Badge>
         </Popover>

@@ -1,6 +1,6 @@
 export enum UserTypes {
   ADMIN = 'Admin',
-  SYNDIC = 'Síndico',
+  ASSIGNEE = 'Síndico',
   RESIDENT = 'Morador',
 }
 export type UserType = {

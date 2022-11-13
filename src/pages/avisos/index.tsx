@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { parseCookies } from 'nookies';
 import moment from 'moment';
 
-import { Comment, List, message, Modal, Radio } from 'antd';
+import { Avatar, Comment, List, message, Modal, Radio } from 'antd';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 
 import { BasicPage, Button, NoticeSettings } from '../../components';
@@ -18,11 +18,15 @@ import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
 import { DATE_FORMAT_STRING } from '../../utils/constants';
 import { orderByDate } from '../../utils/orderByDate';
+import { User } from '../../services/user';
+import { Condominium, getCondominiumById } from '../../services/condominium';
+import theme from '../../styles/theme';
 
 interface Props {
-  notices: Notice[];
-  noticeTypes: NoticeType[];
-  condominiumId: number;
+  notices?: Notice[];
+  noticeTypes?: NoticeType[];
+  condominium?: Condominium;
+  assignee?: User;
   ok: boolean;
   messageError?: ApiError;
 }
@@ -31,7 +35,7 @@ const MAX_NOTICES = 10;
 const NOTICE_MODE_DEFAULT = NoticeTypes.HANDOUT;
 let showError = false;
 
-function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, messageError }: Props) {
+function Notices({ notices: initialNotices, noticeTypes, condominium, assignee, ok, messageError }: Props) {
   const initialFilteredNotices = initialNotices.filter(
     (n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === NOTICE_MODE_DEFAULT
   );
@@ -58,8 +62,9 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
 
   const handleCreate = useCallback(
     async (values: NoticeForm) => {
+      if (!condominium) return;
       setLoading(true);
-      const { ok, error, data: newNotice } = await createNotice({ ...values, id_condominium: condominiumId });
+      const { ok, error, data: newNotice } = await createNotice({ ...values, id_condominium: condominium.id });
       if (!ok && error) {
         setLoading(false);
 
@@ -71,7 +76,7 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
       setLoading(false);
       message.success('Aviso criado com sucesso!');
     },
-    [condominiumId]
+    [condominium?.id]
   );
 
   const handleUpdate = useCallback(
@@ -170,11 +175,16 @@ function Notices({ notices: initialNotices, noticeTypes, condominiumId, ok, mess
                     setNoticeSelected(notice);
                   }}
                 />,
-                <Button className="delete" icon={<DeleteOutlined />} onClick={() => confirmDeleteModal(notice.id)} />,
+                <Button
+                  backgroundColor={theme.colors.RED}
+                  icon={<DeleteOutlined />}
+                  onClick={() => confirmDeleteModal(notice.id)}
+                />,
               ]}
             >
               <Comment
-                avatar={<UserOutlined />}
+                avatar={assignee?.avatarArchive ? <Avatar src={assignee.avatarArchive} /> : <UserOutlined />}
+                author={condominium?.name}
                 content={
                   <>
                     <h2>{notice.title}</h2>
@@ -234,6 +244,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       id_condominium: user.id_condominium,
     });
     const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
+    const { data: condominium } = await getCondominiumById(user.id_condominium);
+    const { data: assignee } = await apiClient.post<User[]>('services/searchCondominiumAssignee', {
+      id_condominium: user.id_condominium,
+    });
 
     if (status === 204) {
       return {
@@ -250,7 +264,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         ok: true,
         notices,
         noticeTypes,
-        condominiumId: user.id_condominium,
+        condominium: condominium,
+        assignee: assignee[0],
       },
     };
   } catch (error) {

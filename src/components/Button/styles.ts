@@ -9,8 +9,9 @@ interface Props {
 
 export const Button = styled(AntdButton)<Props>`
   &.ant-btn {
-    color: ${theme.colors.text};
+    color: ${theme.colors.TEXT};
     background-color: ${({ background }) => background};
+    border: none;
 
     :hover {
       background-color: ${({ background }) => `${background}70`};

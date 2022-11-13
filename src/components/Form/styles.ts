@@ -12,16 +12,16 @@ export const Form = styled(AntdForm)`
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    caret-color: ${theme.colors.text};
-    -webkit-text-fill-color: ${theme.colors.text} !important;
-    box-shadow: 0 0 0px 1000px ${theme.colors.background} inset;
+    caret-color: ${theme.colors.TEXT};
+    -webkit-text-fill-color: ${theme.colors.TEXT} !important;
+    box-shadow: 0 0 0px 1000px ${theme.colors.BACKGROUND} inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
   .ant-form-item-control-input-content {
     > input,
     > span {
-      background-color: ${theme.colors.background} !important;
+      background-color: ${theme.colors.BACKGROUND} !important;
     }
   }
 `;

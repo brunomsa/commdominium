@@ -34,8 +34,8 @@ function Upload({ children, uploadProps, drag, onChange }: PropsWithChildren<Pro
     onRemove: () => onChange?.(),
     progress: {
       strokeColor: {
-        '0%': theme.colors.light_blue,
-        '100%': theme.colors.green,
+        '0%': theme.colors.LIGHT_BLUE,
+        '100%': theme.colors.GREEN,
       },
       strokeWidth: 3,
       format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,

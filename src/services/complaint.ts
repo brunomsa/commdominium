@@ -5,8 +5,10 @@ import { BASE_API_URL } from './constants';
 export type Complaint = {
   id: number;
   message: string;
-  resolved: boolean;
+  resolved: number | boolean;
   id_user: number;
+  fullname: string;
+  avatarArchive: string;
   id_condominium: number;
   updatedAt?: string | Date;
 };

@@ -41,7 +41,7 @@ function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? `${theme.colors.primary}` : undefined }} />
+      <SearchOutlined style={{ color: filtered ? `${theme.colors.PRIMARY}` : undefined }} />
     ),
     onFilter: (value, record) =>
       record[key]

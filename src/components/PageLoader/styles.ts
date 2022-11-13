@@ -6,7 +6,7 @@ export const PageLoader = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: ${theme.colors.background};
+    background-color: ${theme.colors.BACKGROUND};
     opacity: 80%;
     z-index: 10;
 

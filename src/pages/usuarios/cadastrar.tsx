@@ -40,7 +40,7 @@ function CreateUser({ condominiums, userTypes }: Props) {
         style: {
           position: 'absolute',
           right: 10,
-          top: `${theme.header.height}px`,
+          top: `${theme.header.HEIGHT}px`,
         },
       });
     }

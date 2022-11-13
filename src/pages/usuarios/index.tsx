@@ -17,6 +17,8 @@ import { findUserTypeById, UserType } from '../../services/userType';
 import { ApiError } from '../../services/api';
 import { pageKey } from '../../utils/types';
 
+import theme from '../../styles/theme';
+
 interface DataType {
   key: number;
   name: string;
@@ -170,7 +172,11 @@ function Users({ users: initialUsers, condominiums, userTypes, ok, messageError 
         <Space size="middle">
           <Button type="primary" icon={<EditOutlined />} onClick={() => Router.push(`usuarios/${record.key}/editar`)} />
           <Divider type="vertical" style={{ margin: 0 }} />
-          <Button className="delete" icon={<DeleteOutlined />} onClick={() => confirmDeleteModal(record.key)} />
+          <Button
+            backgroundColor={theme.colors.RED}
+            icon={<DeleteOutlined />}
+            onClick={() => confirmDeleteModal(record.key)}
+          />
         </Space>
       ),
     };
