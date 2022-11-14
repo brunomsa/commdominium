@@ -45,7 +45,7 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
         layout="vertical"
         requiredMark={false}
         initialValues={initialValues}
-        onFinish={(values) => onSubmit({ ...values, avatarArchive: avatarUrl ?? initialValues.avatarArchive })}
+        onFinish={(values) => onSubmit({ ...values, avatarArchive: avatarUrl ?? initialValues?.avatarArchive })}
       >
         <AntdForm.Item
           name="fullname"

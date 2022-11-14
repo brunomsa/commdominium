@@ -219,19 +219,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const { status, data: residents } = await apiClient.post<User>(`${BASE_API_URL}/services/findUserList`, {
+    const { data: residents } = await apiClient.post<User>(`${BASE_API_URL}/services/findUserList`, {
       id_condominium: loggedUser.id_condominium,
     });
-
-    if (status === 204) {
-      return {
-        props: {
-          ok: false,
-          residents: [],
-          messageError: { error: 'Nenhum morador encontrado' },
-        },
-      };
-    }
 
     return {
       props: {
@@ -241,6 +231,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   } catch (error) {
-    catchPageError(error);
+    return catchPageError(error);
   }
 };

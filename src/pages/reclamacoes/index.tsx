@@ -313,19 +313,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const { data: loggedUser } = await recoverUserInfo(token);
     const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
-    const { status, data: complaints } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
+    const { data: complaints } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
       id_condominium: loggedUser.id_condominium,
     });
-
-    if (status === 204) {
-      return {
-        props: {
-          ok: false,
-          complaints: [],
-          messageError: { error: 'Nenhuma reclamação encontrada' },
-        },
-      };
-    }
 
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
     const filteredComplaints =
@@ -339,6 +329,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   } catch (error) {
-    catchPageError(error);
+    return catchPageError(error);
   }
 };

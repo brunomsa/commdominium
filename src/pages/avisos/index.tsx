@@ -257,7 +257,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
-    const { status, data: notices } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
+    const { data: notices } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
       id_condominium: loggedUser.id_condominium,
     });
     const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
@@ -266,16 +266,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       id_condominium: loggedUser.id_condominium,
     });
 
-    if (status === 204) {
-      return {
-        props: {
-          ok: false,
-          notices: [],
-          messageError: { error: 'Nenhum aviso encontrado' },
-        },
-      };
-    }
-
     return {
       props: {
         ok: true,
@@ -283,10 +273,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         notices,
         noticeTypes,
         condominium: condominium,
-        assignee: assignee[0],
+        assignee: assignee?.[0] ?? [],
       },
     };
   } catch (error) {
-    catchPageError(error);
+    return catchPageError(error);
   }
 };

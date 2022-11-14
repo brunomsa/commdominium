@@ -79,7 +79,7 @@ function Home({
   }, [complaints, complaintMode]);
 
   useEffect(() => {
-    setFilteredNotices(notices.filter((n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === noticeMode));
+    setFilteredNotices(notices?.filter((n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === noticeMode));
   }, [notices, noticeTypes, noticeMode]);
 
   const handleComplaintSwitchChange = useCallback((checked: boolean) => {
@@ -167,11 +167,13 @@ function Home({
               </List.Item>
             )}
           >
-            <div style={{ width: '100%', textAlign: 'end' }}>
-              <Button type="primary" onClick={() => Router.push('/avisos')}>
-                Ver todos
-              </Button>
-            </div>
+            {!!filteredNotices?.length && (
+              <div style={{ width: '100%', textAlign: 'end' }}>
+                <Button type="primary" onClick={() => Router.push('/avisos')}>
+                  Ver todos
+                </Button>
+              </div>
+            )}
           </List>
           <List
             size="small"
@@ -208,11 +210,13 @@ function Home({
               </List.Item>
             )}
           >
-            <div style={{ width: '100%', textAlign: 'end' }}>
-              <Button type="primary" onClick={() => Router.push('/reclamacoes')}>
-                Ver todas
-              </Button>
-            </div>
+            {!!filteredComplaints?.length && (
+              <div style={{ width: '100%', textAlign: 'end' }}>
+                <Button type="primary" onClick={() => Router.push('/reclamacoes')}>
+                  Ver todas
+                </Button>
+              </div>
+            )}
           </List>
         </div>
       </BasicPage>
@@ -266,14 +270,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         ok: true,
         loggedUserType,
         condominium: condominium,
-        assignee: assignee[0],
-        recentBill: monthPayment[0],
-        noticeTypes: noticeTypes ?? [],
-        notices: notices ?? [],
-        complaints: filteredComplaints.slice(0, 5) ?? [],
+        assignee: assignee?.[0] ?? [],
+        recentBill: monthPayment?.[0] ?? [],
+        noticeTypes: noticeTypes,
+        notices: notices,
+        complaints: filteredComplaints.slice(0, 5),
       },
     };
   } catch (error) {
-    catchPageError(error);
+    return catchPageError(error);
   }
 };

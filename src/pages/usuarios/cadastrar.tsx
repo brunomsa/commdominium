@@ -117,6 +117,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   } catch (error) {
-    catchPageError(error);
+    return catchPageError(error);
   }
 };

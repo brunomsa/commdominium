@@ -231,18 +231,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const { status, data: users } = await apiClient.get<User[]>('/user/findAll');
+    const { data: users } = await apiClient.get<User[]>('/user/findAll');
     const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
-
-    if (status === 204) {
-      return {
-        props: {
-          ok: false,
-          users: [],
-          messageError: { error: 'Nenhum usuário encontrado' },
-        },
-      };
-    }
 
     return {
       props: {
@@ -254,6 +244,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   } catch (error) {
-    catchPageError(error);
+    return catchPageError(error);
   }
 };
