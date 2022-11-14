@@ -26,4 +26,12 @@ export default createGlobalStyle`
   .ant-form-item-label > label .ant-form-item-tooltip {
     margin-left: 10px;
   }
+
+  .ant-table-pagination.ant-pagination{
+    margin-right: 16px;
+  }
+
+  .ant-list{
+    border-radius: 8px;
+  }
 `;

@@ -29,6 +29,7 @@ import {
   updateComplaintStatus,
 } from '../../services/complaint';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
+import { MAX_ITENS_PAGE } from '../../utils/constants';
 import { orderByDate } from '../../utils/orderByDate';
 import { pageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
@@ -42,7 +43,6 @@ interface Props {
   messageError?: ApiError;
 }
 
-const MAX_COMPLAINTS = 10;
 let showError = false;
 
 function Complaints({ loggedUserType, complaints: initialComplaints, ok, messageError }: Props) {
@@ -205,7 +205,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
           size="large"
           itemLayout="horizontal"
           dataSource={orderByDate(filteredComplaints)}
-          pagination={filteredComplaints.length > MAX_COMPLAINTS ? { pageSize: MAX_COMPLAINTS } : undefined}
+          pagination={filteredComplaints.length > MAX_ITENS_PAGE ? { pageSize: MAX_ITENS_PAGE } : undefined}
           renderItem={(complaint) => (
             <Card
               style={{
@@ -311,10 +311,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: user } = await recoverUserInfo(token);
+    const { data: loggedUser } = await recoverUserInfo(token);
     const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
     const { status, data: complaints } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
-      id_condominium: user.id_condominium,
+      id_condominium: loggedUser.id_condominium,
     });
 
     if (status === 204) {
@@ -327,9 +327,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const loggedUserType = findUserTypeById(userTypes, user.id_userType)?.type;
+    const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
     const filteredComplaints =
-      loggedUserType === UserTypes.RESIDENT ? complaints.filter((c) => c.id_user === user.id) : complaints;
+      loggedUserType === UserTypes.RESIDENT ? complaints.filter((c) => c.id_user === loggedUser.id) : complaints;
 
     return {
       props: {

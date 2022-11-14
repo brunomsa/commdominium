@@ -20,6 +20,7 @@ export const Header = styled.header`
     .logo {
       flex: 0;
       margin-right: 40px;
+      cursor: pointer;
     }
 
     nav {

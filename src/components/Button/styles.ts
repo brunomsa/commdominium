@@ -11,7 +11,7 @@ export const Button = styled(AntdButton)<Props>`
   &.ant-btn {
     color: ${theme.colors.TEXT};
     background-color: ${({ background }) => background};
-    border: none;
+    border: ${({ background }) => background};
 
     :hover {
       background-color: ${({ background }) => `${background}70`};

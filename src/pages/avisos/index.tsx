@@ -17,7 +17,7 @@ import { createNotice, deleteNotice, Notice, NoticeForm, updateNotice } from '..
 import { findNoticeTypeById, NoticeType, NoticeTypes } from '../../services/noticeType';
 import { User } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
-import { DATE_FORMAT_STRING } from '../../utils/constants';
+import { DATE_FORMAT_STRING, MAX_ITENS_PAGE } from '../../utils/constants';
 import { orderByDate } from '../../utils/orderByDate';
 import { toDayjs } from '../../utils/toDayjs';
 import { pageKey } from '../../utils/types';
@@ -34,7 +34,6 @@ interface Props {
   messageError?: ApiError;
 }
 
-const MAX_NOTICES = 10;
 const NOTICE_MODE_DEFAULT = NoticeTypes.HANDOUT;
 let showError = false;
 
@@ -176,7 +175,7 @@ function Notices({
           size="large"
           itemLayout="horizontal"
           dataSource={orderByDate(filteredNotices)}
-          pagination={filteredNotices.length > MAX_NOTICES ? { pageSize: MAX_NOTICES } : undefined}
+          pagination={filteredNotices.length > MAX_ITENS_PAGE ? { pageSize: MAX_ITENS_PAGE } : undefined}
           renderItem={(notice) => (
             <List.Item
               actions={

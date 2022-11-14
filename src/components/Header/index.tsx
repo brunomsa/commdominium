@@ -41,10 +41,10 @@ function Header({ selectedKey, loggedUserType, onChange }: Props) {
   const menuOptions = useMemo(() => {
     return [
       { key: pageKey.HOME, label: 'Início' },
-      loggedUserType === UserTypes.ADMIN && { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
       loggedUserType !== UserTypes.RESIDENT && { key: pageKey.PAYMENT, label: 'Financeiro' },
       { key: pageKey.NOTICES, label: 'Avisos ' },
       { key: pageKey.COMPLAINTS, label: 'Reclamações' },
+      loggedUserType === UserTypes.ADMIN && { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
       loggedUserType === UserTypes.ADMIN && { key: pageKey.USERS, label: 'Usuários' },
     ];
   }, [loggedUserType]);
@@ -75,7 +75,9 @@ function Header({ selectedKey, loggedUserType, onChange }: Props) {
   return (
     <styled.Header>
       <div>
-        <div className="logo">Commdominium</div>
+        <div className="logo" onClick={() => Router.push('/')}>
+          Commdominium
+        </div>
         <nav>
           <Menu
             theme="light"

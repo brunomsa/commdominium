@@ -5,9 +5,11 @@ import { Input, Table, TableColumnsType, TableColumnType } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import Button from '../Button';
+import TextInput from '../TextInput';
+
+import { MAX_ITENS_PAGE } from '../../utils/constants';
 
 import theme from '../../styles/theme';
-import TextInput from '../TextInput';
 
 interface Props<T> {
   data: T[];
@@ -74,11 +76,14 @@ function TableList<T, K extends keyof T>({ data, columns, action }: Props<T>) {
 
   return (
     <Table
-      className="user-table"
+      style={{
+        boxShadow: '0 1px 2px -2px rgb(0 0 0 / 64%), 0 3px 6px 0 rgb(0 0 0 / 48%), 0 5px 12px 4px rgb(0 0 0 / 36%)',
+      }}
       columns={dataColumns as object[]}
       dataSource={data as object[]}
       scroll={{ x: 500 }}
       loading={loading}
+      pagination={data.length > MAX_ITENS_PAGE ? { pageSize: MAX_ITENS_PAGE } : false}
     />
   );
 }
