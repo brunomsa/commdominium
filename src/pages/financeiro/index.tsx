@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
@@ -17,6 +17,7 @@ import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
+import { AuthContext } from '../../contexts/AuthContext';
 
 interface DataType {
   key: number;
@@ -70,6 +71,8 @@ const columns: TableColumnsType<DataType> = [
 let showError = false;
 
 function Residents({ loggedUserType, residents, ok, messageError }: Props) {
+  const { user: loggedUser } = useContext(AuthContext);
+
   const [showPaymentSettings, setShowPaymentSettings] = useState(false);
   const [selectedResidentId, setSelectedResidentId] = useState<number>();
 
@@ -83,13 +86,15 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
   }, [ok, messageError]);
 
   const data: DataType[] = useMemo(() => {
-    return residents.map((user) => ({
-      key: user.id,
-      name: user.fullname,
-      building: user.building ? user.building : '-',
-      block: user.block ? user.block : '-',
-      number: user.number,
-    }));
+    return residents
+      .filter((i) => i.id !== loggedUser.id)
+      .map((user) => ({
+        key: user.id,
+        name: user.fullname,
+        building: user.building ? user.building : '-',
+        block: user.block ? user.block : '-',
+        number: user.number,
+      }));
   }, [residents]);
 
   const actionsColumn: TableColumnType<DataType> = useMemo(() => {
@@ -219,15 +224,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const { data: residents } = await apiClient.post<User>(`${BASE_API_URL}/services/findUserList`, {
+    const { data: residents } = await apiClient.post<User[]>(`${BASE_API_URL}/services/findUserList`, {
       id_condominium: loggedUser.id_condominium,
     });
+    const filteredResidents =
+      loggedUserType === UserTypes.ASSIGNEE
+        ? residents?.filter((r) => findUserTypeById(userTypes, r.id_userType).type !== UserTypes.ADMIN)
+        : residents;
 
     return {
       props: {
         ok: true,
         loggedUserType,
-        residents,
+        residents: filteredResidents,
       },
     };
   } catch (error) {
