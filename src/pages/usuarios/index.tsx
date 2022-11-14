@@ -148,7 +148,7 @@ function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, o
     }
     if (ok && data) {
       setUsers((prev) => prev.filter((user) => user.id !== id));
-      return message.success('Usuário excluído com sucesso');
+      return message.success('Usuário excluído com sucesso!');
     }
   }, []);
 

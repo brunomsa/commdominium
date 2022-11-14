@@ -132,7 +132,7 @@ function Notices({
     }
     if (ok && data) {
       setNotices((prev) => prev.filter((notice) => notice.id !== id));
-      return message.success('Aviso excluído com sucesso');
+      return message.success('Aviso excluído com sucesso!');
     }
   }, []);
 
@@ -198,7 +198,7 @@ function Notices({
               }
             >
               <Comment
-                avatar={assignee?.avatarArchive ? <Avatar src={assignee.avatarArchive} /> : <UserOutlined />}
+                avatar={<Avatar icon={<UserOutlined />} src={assignee?.avatarArchive} />}
                 author={condominium?.name}
                 content={
                   <>

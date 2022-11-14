@@ -111,7 +111,7 @@ function Condominiums({ loggedUserType, condominiums: initialCondominiums, ok, m
     }
     if (ok && data) {
       setCondominiums((prev) => prev.filter((cond) => cond.id !== id));
-      return message.success('Condomínio excluído com sucesso');
+      return message.success('Condomínio excluído com sucesso!');
     }
   }, []);
 

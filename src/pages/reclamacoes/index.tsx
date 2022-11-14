@@ -26,6 +26,7 @@ import {
   createComplaint,
   deleteComplaint,
   updateComplaint,
+  updateComplaintStatus,
 } from '../../services/complaint';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { orderByDate } from '../../utils/orderByDate';
@@ -69,22 +70,6 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
     const resolved = complaintMode === ComplaintTypes.RESOLVED;
     setFilteredComplaints(complaints.filter((c) => Number(c.resolved) === Number(resolved)));
   }, [complaints, complaintMode]);
-
-  const updateStatusButton = useMemo(() => {
-    if (complaintMode === ComplaintTypes.UNRESOLVED) {
-      return (
-        <Tooltip title="Marcar como resolvida">
-          <Button backgroundColor={theme.colors.GREEN} type="primary" icon={<CheckCircleOutlined />} />
-        </Tooltip>
-      );
-    }
-
-    return (
-      <Tooltip title="Marcar como não resolvida">
-        <Button backgroundColor={theme.colors.RED} type="primary" icon={<CloseCircleOutlined />} />
-      </Tooltip>
-    );
-  }, [complaintMode]);
 
   const handleCreate = useCallback(
     async (values: ComplaintForm) => {
@@ -142,6 +127,27 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
     [complaintSelected]
   );
 
+  const handleUpdateStatus = useCallback(async (id: number) => {
+    const { ok, data, error } = await updateComplaintStatus(id);
+    if (error) {
+      if (!ok) return message.error(error.error);
+
+      if (ok) return message.warning(error.error);
+    }
+    if (ok && data) {
+      setComplaints((prev) =>
+        prev.map((complaint) => {
+          if (complaint.id === id) {
+            complaint.resolved = !complaint.resolved;
+          }
+          return complaint;
+        })
+      );
+
+      return message.success('Reclamação atualizada com sucesso!');
+    }
+  }, []);
+
   const handleDelete = useCallback(async (id: number) => {
     const { ok, data, error } = await deleteComplaint(id);
     if (error) {
@@ -151,7 +157,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
     }
     if (ok && data) {
       setComplaints((prev) => prev.filter((complaint) => complaint.id !== id));
-      return message.success('Reclamação excluída com sucesso');
+      return message.success('Reclamação excluída com sucesso!');
     }
   }, []);
 
@@ -227,12 +233,36 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
                           onClick={() => confirmDeleteModal(complaint.id)}
                         />,
                       ]
-                    : [updateStatusButton]
+                    : [
+                        <Tooltip
+                          title={
+                            complaintMode === ComplaintTypes.UNRESOLVED
+                              ? 'Marcar como resolvida'
+                              : 'Marcar como não resolvida'
+                          }
+                        >
+                          <Button
+                            key={complaint.id}
+                            type="primary"
+                            backgroundColor={
+                              complaintMode === ComplaintTypes.UNRESOLVED ? theme.colors.GREEN : theme.colors.RED
+                            }
+                            icon={
+                              complaintMode === ComplaintTypes.UNRESOLVED ? (
+                                <CheckCircleOutlined />
+                              ) : (
+                                <CloseCircleOutlined />
+                              )
+                            }
+                            onClick={() => handleUpdateStatus(complaint.id)}
+                          />
+                        </Tooltip>,
+                      ]
                 }
               >
                 <Comment
                   author={complaint.fullname}
-                  avatar={complaint.avatarArchive ? <Avatar src={complaint.avatarArchive} /> : <UserOutlined />}
+                  avatar={<Avatar icon={<UserOutlined />} src={complaint?.avatarArchive} />}
                   content={<p>{complaint.message}</p>}
                   datetime={<span>{toDayjs(complaint.updatedAt).fromNow()}</span>}
                 />
