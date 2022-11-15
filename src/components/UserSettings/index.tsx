@@ -156,6 +156,15 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
         )}
 
         <AntdForm.Item
+          name="number"
+          label="Número"
+          rules={[{ required: true, message: 'Por favor, informe um número do apartamento' }]}
+          tooltip={{ title: 'Digite o número do apartamento', icon: <InfoCircleOutlined /> }}
+        >
+          <TextInput />
+        </AntdForm.Item>
+
+        <AntdForm.Item
           name="block"
           label="Bloco"
           tooltip={{ title: 'Digite o bloco do condomínio', icon: <InfoCircleOutlined /> }}
@@ -167,15 +176,6 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
           name="building"
           label="Prédio"
           tooltip={{ title: 'Digite o prédio do condomínio', icon: <InfoCircleOutlined /> }}
-        >
-          <TextInput />
-        </AntdForm.Item>
-
-        <AntdForm.Item
-          name="number"
-          label="Número"
-          rules={[{ required: true, message: 'Por favor, informe um número' }]}
-          tooltip={{ title: 'Digite o número do condomínio', icon: <InfoCircleOutlined /> }}
         >
           <TextInput />
         </AntdForm.Item>

@@ -207,17 +207,10 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
         <List
           size="large"
           itemLayout="horizontal"
-          dataSource={orderByDate(filteredComplaints)}
+          dataSource={orderByDate<Complaint>(filteredComplaints)}
           pagination={filteredComplaints.length > MAX_ITENS_PAGE ? { pageSize: MAX_ITENS_PAGE } : undefined}
           renderItem={(complaint) => (
-            <Card
-              style={{
-                boxShadow:
-                  '0 1px 2px -2px rgb(0 0 0 / 64%), 0 3px 6px 0 rgb(0 0 0 / 48%), 0 5px 12px 4px rgb(0 0 0 / 36%)',
-                marginBottom: 24,
-              }}
-              bordered={false}
-            >
+            <Card style={{ boxShadow: theme.boxShadow, marginBottom: 24 }} bordered={false}>
               <List.Item
                 actions={
                   loggedUserType !== UserTypes.ASSIGNEE

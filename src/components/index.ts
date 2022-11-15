@@ -12,3 +12,4 @@ export { default as ComplaintSettings } from './ComplaintSettings';
 export { default as Upload } from './Upload';
 export { default as Button } from './Button';
 export { default as TextInput } from './TextInput';
+export { default as SwitchCard } from './SwitchCard';

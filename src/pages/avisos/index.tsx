@@ -174,7 +174,7 @@ function Notices({
         <List
           size="large"
           itemLayout="horizontal"
-          dataSource={orderByDate(filteredNotices)}
+          dataSource={orderByDate<Notice>(filteredNotices)}
           pagination={filteredNotices.length > MAX_ITENS_PAGE ? { pageSize: MAX_ITENS_PAGE } : undefined}
           renderItem={(notice) => (
             <List.Item

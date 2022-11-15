@@ -3,13 +3,12 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
-import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { Alert, Avatar, Button, Comment, List, message, Switch } from 'antd';
-import { AuditOutlined, BulbOutlined, UserOutlined } from '@ant-design/icons';
+import { Alert, message } from 'antd';
+import { AuditOutlined, BulbOutlined } from '@ant-design/icons';
 
-import { BasicPage } from '../components';
+import { BasicPage, SwitchCard } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import { ApiError } from '../services/api';
 import { recoverUserInfo } from '../services/auth';
@@ -21,9 +20,6 @@ import { findNoticeTypeById, NoticeType, NoticeTypes } from '../services/noticeT
 import { Payment } from '../services/payment';
 import { User } from '../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../services/userType';
-import { DATE_FORMAT_STRING } from '../utils/constants';
-import { orderByDate } from '../utils/orderByDate';
-import { toDayjs } from '../utils/toDayjs';
 import { pageKey } from '../utils/types';
 
 interface Props {
@@ -122,104 +118,26 @@ function Home({
           />
         )}
 
-        <div
-          style={{
-            display: 'flex',
-            flexGrow: 1,
-            gap: 40,
-          }}
-        >
-          <List
-            size="small"
-            style={{
-              padding: 12,
-              flex: 1,
-              boxShadow:
-                '0 1px 2px -2px rgb(0 0 0 / 64%), 0 3px 6px 0 rgb(0 0 0 / 48%), 0 5px 12px 4px rgb(0 0 0 / 36%)',
-            }}
-            itemLayout="horizontal"
-            dataSource={filteredNotices}
-            header={
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', fontSize: 16 }}>
-                  <BulbOutlined />
-                  <div style={{ marginLeft: 8 }}>Avisos recentes</div>
-                </div>
-                <Switch
-                  defaultChecked
-                  checkedChildren="Comunicados"
-                  unCheckedChildren="Reuniões"
-                  onChange={handleNoticeSwitchChange}
-                />
-              </div>
-            }
-            renderItem={(notice) => (
-              <List.Item>
-                <Comment
-                  avatar={<Avatar icon={<UserOutlined />} src={assignee?.avatarArchive} />}
-                  author={condominium?.name}
-                  content={
-                    <>
-                      {notice.eventDay && <p>Dia: {moment(notice.eventDay).utcOffset(3).format(DATE_FORMAT_STRING)}</p>}
-                      <p>{notice.message}</p>
-                    </>
-                  }
-                  datetime={<span>{toDayjs(notice.updatedAt).fromNow()}</span>}
-                />
-              </List.Item>
-            )}
-          >
-            {!!filteredNotices?.length && (
-              <div style={{ width: '100%', textAlign: 'end' }}>
-                <Button type="primary" onClick={() => Router.push('/avisos')}>
-                  Ver todos
-                </Button>
-              </div>
-            )}
-          </List>
-          <List
-            size="small"
-            style={{
-              padding: 12,
-              flex: 1,
-              boxShadow:
-                '0 1px 2px -2px rgb(0 0 0 / 64%), 0 3px 6px 0 rgb(0 0 0 / 48%), 0 5px 12px 4px rgb(0 0 0 / 36%)',
-            }}
-            itemLayout="horizontal"
-            dataSource={orderByDate(filteredComplaints)}
-            header={
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', fontSize: 16 }}>
-                  <AuditOutlined />
-                  <div style={{ marginLeft: 8 }}>Reclamações recentes</div>
-                </div>
-                <Switch
-                  defaultChecked
-                  checkedChildren="Não resolvidas"
-                  unCheckedChildren="Resolvidas"
-                  onChange={handleComplaintSwitchChange}
-                />
-              </div>
-            }
-            renderItem={(complaint) => (
-              <List.Item>
-                <Comment
-                  author={complaint.fullname}
-                  avatar={<Avatar icon={<UserOutlined />} src={complaint.avatarArchive} />}
-                  content={<p>{complaint.message}</p>}
-                  datetime={<span>{toDayjs(complaint.updatedAt).fromNow()}</span>}
-                />
-              </List.Item>
-            )}
-          >
-            {!!filteredComplaints?.length && (
-              <div style={{ width: '100%', textAlign: 'end' }}>
-                <Button type="primary" onClick={() => Router.push('/reclamacoes')}>
-                  Ver todas
-                </Button>
-              </div>
-            )}
-          </List>
+        <div style={{ display: 'flex', flexGrow: 1, gap: 40 }}>
+          <SwitchCard<Notice>
+            itens={filteredNotices}
+            headerTitle="Avisos recentes"
+            headerIcon={<BulbOutlined />}
+            checkedChildren="Comunicados"
+            unCheckedChildren="Reuniões"
+            onSwitchChange={handleNoticeSwitchChange}
+            urlButton="/avisos"
+            avatarAssigneeUrl={assignee?.avatarArchive}
+          />
+          <SwitchCard<Complaint>
+            itens={filteredComplaints}
+            headerTitle="Reclamações recentes"
+            headerIcon={<AuditOutlined />}
+            checkedChildren="Não resolvidas"
+            unCheckedChildren="Resolvidas"
+            onSwitchChange={handleComplaintSwitchChange}
+            urlButton="/reclamacoes"
+          />
         </div>
       </BasicPage>
     </>
