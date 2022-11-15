@@ -40,9 +40,9 @@ export async function updatePayment(payment: Payment): Promise<ApiResponse<Payme
   }
 }
 
-export async function verifyBillExistance(id_user: number, dueDate: Moment): Promise<ApiResponse<Payment>> {
+export async function verifyBillExistance(id_user: number, dueDate: Moment): Promise<ApiResponse<Payment[]>> {
   try {
-    const { status, data } = await api.post<Payment>(`${BASE_API_URL}/services/verifyBillExistance`, {
+    const { status, data } = await api.post<Payment[]>(`${BASE_API_URL}/services/verifyBillExistance`, {
       id_user,
       month: dueDate.get('month') + 1,
       year: dueDate.get('year'),

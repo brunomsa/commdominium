@@ -149,9 +149,8 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
 
       setLoading(true);
       const { data: billExistance } = await verifyBillExistance(selectedResidentId, values.dueDate);
-      console.log(billExistance);
 
-      if (!billExistance) {
+      if (!billExistance?.length) {
         setLoading(false);
         const { ok, error } = await createPayment({ ...values, id_user: selectedResidentId });
         if (!ok && error) return message.error(error.error);
