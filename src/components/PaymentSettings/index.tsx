@@ -28,7 +28,11 @@ function PaymentSettings({ loading, onSubmit, onCancel }: Props) {
     if (!isPDF) {
       message.error(`${file.name} não é um arquivo do tipo PDF`);
     }
-    return isPDF || AntdUpload.LIST_IGNORE;
+    const isLt1M = file.size / 1024 / 1024 < 1;
+    if (isPDF && !isLt1M) {
+      message.error('O arquivo deve ser menor que 1MB');
+    }
+    return (isPDF || AntdUpload.LIST_IGNORE) && isLt1M;
   }, []);
 
   return (

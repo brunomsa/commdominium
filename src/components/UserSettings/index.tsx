@@ -35,7 +35,11 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
     if (!isValid) {
       message.error(`${file.name} não é um arquivo do tipo PNG`);
     }
-    return isValid || AntdUpload.LIST_IGNORE;
+    const isLt1M = file.size / 1024 / 1024 < 1;
+    if (isValid && !isLt1M) {
+      message.error('A imagem deve ser menor que 1MB');
+    }
+    return (isValid && isLt1M) || AntdUpload.LIST_IGNORE;
   }, []);
 
   return (
