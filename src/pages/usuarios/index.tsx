@@ -74,6 +74,33 @@ const columns: TableColumnsType<DataType> = [
     sorter: (a, b) => a.userType.localeCompare(b.userType),
   },
   {
+    title: 'Status',
+    dataIndex: 'status',
+    showSorterTooltip: false,
+    width: 120,
+    filters: [
+      {
+        text: 'Ativo',
+        value: 'Ativo',
+      },
+      {
+        text: 'Desativo',
+        value: 'Desativo',
+      },
+    ],
+    filterMode: 'tree',
+    onFilter: (value: string, record) => record.status.includes(value),
+    sorter: (a, b) => a.status.localeCompare(b.status),
+  },
+  {
+    title: 'Número',
+    dataIndex: 'number',
+    showSorterTooltip: false,
+    width: 120,
+    align: 'center',
+    sorter: (a, b) => a.number.localeCompare(b.number),
+  },
+  {
     title: 'Bloco',
     dataIndex: 'block',
     showSorterTooltip: false,
@@ -88,21 +115,6 @@ const columns: TableColumnsType<DataType> = [
     width: 120,
     align: 'center',
     sorter: (a, b) => a.building.localeCompare(b.building),
-  },
-  {
-    title: 'Número',
-    dataIndex: 'number',
-    showSorterTooltip: false,
-    width: 120,
-    align: 'center',
-    sorter: (a, b) => a.number.localeCompare(b.number),
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    showSorterTooltip: false,
-    width: 120,
-    sorter: (a, b) => a.status.localeCompare(b.status),
   },
 ];
 

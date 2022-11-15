@@ -8,6 +8,6 @@ export type UserType = {
   type: UserTypes;
 };
 
-export function findUserTypeById(userTypes: UserType[], id: number) {
+export function findUserTypeById(userTypes?: UserType[], id?: number) {
   return userTypes?.find((type) => type.id === id);
 }
