@@ -22,16 +22,13 @@ interface Props {
   messageError?: ApiError;
 }
 
-let showError = false;
-
 function MyProfile({ loggedUserType, ok, messageError }: Props) {
   const { user, setUser } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

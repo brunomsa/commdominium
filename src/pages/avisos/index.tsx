@@ -35,7 +35,6 @@ interface Props {
 }
 
 const NOTICE_MODE_DEFAULT = NoticeTypes.HANDOUT;
-let showError = false;
 
 function Notices({
   loggedUserType,
@@ -60,8 +59,7 @@ function Notices({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

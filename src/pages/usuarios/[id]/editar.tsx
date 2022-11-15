@@ -27,16 +27,13 @@ interface Props {
   messageError?: ApiError;
 }
 
-let showError = false;
-
 function EditUser({ loggedUserType, user, condominiums, userTypes, ok, messageError }: Props) {
   const { id: itemId } = useRouter().query;
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

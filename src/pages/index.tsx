@@ -36,7 +36,6 @@ interface Props {
 const TODAY = new Date();
 const NOTICE_MODE_DEFAULT = NoticeTypes.HANDOUT;
 const COMPLAINT_MODE_DEFAULT = ComplaintTypes.UNRESOLVED;
-let showError = false;
 
 function Home({
   loggedUserType,
@@ -63,8 +62,7 @@ function Home({
   const [complaintMode, setComplaintMode] = useState<ComplaintTypes>(COMPLAINT_MODE_DEFAULT);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);
@@ -127,6 +125,7 @@ function Home({
             unCheckedChildren="Reuniões"
             onSwitchChange={handleNoticeSwitchChange}
             urlButton="/avisos"
+            condominiumName={condominium?.name}
             avatarAssigneeUrl={assignee?.avatarArchive}
           />
           <SwitchCard<Complaint>

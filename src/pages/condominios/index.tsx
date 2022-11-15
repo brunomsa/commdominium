@@ -75,14 +75,12 @@ const columns: TableColumnsType<DataType> = [
     sorter: (a, b) => a.number.localeCompare(b.number),
   },
 ];
-let showError = false;
 
 function Condominiums({ loggedUserType, condominiums: initialCondominiums, ok, messageError }: Props) {
   const [condominiums, setCondominiums] = useState<Condominium[]>(initialCondominiums);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

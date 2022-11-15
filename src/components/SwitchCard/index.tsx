@@ -16,6 +16,7 @@ interface Props<T = unknown> {
   checkedChildren: string;
   unCheckedChildren: string;
   urlButton: string;
+  condominiumName?: string;
   avatarAssigneeUrl?: string;
   onSwitchChange: (checked: boolean) => void;
 }
@@ -27,6 +28,7 @@ function SwitchCard<T>({
   checkedChildren,
   unCheckedChildren,
   urlButton,
+  condominiumName,
   avatarAssigneeUrl,
   onSwitchChange,
 }: Props<T>) {
@@ -53,7 +55,7 @@ function SwitchCard<T>({
         renderItem={(item) => (
           <List.Item>
             <Comment
-              author={item.fullname}
+              author={condominiumName ?? item.fullname}
               avatar={<Avatar icon={<UserOutlined />} src={avatarAssigneeUrl ?? item.avatarArchive ?? undefined} />}
               content={<p>{item.message}</p>}
               datetime={<span>{toDayjs(item.updatedAt).fromNow()}</span>}

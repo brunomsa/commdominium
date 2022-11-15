@@ -43,8 +43,6 @@ interface Props {
   messageError?: ApiError;
 }
 
-let showError = false;
-
 function Complaints({ loggedUserType, complaints: initialComplaints, ok, messageError }: Props) {
   const { user } = useContext(AuthContext);
 
@@ -60,8 +58,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

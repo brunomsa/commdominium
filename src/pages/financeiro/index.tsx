@@ -68,7 +68,6 @@ const columns: TableColumnsType<DataType> = [
     sorter: (a, b) => a.number.localeCompare(b.number),
   },
 ];
-let showError = false;
 
 function Residents({ loggedUserType, residents, ok, messageError }: Props) {
   const { user: loggedUser } = useContext(AuthContext);
@@ -79,8 +78,7 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

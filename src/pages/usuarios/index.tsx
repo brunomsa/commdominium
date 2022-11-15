@@ -105,7 +105,6 @@ const columns: TableColumnsType<DataType> = [
     sorter: (a, b) => a.status.localeCompare(b.status),
   },
 ];
-let showError = false;
 
 function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, ok, messageError }: Props) {
   const { user: loggedUser } = useContext(AuthContext);
@@ -113,8 +112,7 @@ function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, o
   const [users, setUsers] = useState<User[]>(initialUsers ?? []);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);

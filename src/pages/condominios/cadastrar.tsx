@@ -26,14 +26,11 @@ interface Props {
   messageError?: ApiError;
 }
 
-let showError = false;
-
 function CreateCondominium({ loggedUserType, ok, messageError }: Props) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!ok && messageError && !showError) {
-      showError = true;
+    if (!ok && messageError) {
       return message.error(messageError.error);
     }
   }, [ok, messageError]);
