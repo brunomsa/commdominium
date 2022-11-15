@@ -13,13 +13,20 @@ export const Login = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
 
-  h1 {
-    text-transform: uppercase;
-    font-size: 60px;
-    margin-top: 40px;
-  }
-  p {
-    font-size: 35px;
+  header {
+    text-align: center;
+    img {
+      width: 180px;
+      opacity: 0.9;
+    }
+    h1 {
+      text-transform: uppercase;
+      font-size: 56px;
+      margin-top: 40px;
+    }
+    p {
+      font-size: 30px;
+    }
   }
 
   @media (max-width: 1080px) {

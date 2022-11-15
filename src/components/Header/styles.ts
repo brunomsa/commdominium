@@ -19,7 +19,8 @@ export const Header = styled.header`
 
     .logo {
       flex: 0;
-      margin-right: 40px;
+      margin-right: 24px;
+      max-width: 50px;
       cursor: pointer;
     }
 

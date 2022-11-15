@@ -26,6 +26,7 @@ function Login() {
   return (
     <styled.Login>
       <header>
+        <img src="/logo.png" />
         <h1>Commdominium</h1>
         <p>Faça seu login no sistema</p>
       </header>

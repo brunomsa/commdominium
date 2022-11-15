@@ -75,9 +75,7 @@ function Header({ selectedKey, loggedUserType, onChange }: Props) {
   return (
     <styled.Header>
       <div>
-        <div className="logo" onClick={() => Router.push('/')}>
-          Commdominium
-        </div>
+        <img className="logo" src="/logo.png" />
         <nav>
           <Menu
             theme="light"
