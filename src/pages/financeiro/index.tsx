@@ -86,6 +86,8 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
   }, [ok, messageError]);
 
   const data: DataType[] = useMemo(() => {
+    if (!loggedUser || !residents) return [];
+
     return residents
       .filter((i) => i.id !== loggedUser.id)
       .map((user) => ({
@@ -95,7 +97,7 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
         block: user.block ? user.block : '-',
         number: user.number,
       }));
-  }, [residents]);
+  }, [loggedUser, residents]);
 
   const actionsColumn: TableColumnType<DataType> = useMemo(() => {
     return {
@@ -143,8 +145,11 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
 
   const handleCreate = useCallback(
     async (values: FormPayment) => {
+      if (!selectedResidentId) return;
+
       setLoading(true);
       const { data: billExistance } = await verifyBillExistance(selectedResidentId, values.dueDate);
+      console.log(billExistance);
 
       if (!billExistance) {
         setLoading(false);
@@ -211,7 +216,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 

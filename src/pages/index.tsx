@@ -56,12 +56,12 @@ function Home({
   const { user } = useContext(AuthContext);
 
   const initialFilteredComplaints = complaints?.filter((c) => !c.resolved);
-  const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>(initialFilteredComplaints);
+  const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>(initialFilteredComplaints ?? []);
 
   const initialFilteredNotice = notices?.filter(
-    (n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === NOTICE_MODE_DEFAULT
+    (n) => findNoticeTypeById(noticeTypes, n?.id_noticeType)?.type === NOTICE_MODE_DEFAULT
   );
-  const [filteredNotices, setFilteredNotices] = useState<Notice[]>(initialFilteredNotice);
+  const [filteredNotices, setFilteredNotices] = useState<Notice[]>(initialFilteredNotice ?? []);
 
   const [noticeMode, setNoticeMode] = useState<NoticeTypes>(NOTICE_MODE_DEFAULT);
   const [complaintMode, setComplaintMode] = useState<ComplaintTypes>(COMPLAINT_MODE_DEFAULT);
@@ -74,12 +74,14 @@ function Home({
   }, [ok, messageError]);
 
   useEffect(() => {
+    if (!complaints) return;
     const resolved = complaintMode === ComplaintTypes.RESOLVED;
-    setFilteredComplaints(complaints?.filter((c) => Number(c.resolved) === Number(resolved)));
+    setFilteredComplaints(complaints.filter((c) => Number(c.resolved) === Number(resolved)));
   }, [complaints, complaintMode]);
 
   useEffect(() => {
-    setFilteredNotices(notices?.filter((n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === noticeMode));
+    if (!notices || !noticeTypes) return;
+    setFilteredNotices(notices.filter((n) => findNoticeTypeById(noticeTypes, n.id_noticeType)?.type === noticeMode));
   }, [notices, noticeTypes, noticeMode]);
 
   const handleComplaintSwitchChange = useCallback((checked: boolean) => {
@@ -240,26 +242,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
     const { data: condominium } = await getCondominiumById(loggedUser.id_condominium);
-    const { data: assignee } = await apiClient.post<User[]>('services/searchCondominiumAssignee', {
+    const { data: assignee = [] } = await apiClient.post<User[]>('services/searchCondominiumAssignee', {
       id_condominium: loggedUser.id_condominium,
     });
 
-    const { data: payments } = await apiClient.post<Payment[]>('services/findAllOrderedPayments', {
+    const { data: payments = [] } = await apiClient.post<Payment[]>('services/findAllOrderedPayments', {
       id_user: loggedUser.id,
     });
     const monthPayment = payments.filter((p) => moment(p.dueDate).month() === TODAY.getMonth());
 
-    const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
-    const { data: notices } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
+    const { data: noticeTypes = [] } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
+    const { data: notices = [] } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
       id_condominium: loggedUser.id_condominium,
     });
 
-    const { data: complaints } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
+    const { data: complaints = [] } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
       id_condominium: loggedUser.id_condominium,
     });
     const filteredComplaints =

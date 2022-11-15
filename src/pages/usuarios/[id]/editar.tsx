@@ -74,8 +74,8 @@ function EditUser({ loggedUserType, user, condominiums, userTypes, ok, messageEr
         <h1>Editar Usuário</h1>
         <UserSettings
           initialValues={user}
-          condominiums={condominiums}
-          userTypes={userTypes}
+          condominiums={condominiums ?? []}
+          userTypes={userTypes ?? []}
           loading={loading}
           onSubmit={handleSubmit}
         />
@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
@@ -114,7 +114,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
     const { id } = ctx.query;
     const { data: user } = await getUserById(Number(id));
-    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const { data: condominiums = [] } = await apiClient.get<Condominium[]>('/condominium/findAll');
 
     return {
       props: {

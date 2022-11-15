@@ -11,7 +11,7 @@ export type Condominium = {
   number: string;
 };
 
-export function findCondominiumById(condominiums: Condominium[], id: number) {
+export function findCondominiumById(condominiums?: Condominium[], id?: number): Condominium | undefined {
   return condominiums?.find((cond) => cond.id === id);
 }
 

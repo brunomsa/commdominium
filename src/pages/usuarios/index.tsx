@@ -110,7 +110,7 @@ let showError = false;
 function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, ok, messageError }: Props) {
   const { user: loggedUser } = useContext(AuthContext);
 
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [users, setUsers] = useState<User[]>(initialUsers ?? []);
 
   useEffect(() => {
     if (!ok && messageError && !showError) {
@@ -120,7 +120,7 @@ function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, o
   }, [ok, messageError]);
 
   const data: DataType[] = useMemo(() => {
-    if (!users || !loggedUser) return;
+    if (!users || !loggedUser) return [];
     return users
       .filter((i) => i.id !== loggedUser.id)
       .map((user) => ({
@@ -218,7 +218,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
@@ -231,8 +231,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const { data: users } = await apiClient.get<User[]>('/user/findAll');
-    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const { data: users = [] } = await apiClient.get<User[]>('/user/findAll');
+    const { data: condominiums = [] } = await apiClient.get<Condominium[]>('/condominium/findAll');
 
     return {
       props: {

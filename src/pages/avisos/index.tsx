@@ -253,16 +253,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
-    const { data: notices } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
+    const { data: notices = [] } = await apiClient.post<Notice[]>('/services/findAllOrderedNotices', {
       id_condominium: loggedUser.id_condominium,
     });
-    const { data: noticeTypes } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
+    const { data: noticeTypes = [] } = await apiClient.get<NoticeType[]>('/noticeType/findAll');
     const { data: condominium } = await getCondominiumById(loggedUser.id_condominium);
-    const { data: assignee } = await apiClient.post<User[]>('services/searchCondominiumAssignee', {
+    const { data: assignee = [] } = await apiClient.post<User[]>('services/searchCondominiumAssignee', {
       id_condominium: loggedUser.id_condominium,
     });
 
@@ -272,7 +272,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         loggedUserType,
         notices,
         noticeTypes,
-        condominium: condominium,
+        condominium,
         assignee: assignee?.[0] ?? [],
       },
     };

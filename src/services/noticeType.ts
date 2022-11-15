@@ -8,6 +8,6 @@ export type NoticeType = {
   type: NoticeTypes;
 };
 
-export function findNoticeTypeById(noticeTypes: NoticeType[], id: number) {
-  return noticeTypes?.find((type) => type.id === id);
+export function findNoticeTypeById(noticeTypes: NoticeType[], id: number): NoticeType | undefined {
+  return noticeTypes.find((type) => type.id === id);
 }

@@ -48,10 +48,10 @@ let showError = false;
 function Complaints({ loggedUserType, complaints: initialComplaints, ok, messageError }: Props) {
   const { user } = useContext(AuthContext);
 
-  const initialFilteredComplaints = initialComplaints.filter((c) => !c.resolved);
+  const initialFilteredComplaints = initialComplaints?.filter((c) => !c.resolved);
 
-  const [complaints, setComplaints] = useState<Complaint[]>(initialComplaints);
-  const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>(initialFilteredComplaints);
+  const [complaints, setComplaints] = useState<Complaint[]>(initialComplaints ?? []);
+  const [filteredComplaints, setFilteredComplaints] = useState<Complaint[]>(initialFilteredComplaints ?? []);
   const [complaintSelected, setComplaintSelected] = useState<Complaint>();
 
   const [complaintMode, setComplaintMode] = useState<ComplaintTypes>(ComplaintTypes.UNRESOLVED);
@@ -67,6 +67,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
   }, [ok, messageError]);
 
   useEffect(() => {
+    if (!complaints) return;
     const resolved = complaintMode === ComplaintTypes.RESOLVED;
     setFilteredComplaints(complaints.filter((c) => Number(c.resolved) === Number(resolved)));
   }, [complaints, complaintMode]);
@@ -100,6 +101,8 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
 
   const handleUpdate = useCallback(
     async (values: ComplaintForm) => {
+      if (!complaintSelected) return;
+
       setLoading(true);
       const complaintData = {
         ...complaintSelected,
@@ -312,14 +315,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const { data: loggedUser } = await recoverUserInfo(token);
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
-    const { data: complaints } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: complaints = [] } = await apiClient.post<Complaint[]>('/services/findAllComplaints', {
       id_condominium: loggedUser.id_condominium,
     });
 
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
     const filteredComplaints =
-      loggedUserType === UserTypes.RESIDENT ? complaints.filter((c) => c.id_user === loggedUser.id) : complaints;
+      loggedUserType === UserTypes.RESIDENT ? complaints?.filter((c) => c.id_user === loggedUser.id) : complaints;
 
     return {
       props: {

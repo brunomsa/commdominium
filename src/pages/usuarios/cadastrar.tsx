@@ -31,7 +31,7 @@ interface Props {
 
 let showError = false;
 
-function CreateUser({ loggedUserType, condominiums, userTypes, ok, messageError }: Props) {
+function CreateUser({ loggedUserType, condominiums = [], userTypes = [], ok, messageError }: Props) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -72,7 +72,12 @@ function CreateUser({ loggedUserType, condominiums, userTypes, ok, messageError 
 
       <BasicPage pageKey={pageKey.USERS} loggedUserType={loggedUserType}>
         <h1>Cadastrar Novo Usuário</h1>
-        <UserSettings condominiums={condominiums} userTypes={userTypes} loading={loading} onSubmit={handleSubmit} />
+        <UserSettings
+          condominiums={condominiums ?? []}
+          userTypes={userTypes ?? []}
+          loading={loading}
+          onSubmit={handleSubmit}
+        />
       </BasicPage>
     </styled.FormSettings>
   );
@@ -94,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes } = await apiClient.get<UserType[]>('/userType/findAll');
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
@@ -106,7 +111,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         },
       };
     }
-    const { data: condominiums } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const { data: condominiums = [] } = await apiClient.get<Condominium[]>('/condominium/findAll');
 
     return {
       props: {
