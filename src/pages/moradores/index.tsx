@@ -73,6 +73,11 @@ const columns: TableColumnsType<DataType> = [
     dataIndex: 'status',
     showSorterTooltip: false,
     width: 120,
+    filters: [
+      { text: 'Ativo', value: 'Ativo' },
+      { text: 'Desativo', value: 'Desativo' },
+    ],
+    onFilter: (value: string, record) => record.status.includes(value),
     sorter: (a, b) => a.status.localeCompare(b.status),
   },
 ];
