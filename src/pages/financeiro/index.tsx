@@ -234,7 +234,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     });
     const filteredResidents =
       loggedUserType === UserTypes.ASSIGNEE
-        ? residents?.filter((r) => findUserTypeById(userTypes, r.id_userType).type !== UserTypes.ADMIN)
+        ? residents?.filter((r) => findUserTypeById(userTypes, r.id_userType).type === UserTypes.RESIDENT)
         : residents;
 
     return {

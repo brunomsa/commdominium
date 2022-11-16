@@ -44,6 +44,7 @@ function Header({ selectedKey, loggedUserType, onChange }: Props) {
       loggedUserType !== UserTypes.RESIDENT && { key: pageKey.PAYMENT, label: 'Financeiro' },
       { key: pageKey.NOTICES, label: 'Avisos ' },
       { key: pageKey.COMPLAINTS, label: 'Reclamações' },
+      loggedUserType !== UserTypes.RESIDENT && { key: pageKey.RESIDENTS, label: 'Moradores' },
       loggedUserType === UserTypes.ADMIN && { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
       loggedUserType === UserTypes.ADMIN && { key: pageKey.USERS, label: 'Usuários' },
     ];

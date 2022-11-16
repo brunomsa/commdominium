@@ -51,9 +51,7 @@ export async function updateComplaint(complaint: Complaint): Promise<ApiResponse
 
 export async function updateComplaintStatus(id_complaint: number): Promise<ApiResponse<{ status: string }>> {
   try {
-    const { status, data } = await api.patch(`${BASE_API_URL}/services/updateResolvedStatus`, {
-      id_complaint,
-    });
+    const { status, data } = await api.patch(`${BASE_API_URL}/services/updateResolvedStatus`, { id_complaint });
     if (status === 204) return { ok: true, error: { error: 'Reclamação inexistente' } };
     if (status === 200) return { ok: true, data };
   } catch (error) {

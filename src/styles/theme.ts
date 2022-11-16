@@ -7,6 +7,7 @@ const theme = {
     LIGHT_BLUE: '#008f9e',
     GREEN: '#009c4f',
     RED: '#c01616',
+    ORANGE: '#eb671c',
   },
   header: {
     HEIGHT: 80,

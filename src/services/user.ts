@@ -48,6 +48,16 @@ export async function updateUser(user: Omit<User, 'active'>): Promise<ApiRespons
   }
 }
 
+export async function updateActiveStatus(id_user: number): Promise<ApiResponse<{ status: string }>> {
+  try {
+    const { status, data } = await api.patch(`${BASE_API_URL}/services/updateActiveStatus`, { id_user });
+    if (status === 204) return { ok: true, error: { error: '   inexistente' } };
+    if (status === 200) return { ok: true, data };
+  } catch (error) {
+    return catchError(error);
+  }
+}
+
 export async function deleteUser(id: number): Promise<ApiResponse<{ status: string }>> {
   try {
     const { status, data } = await api.delete<{ status: string }>(`${BASE_API_URL}/user/delete`, { data: { id } });

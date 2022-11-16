@@ -21,10 +21,11 @@ const BasicPage = ({ pageKey, loggedUserType, children }: PropsWithChildren<Prop
   const goTo = useCallback((key: string) => {
     const navigate: Record<pageKey, string> = {
       home: '/',
-      condominiums: '/condominios',
       payment: '/financeiro',
       notices: '/avisos',
       complaints: '/reclamacoes',
+      residents: '/moradores',
+      condominiums: '/condominios',
       users: '/usuarios',
     };
     Router.push(navigate[key]);

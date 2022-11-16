@@ -1,8 +1,9 @@
 export enum pageKey {
   HOME = 'home',
-  CONDOMINIUMS = 'condominiums',
   PAYMENT = 'payment',
   NOTICES = 'notices',
   COMPLAINTS = 'complaints',
+  RESIDENTS = 'residents',
+  CONDOMINIUMS = 'condominiums',
   USERS = 'users',
 }
