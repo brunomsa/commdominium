@@ -21,7 +21,7 @@ export interface UserForm extends Omit<User, 'id'> {
 
 export async function createUser(user: Omit<User, 'id'>): Promise<ApiResponse<User>> {
   try {
-    const { status, data } = await api.post<User>(`${BASE_API_URL}/user/register`, user);
+    const { status, data } = await api.post<User>('/user/register', user);
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);
@@ -30,7 +30,7 @@ export async function createUser(user: Omit<User, 'id'>): Promise<ApiResponse<Us
 
 export async function getUserById(id: number): Promise<ApiResponse<User>> {
   try {
-    const { status, data } = await api.post<User>(`${BASE_API_URL}/user/findById`, { id });
+    const { status, data } = await api.post<User>('/user/findById', { id });
     if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -40,7 +40,7 @@ export async function getUserById(id: number): Promise<ApiResponse<User>> {
 
 export async function updateUser(user: Omit<User, 'active'>): Promise<ApiResponse<User>> {
   try {
-    const { status, data } = await api.patch<User>(`${BASE_API_URL}/user/update`, user);
+    const { status, data } = await api.patch<User>('/user/update', user);
     if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -50,7 +50,7 @@ export async function updateUser(user: Omit<User, 'active'>): Promise<ApiRespons
 
 export async function updateActiveStatus(id_user: number): Promise<ApiResponse<{ status: string }>> {
   try {
-    const { status, data } = await api.patch(`${BASE_API_URL}/services/updateActiveStatus`, { id_user });
+    const { status, data } = await api.patch('/services/updateActiveStatus', { id_user });
     if (status === 204) return { ok: true, error: { error: '   inexistente' } };
     if (status === 200) return { ok: true, data };
   } catch (error) {
@@ -60,7 +60,7 @@ export async function updateActiveStatus(id_user: number): Promise<ApiResponse<{
 
 export async function deleteUser(id: number): Promise<ApiResponse<{ status: string }>> {
   try {
-    const { status, data } = await api.delete<{ status: string }>(`${BASE_API_URL}/user/delete`, { data: { id } });
+    const { status, data } = await api.delete<{ status: string }>('/user/delete', { data: { id } });
     if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {

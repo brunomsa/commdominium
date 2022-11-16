@@ -24,7 +24,7 @@ export async function createNotice(notice: NoticeForm): Promise<ApiResponse<Noti
     eventDay: notice.eventDay?.format('YYYY-MM-DD'),
   };
   try {
-    const { status, data } = await api.post<Notice>(`${BASE_API_URL}/notices/register`, noticeData);
+    const { status, data } = await api.post<Notice>('/notices/register', noticeData);
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);
@@ -33,7 +33,7 @@ export async function createNotice(notice: NoticeForm): Promise<ApiResponse<Noti
 
 export async function getNoticeById(id: number): Promise<ApiResponse<Notice>> {
   try {
-    const { status, data } = await api.post<Notice>(`${BASE_API_URL}/notices/findById`, { id });
+    const { status, data } = await api.post<Notice>('/notices/findById', { id });
     if (status === 204) return { ok: true, error: { error: 'Aviso inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -43,7 +43,7 @@ export async function getNoticeById(id: number): Promise<ApiResponse<Notice>> {
 
 export async function updateNotice(notice: Notice): Promise<ApiResponse<Notice>> {
   try {
-    const { status, data } = await api.patch<Notice>(`${BASE_API_URL}/notices/update`, notice);
+    const { status, data } = await api.patch<Notice>('/notices/update', notice);
     if (status === 204) return { ok: true, error: { error: 'Aviso inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -53,7 +53,7 @@ export async function updateNotice(notice: Notice): Promise<ApiResponse<Notice>>
 
 export async function deleteNotice(id: number): Promise<ApiResponse<{ status: string }>> {
   try {
-    const { status, data } = await api.delete<{ status: string }>(`${BASE_API_URL}/notices/delete`, {
+    const { status, data } = await api.delete<{ status: string }>('/notices/delete', {
       data: { id },
     });
     if (status === 204) return { ok: true, error: { error: 'Aviso inexistente' } };

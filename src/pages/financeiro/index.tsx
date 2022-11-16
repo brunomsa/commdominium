@@ -229,7 +229,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const { data: residents } = await apiClient.post<User[]>(`${BASE_API_URL}/services/findUserList`, {
+    const { data: residents } = await apiClient.post<User[]>('/services/findUserList', {
       id_condominium: loggedUser.id_condominium,
     });
     const filteredResidents =

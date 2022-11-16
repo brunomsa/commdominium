@@ -11,7 +11,7 @@ type SignInResponse = {
 
 export async function signInRequest(values: SignInData): Promise<ApiResponse<SignInResponse>> {
   try {
-    const { status, data } = await api.post<SignInResponse>(`${BASE_API_URL}/auth/authenticate`, values);
+    const { status, data } = await api.post<SignInResponse>('/auth/authenticate', values);
     if (status === 200 && data) return { ok: true, data: { token: data.token, user: data.user } };
   } catch (error) {
     return catchError(error);
@@ -21,7 +21,7 @@ export async function signInRequest(values: SignInData): Promise<ApiResponse<Sig
 export async function recoverUserInfo(token: string): Promise<ApiResponse<User>> {
   const authorization = `Bearer ${token}`;
   try {
-    const { status, data } = await api.get<User>(`${BASE_API_URL}/queryToken`, {
+    const { status, data } = await api.get<User>('/queryToken', {
       headers: { Authorization: authorization },
     });
     if (status === 200 && data) {

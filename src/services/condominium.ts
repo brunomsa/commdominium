@@ -17,7 +17,7 @@ export function findCondominiumById(condominiums?: Condominium[], id?: number): 
 
 export async function createCondominium(cond: Omit<Condominium, 'id'>): Promise<ApiResponse<Condominium>> {
   try {
-    const { status, data } = await api.post<Condominium>(`${BASE_API_URL}/condominium/register`, cond);
+    const { status, data } = await api.post<Condominium>('/condominium/register', cond);
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);
@@ -26,7 +26,7 @@ export async function createCondominium(cond: Omit<Condominium, 'id'>): Promise<
 
 export async function getCondominiumById(id: number): Promise<ApiResponse<Condominium>> {
   try {
-    const { status, data } = await api.post<Condominium>(`${BASE_API_URL}/condominium/findById`, { id });
+    const { status, data } = await api.post<Condominium>('/condominium/findById', { id });
     if (status === 204) return { ok: true, error: { error: 'Condomínio inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -36,7 +36,7 @@ export async function getCondominiumById(id: number): Promise<ApiResponse<Condom
 
 export async function updateCondominium(condominium: Condominium): Promise<ApiResponse<Condominium>> {
   try {
-    const { status, data } = await api.patch<Condominium>(`${BASE_API_URL}/condominium/update`, condominium);
+    const { status, data } = await api.patch<Condominium>('/condominium/update', condominium);
     if (status === 204) return { ok: true, error: { error: 'Condomínio inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
@@ -46,7 +46,7 @@ export async function updateCondominium(condominium: Condominium): Promise<ApiRe
 
 export async function deleteCondominium(id: number): Promise<ApiResponse<{ status: string }>> {
   try {
-    const { status, data } = await api.delete<{ status: string }>(`${BASE_API_URL}/condominium/delete`, {
+    const { status, data } = await api.delete<{ status: string }>('/condominium/delete', {
       data: { id },
     });
     if (status === 204) return { ok: true, error: { error: 'Condomínio inexistente' } };

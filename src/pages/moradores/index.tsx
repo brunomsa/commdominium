@@ -216,8 +216,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const { data: userTypes = [] } = await apiClient.get<UserType[]>(`${BASE_API_URL}/userType/findAll`);
-    console.log(userTypes);
+    const { data: userTypes = [] } = await apiClient.get<UserType[]>('/userType/findAll');
     const { data: loggedUser } = await recoverUserInfo(token);
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
 
@@ -230,7 +229,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
 
-    const { data: residents } = await apiClient.post<User[]>(`${BASE_API_URL}/services/findUserList`, {
+    const { data: residents } = await apiClient.post<User[]>('/services/findUserList', {
       id_condominium: loggedUser.id_condominium,
     });
     const filteredResidents = residents.filter(
