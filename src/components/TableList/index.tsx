@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { InputRef } from 'antd';
-import { Input, Table, TableColumnsType, TableColumnType } from 'antd';
+import { Table, TableColumnsType, TableColumnType } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import Button from '../Button';

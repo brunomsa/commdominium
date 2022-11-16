@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { AppProps } from 'next/app';
 import Router from 'next/router';
-import { ThemeProvider } from 'styled-components';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -10,11 +9,13 @@ import ptBr from 'dayjs/locale/pt-br';
 dayjs.extend(relativeTime);
 dayjs.locale(ptBr);
 
+import { ThemeProvider } from 'styled-components';
 import { ConfigProvider } from 'antd';
 import '../../custom-theme.css';
 
-import { AuthProvider } from '../contexts/AuthContext';
 import { EmptyState, PageLoader } from '../components';
+import { AuthProvider } from '../contexts/AuthContext';
+
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
 

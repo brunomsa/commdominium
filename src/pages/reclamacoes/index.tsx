@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
@@ -16,9 +16,9 @@ import {
 
 import { BasicPage, Button, ComplaintSettings } from '../../components';
 import { AuthContext } from '../../contexts/AuthContext';
+import { ApiError } from '../../services/api';
 import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
-import { ApiError } from '../../services/api';
 import {
   Complaint,
   ComplaintForm,

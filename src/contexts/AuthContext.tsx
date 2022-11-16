@@ -5,8 +5,8 @@ import { setCookie, parseCookies, destroyCookie } from 'nookies';
 
 import { message } from 'antd';
 
-import { recoverUserInfo, signInRequest } from '../services/auth';
 import { api } from '../services/api';
+import { recoverUserInfo, signInRequest } from '../services/auth';
 import { User } from '../services/user';
 import { SignInData } from './types';
 
