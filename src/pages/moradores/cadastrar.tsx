@@ -13,6 +13,7 @@ import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { createUser, UserForm } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
+import { DEFAULT_PASSWORD } from '../../utils/constants';
 import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
@@ -45,6 +46,7 @@ function CreateResident({ loggedUserType, residentTypeId, ok, messageError }: Pr
     const { confirm, ...userData } = values;
     const { ok, error } = await createUser({
       ...userData,
+      password: DEFAULT_PASSWORD,
       id_condominium: loggedUser.id_condominium,
       id_userType: residentTypeId,
     });

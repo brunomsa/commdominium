@@ -59,7 +59,7 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
           onSubmit({
             ...values,
             avatarArchive: avatarUrl ?? initialValues?.avatarArchive,
-            active: userStatus === 'Active',
+            active: userStatus === 'Ativo',
           })
         }
       >
