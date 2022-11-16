@@ -113,13 +113,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { data: user } = await getUserById(Number(id));
     const { data: condominiums = [] } = await apiClient.get<Condominium[]>('/condominium/findAll');
 
+    const filteresCondominums = condominiums.filter((c) => c.name !== 'root');
+    const filteredUserTypes = userTypes.filter((us) => us.type !== UserTypes.ADMIN);
+
     return {
       props: {
         ok: true,
         loggedUserType,
         user,
-        condominiums,
-        userTypes,
+        condominiums: filteresCondominums,
+        userTypes: filteredUserTypes,
       },
     };
   } catch (error) {

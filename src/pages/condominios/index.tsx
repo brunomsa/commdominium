@@ -199,12 +199,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
     const { data: condominiums = [] } = await apiClient.get<Condominium[]>('/condominium/findAll');
+    const filteresCondominums = condominiums.filter((c) => c.name !== 'root');
 
     return {
       props: {
         ok: true,
         loggedUserType,
-        condominiums,
+        condominiums: filteresCondominums,
       },
     };
   } catch (error) {
