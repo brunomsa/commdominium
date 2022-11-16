@@ -28,8 +28,8 @@ interface DataType {
   block: string;
   building: string;
   number: string;
-  userType: string;
-  status: string;
+  userType: UserTypes;
+  status: 'Ativo' | 'Desativo';
 }
 
 interface Props {
@@ -71,6 +71,12 @@ const columns: TableColumnsType<DataType> = [
     dataIndex: 'userType',
     showSorterTooltip: false,
     width: 180,
+    filters: [
+      { text: UserTypes.ADMIN, value: UserTypes.ADMIN },
+      { text: UserTypes.ASSIGNEE, value: UserTypes.ASSIGNEE },
+      { text: UserTypes.RESIDENT, value: UserTypes.RESIDENT },
+    ],
+    onFilter: (value: string, record) => record.userType.includes(value),
     sorter: (a, b) => a.userType.localeCompare(b.userType),
   },
   {
@@ -79,16 +85,9 @@ const columns: TableColumnsType<DataType> = [
     showSorterTooltip: false,
     width: 120,
     filters: [
-      {
-        text: 'Ativo',
-        value: 'Ativo',
-      },
-      {
-        text: 'Desativo',
-        value: 'Desativo',
-      },
+      { text: 'Ativo', value: 'Ativo' },
+      { text: 'Desativo', value: 'Desativo' },
     ],
-    filterMode: 'tree',
     onFilter: (value: string, record) => record.status.includes(value),
     sorter: (a, b) => a.status.localeCompare(b.status),
   },
