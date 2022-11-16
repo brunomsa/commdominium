@@ -10,7 +10,6 @@ import { BasicPage, Button, PaymentSettings, TableList } from '../../components'
 import { ApiError } from '../../services/api';
 import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
-import { BASE_API_URL } from '../../services/constants';
 import { createPayment, FormPayment, Payment, updatePayment, verifyBillExistance } from '../../services/payment';
 import { User } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';

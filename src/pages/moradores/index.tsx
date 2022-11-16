@@ -18,7 +18,6 @@ import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { pageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
-import { BASE_API_URL } from '../../services/constants';
 
 interface DataType {
   key: number;

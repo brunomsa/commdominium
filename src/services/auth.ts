@@ -1,7 +1,6 @@
 import { SignInData } from '../contexts/types';
 import { api, ApiResponse } from './api';
 import { catchError } from './axios';
-import { BASE_API_URL } from './constants';
 import { getUserById, User } from './user';
 
 type SignInResponse = {

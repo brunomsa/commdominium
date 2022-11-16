@@ -1,11 +1,11 @@
 import { api, ApiResponse } from './api';
 import { catchError } from './axios';
-import { BASE_API_URL } from './constants';
 
 export type User = {
   id: number;
   fullname: string;
   email: string;
+  password?: string;
   id_condominium: number;
   id_userType: number;
   block?: string;
