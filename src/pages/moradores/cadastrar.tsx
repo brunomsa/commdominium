@@ -101,7 +101,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const loggedUserType = findUserTypeById(userTypes, loggedUser.id_userType)?.type;
     const residentTypeId = userTypes.find((ut) => ut.type === UserTypes.RESIDENT).id;
 
-    if (loggedUserType !== UserTypes.ADMIN) {
+    if (loggedUserType === UserTypes.RESIDENT) {
       return {
         redirect: {
           destination: '/login',
