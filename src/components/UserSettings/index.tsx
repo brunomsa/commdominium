@@ -170,8 +170,8 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
         <AntdForm.Item
           name="number"
           label="Número"
-          rules={[{ required: true, message: 'Por favor, informe um número do apartamento' }]}
-          tooltip={{ title: 'Digite o número do apartamento', icon: <InfoCircleOutlined /> }}
+          rules={[{ required: true, message: 'Por favor, informe um número do apartamento ou casa' }]}
+          tooltip={{ title: 'Digite o número do apartamento ou casa', icon: <InfoCircleOutlined /> }}
         >
           <TextInput />
         </AntdForm.Item>
