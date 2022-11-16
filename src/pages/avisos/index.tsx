@@ -181,6 +181,7 @@ function Notices({
                   <Button
                     type="primary"
                     icon={<EditOutlined />}
+                    tooltip="Editar"
                     onClick={() => {
                       setShowNoticeSettings(true);
                       setNoticeSelected(notice);
@@ -189,6 +190,7 @@ function Notices({
                   <Button
                     backgroundColor={theme.colors.RED}
                     icon={<DeleteOutlined />}
+                    tooltip="Excluir"
                     onClick={() => confirmDeleteModal(notice.id)}
                   />,
                 ]

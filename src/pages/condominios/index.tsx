@@ -137,12 +137,14 @@ function Condominiums({ loggedUserType, condominiums: initialCondominiums, ok, m
           <Button
             type="primary"
             icon={<EditOutlined />}
+            tooltip="Editar condomínio"
             onClick={() => Router.push(`condominios/${record.key}/editar`)}
           />
           <Divider type="vertical" style={{ margin: 0 }} />
           <Button
             backgroundColor={theme.colors.RED}
             icon={<DeleteOutlined />}
+            tooltip="Excluir condomínio"
             onClick={() => confirmDeleteModal(record.key)}
           />
         </Space>

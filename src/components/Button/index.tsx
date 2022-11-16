@@ -1,16 +1,19 @@
 import React, { CSSProperties, PropsWithChildren } from 'react';
-import { Button as AntdButton, ButtonProps } from 'antd';
+import { ButtonProps, Tooltip } from 'antd';
 
 import * as styled from './styles';
 interface Props extends ButtonProps {
+  tooltip?: string;
   backgroundColor?: CSSProperties['backgroundColor'];
 }
 
-function Button({ children, backgroundColor, ...buttonProps }: PropsWithChildren<Props>) {
+function Button({ children, tooltip, backgroundColor, ...buttonProps }: PropsWithChildren<Props>) {
   return (
-    <styled.Button {...buttonProps} background={backgroundColor}>
-      {children}
-    </styled.Button>
+    <Tooltip title={tooltip}>
+      <styled.Button {...buttonProps} background={backgroundColor}>
+        {children}
+      </styled.Button>
+    </Tooltip>
   );
 }
 

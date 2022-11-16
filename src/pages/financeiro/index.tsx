@@ -107,6 +107,7 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
           backgroundColor={theme.colors.GREEN}
           type="primary"
           icon={<DollarOutlined />}
+          tooltip="Cadastrar novo boleto"
           onClick={() => {
             setShowPaymentSettings(true);
             setSelectedResidentId(record.key);
@@ -170,10 +171,12 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
 
   return (
     <>
-      <Head>Financeiro</Head>
+      <Head>
+        <title>Financeiro</title>
+      </Head>
 
       <BasicPage pageKey={pageKey.PAYMENT} loggedUserType={loggedUserType}>
-        <h1 style={{ marginBottom: 32 }}>Moradores</h1>
+        <h1 style={{ marginBottom: 32 }}>Cadastrar boletos</h1>
         <TableList columns={columns} data={data} action={actionsColumn} />
 
         <Modal

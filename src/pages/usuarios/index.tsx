@@ -181,11 +181,17 @@ function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, o
       width: 130,
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" icon={<EditOutlined />} onClick={() => Router.push(`usuarios/${record.key}/editar`)} />
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            tooltip="Editar usuário"
+            onClick={() => Router.push(`usuarios/${record.key}/editar`)}
+          />
           <Divider type="vertical" style={{ margin: 0 }} />
           <Button
             backgroundColor={theme.colors.RED}
             icon={<DeleteOutlined />}
+            tooltip="Excluir usuário"
             onClick={() => confirmDeleteModal(record.key)}
           />
         </Space>

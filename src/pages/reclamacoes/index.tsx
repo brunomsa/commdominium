@@ -215,6 +215,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
                         <Button
                           type="primary"
                           icon={<EditOutlined />}
+                          tooltip="Editar"
                           onClick={() => {
                             setShowComplaintSettings(true);
                             setComplaintSelected(complaint);
@@ -223,6 +224,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
                         <Button
                           backgroundColor={theme.colors.RED}
                           icon={<DeleteOutlined />}
+                          tooltip="Excluir"
                           onClick={() => confirmDeleteModal(complaint.id)}
                         />,
                       ]
