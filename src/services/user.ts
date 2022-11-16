@@ -15,17 +15,13 @@ export type User = {
   avatarArchive?: string;
 };
 
-export interface UserForm extends Omit<User, 'id' | 'active'> {
+export interface UserForm extends Omit<User, 'id'> {
   confirm?: string;
 }
 
-export async function createUser(user: Omit<User, 'id' | 'active'>): Promise<ApiResponse<User>> {
+export async function createUser(user: Omit<User, 'id'>): Promise<ApiResponse<User>> {
   try {
-    const userData: Omit<User, 'id'> = {
-      ...user,
-      active: true,
-    };
-    const { status, data } = await api.post<User>(`${BASE_API_URL}/user/register`, userData);
+    const { status, data } = await api.post<User>(`${BASE_API_URL}/user/register`, user);
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {
     return catchError(error);
@@ -44,11 +40,7 @@ export async function getUserById(id: number): Promise<ApiResponse<User>> {
 
 export async function updateUser(user: Omit<User, 'active'>): Promise<ApiResponse<User>> {
   try {
-    const userData: User = {
-      ...user,
-      active: true,
-    };
-    const { status, data } = await api.patch<User>(`${BASE_API_URL}/user/update`, userData);
+    const { status, data } = await api.patch<User>(`${BASE_API_URL}/user/update`, user);
     if (status === 204) return { ok: true, error: { error: 'Usuário inexistente' } };
     if (status === 200 && data) return { ok: true, data };
   } catch (error) {

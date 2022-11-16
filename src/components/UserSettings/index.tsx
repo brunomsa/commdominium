@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Router from 'next/router';
 
-import { Input, Form as AntdForm, Select, message, Upload as AntdUpload } from 'antd';
+import { Input, Form as AntdForm, Select, message, Upload as AntdUpload, Checkbox } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
@@ -29,6 +29,7 @@ interface Props {
 
 function UserSettings({ initialValues, condominiums, userTypes, loading, adminMode = true, onSubmit }: Props) {
   const [avatarUrl, setAvatarUrl] = useState<string>();
+  const [userStatus, setUserStatus] = useState('Ativo');
 
   const handleBeforeUpload = useCallback((file: RcFile) => {
     const isValid = file.type === 'image/png';
@@ -42,6 +43,11 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
     return (isValid && isLt1M) || AntdUpload.LIST_IGNORE;
   }, []);
 
+  const onChangeStatus = useCallback((checked: boolean) => {
+    if (!checked) setUserStatus('Desativo');
+    else setUserStatus('Ativo');
+  }, []);
+
   return (
     <>
       <Form
@@ -49,7 +55,13 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
         layout="vertical"
         requiredMark={false}
         initialValues={initialValues}
-        onFinish={(values) => onSubmit({ ...values, avatarArchive: avatarUrl ?? initialValues?.avatarArchive })}
+        onFinish={(values) =>
+          onSubmit({
+            ...values,
+            avatarArchive: avatarUrl ?? initialValues?.avatarArchive,
+            active: userStatus === 'Active',
+          })
+        }
       >
         <AntdForm.Item
           name="fullname"
@@ -178,6 +190,12 @@ function UserSettings({ initialValues, condominiums, userTypes, loading, adminMo
           tooltip={{ title: 'Digite o prédio do condomínio', icon: <InfoCircleOutlined /> }}
         >
           <TextInput />
+        </AntdForm.Item>
+
+        <AntdForm.Item name="active" label="Status" tooltip={{ title: 'Status do usuário' }}>
+          <Checkbox defaultChecked onChange={(event) => onChangeStatus(event.target.checked)}>
+            {userStatus}
+          </Checkbox>
         </AntdForm.Item>
 
         <AntdForm.Item name="avatarArchive">
