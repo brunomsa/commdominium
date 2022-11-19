@@ -18,7 +18,7 @@ export function getApiClient(
   const { 'commdominium.token': token } = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: 'http://3.92.185.232:3333/',
   });
 
   if (token) {
