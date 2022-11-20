@@ -14,7 +14,7 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { createPayment, FormPayment, Payment, updatePayment, verifyBillExistance } from '../../services/payment';
 import { User } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -175,7 +175,7 @@ function Residents({ loggedUserType, residents, ok, messageError }: Props) {
         <title>Financeiro</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.PAYMENT} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.PAYMENT} loggedUserType={loggedUserType}>
         <h1 style={{ marginBottom: 32 }}>Cadastrar boletos</h1>
         <TableList columns={columns} data={data} action={actionsColumn} />
 

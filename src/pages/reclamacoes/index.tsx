@@ -31,7 +31,7 @@ import {
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { MAX_ITENS_PAGE } from '../../utils/constants';
 import { orderByDate } from '../../utils/orderByDate';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
 
 import theme from '../../styles/theme';
@@ -180,11 +180,19 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
         <title>Reclamações</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.COMPLAINTS} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.COMPLAINTS} loggedUserType={loggedUserType}>
         {loggedUserType !== UserTypes.ASSIGNEE && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              marginBottom: 32,
+            }}
+          >
             {loggedUserType === UserTypes.RESIDENT && <h1 style={{ minWidth: 'max-content' }}>Minhas Reclamações</h1>}
-            <div style={{ width: '100%', textAlign: 'end' }}>
+            <div style={{ flex: 1, textAlign: 'end' }}>
               <Button type="primary" onClick={() => setShowComplaintSettings(true)}>
                 Criar Reclamação
               </Button>

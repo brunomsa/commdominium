@@ -14,7 +14,7 @@ import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, deleteCondominium } from '../../services/condominium';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 
@@ -159,8 +159,8 @@ function Condominiums({ loggedUserType, condominiums: initialCondominiums, ok, m
         <title>Condomínios</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
-        <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
+      <BasicPage pageKey={PageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
+        <div style={{ textAlign: 'end', marginBottom: 32 }}>
           <Button type="primary" onClick={() => Router.push('/condominios/cadastrar')}>
             Novo Condomínio
           </Button>

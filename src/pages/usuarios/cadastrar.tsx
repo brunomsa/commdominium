@@ -14,7 +14,7 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { createUser, UserForm } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { Condominium } from '../../services/condominium';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 import * as styled from '../../styles/pages/FormSettings';
@@ -68,7 +68,7 @@ function CreateUser({ loggedUserType, condominiums = [], userTypes = [], ok, mes
         <title>Cadastrar Usuários</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.USERS} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.USERS} loggedUserType={loggedUserType}>
         <h1>Cadastrar Novo Usuário</h1>
         <UserSettings
           condominiums={condominiums ?? []}

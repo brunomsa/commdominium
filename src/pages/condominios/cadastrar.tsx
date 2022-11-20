@@ -13,7 +13,7 @@ import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, createCondominium } from '../../services/condominium';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 import * as styled from '../../styles/pages/FormSettings';
@@ -64,7 +64,7 @@ function CreateCondominium({ loggedUserType, ok, messageError }: Props) {
         <title>Cadastrar Condomínios</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
         <h1>Cadastrar Novo Condomínio</h1>
         <CondominiumSettings loading={loading} onSubmit={handleSubmit} />
       </BasicPage>

@@ -14,7 +14,7 @@ import { catchPageError, getApiClient } from '../../../services/axios';
 import { Condominium } from '../../../services/condominium';
 import { findUserTypeById, UserType, UserTypes } from '../../../services/userType';
 import { getUserById, updateUser, User, UserForm } from '../../../services/user';
-import { pageKey } from '../../../utils/types';
+import { PageKey } from '../../../utils/types';
 
 import * as styled from '../../../styles/pages/FormSettings';
 import theme from '../../../styles/theme';
@@ -68,7 +68,7 @@ function EditUser({ loggedUserType, user, condominiums, userTypes, ok, messageEr
         <title>Editar Usuários</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.USERS} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.USERS} loggedUserType={loggedUserType}>
         <h1>Editar Usuário</h1>
         <UserSettings
           initialValues={user}

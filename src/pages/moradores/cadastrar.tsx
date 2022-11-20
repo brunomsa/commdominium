@@ -15,7 +15,7 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { createUser, UserForm } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { DEFAULT_PASSWORD } from '../../utils/constants';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 import * as styled from '../../styles/pages/FormSettings';
@@ -75,7 +75,7 @@ function CreateResident({ loggedUserType, residentTypeId, ok, messageError }: Pr
         <title>Cadastrar Moradores</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.USERS} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.USERS} loggedUserType={loggedUserType}>
         <h1>Cadastrar Novo Morador</h1>
         <UserSettings loading={loading} onSubmit={handleSubmit} adminMode={false} />
       </BasicPage>

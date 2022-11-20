@@ -13,7 +13,7 @@ import { recoverUserInfo } from '../../../services/auth';
 import { catchPageError, getApiClient } from '../../../services/axios';
 import { Condominium, getCondominiumById, updateCondominium } from '../../../services/condominium';
 import { findUserTypeById, UserType, UserTypes } from '../../../services/userType';
-import { pageKey } from '../../../utils/types';
+import { PageKey } from '../../../utils/types';
 
 import * as styled from '../../../styles/pages/FormSettings';
 import theme from '../../../styles/theme';
@@ -64,7 +64,7 @@ function EditCondominium({ loggedUserType, condominium, ok, messageError }: Prop
         <title>Editar Condomínios</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.CONDOMINIUMS} loggedUserType={loggedUserType}>
         <h1>Editar Condomínio</h1>
         <CondominiumSettings initialValues={condominium} loading={loading} onSubmit={handleSubmit} />
       </BasicPage>

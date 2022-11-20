@@ -1,20 +1,21 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { SetStateAction, useContext, useMemo, useState } from 'react';
 
 import Router from 'next/router';
 
-import { Avatar, Badge, Menu, Popover } from 'antd';
+import { Avatar, Badge, Button, Menu, Popover } from 'antd';
 import {
   BellOutlined,
   HomeOutlined,
   LockOutlined,
   LogoutOutlined,
+  MenuOutlined,
   SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserTypes } from '../../services/userType';
-import { pageKey } from '../../utils/types';
+import { MenuOptionsType, PageKey } from '../../utils/types';
 
 import EmptyState from '../EmptyState';
 
@@ -29,25 +30,29 @@ const profileMenuOptions = [
 ];
 
 interface Props {
+  menuOptions: MenuOptionsType[];
   selectedKey: string;
   loggedUserType: UserTypes;
   onChange: (key: string) => void;
+  setMenuVisibility: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function Header({ selectedKey, loggedUserType, onChange }: Props) {
+function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Props) {
   const { user, signOut } = useContext(AuthContext);
+
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(selectedKey);
 
   const menuOptions = useMemo(() => {
     return [
-      { key: pageKey.HOME, label: 'Início' },
-      loggedUserType !== UserTypes.RESIDENT && { key: pageKey.PAYMENT, label: 'Financeiro' },
-      { key: pageKey.NOTICES, label: 'Avisos ' },
-      { key: pageKey.COMPLAINTS, label: 'Reclamações' },
-      loggedUserType !== UserTypes.RESIDENT && { key: pageKey.RESIDENTS, label: 'Moradores' },
-      loggedUserType === UserTypes.ADMIN && { key: pageKey.CONDOMINIUMS, label: 'Condomínios' },
-      loggedUserType === UserTypes.ADMIN && { key: pageKey.USERS, label: 'Usuários' },
+      { key: PageKey.HOME, label: 'Início' },
+      loggedUserType !== UserTypes.RESIDENT && { key: PageKey.PAYMENT, label: 'Financeiro' },
+      { key: PageKey.NOTICES, label: 'Avisos' },
+      { key: PageKey.COMPLAINTS, label: 'Reclamações' },
+      loggedUserType !== UserTypes.RESIDENT && { key: PageKey.RESIDENTS, label: 'Moradores' },
+      loggedUserType === UserTypes.ADMIN && { key: PageKey.CONDOMINIUMS, label: 'Condomínios' },
+      loggedUserType === UserTypes.ADMIN && { key: PageKey.USERS, label: 'Usuários' },
     ];
   }, [loggedUserType]);
 
@@ -79,13 +84,18 @@ function Header({ selectedKey, loggedUserType, onChange }: Props) {
       <div>
         <img className="logo" src="/logo.png" />
         <nav>
-          <Menu
-            theme="light"
-            mode="horizontal"
-            defaultSelectedKeys={[selectedKey]}
-            items={menuOptions}
-            onClick={({ key }) => onChange(key)}
-          />
+          {menuOptions.filter(Boolean).map((option) => (
+            <a
+              key={option.key}
+              className={['item', selectedItem === option.key ? 'selected' : null].join(' ')}
+              onClick={() => {
+                setSelectedItem(option.key);
+                onChange(option.key);
+              }}
+            >
+              {option.label}
+            </a>
+          ))}
         </nav>
       </div>
 
@@ -110,8 +120,9 @@ function Header({ selectedKey, loggedUserType, onChange }: Props) {
           open={showProfile}
           onOpenChange={(visible) => setShowProfile(visible)}
         >
-          <Avatar size={40} icon={<UserOutlined />} src={user?.avatarArchive} />
+          <Avatar size={40} icon={<UserOutlined />} />
         </Popover>
+        <Button className="nav-btn" icon={<MenuOutlined />} onClick={() => setMenuVisibility(true)} />
       </div>
     </styled.Header>
   );

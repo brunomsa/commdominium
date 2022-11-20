@@ -20,7 +20,7 @@ import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 import { DATE_FORMAT_STRING, MAX_ITENS_PAGE } from '../../utils/constants';
 import { orderByDate } from '../../utils/orderByDate';
 import { toDayjs } from '../../utils/toDayjs';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 
@@ -152,9 +152,9 @@ function Notices({
         <title>Avisos</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.NOTICES} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.NOTICES} loggedUserType={loggedUserType}>
         {loggedUserType !== UserTypes.RESIDENT && (
-          <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
+          <div style={{ textAlign: 'end', marginBottom: 32 }}>
             <Button type="primary" onClick={() => setShowNoticeSettings(true)}>
               Criar Aviso
             </Button>

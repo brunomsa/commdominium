@@ -15,7 +15,7 @@ import { recoverUserInfo } from '../../services/auth';
 import { catchPageError, getApiClient } from '../../services/axios';
 import { deleteUser, updateActiveStatus, User } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 
@@ -188,11 +188,19 @@ function Residents({ loggedUserType, residents: initialResidents, ok, messageErr
         <title>Moradores</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.RESIDENTS} loggedUserType={loggedUserType}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+      <BasicPage pageKey={PageKey.RESIDENTS} loggedUserType={loggedUserType}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            marginBottom: 32,
+          }}
+        >
           <h1 style={{ minWidth: 'max-content' }}>Moradores</h1>
 
-          <div style={{ width: '100%', textAlign: 'end' }}>
+          <div style={{ textAlign: 'end' }}>
             <Button type="primary" onClick={() => Router.push('/moradores/cadastrar')}>
               Novo Morador
             </Button>

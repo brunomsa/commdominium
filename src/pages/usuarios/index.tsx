@@ -16,7 +16,7 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { Condominium, findCondominiumById } from '../../services/condominium';
 import { deleteUser, User } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
-import { pageKey } from '../../utils/types';
+import { PageKey } from '../../utils/types';
 
 import theme from '../../styles/theme';
 
@@ -205,8 +205,8 @@ function Users({ loggedUserType, users: initialUsers, condominiums, userTypes, o
         <title>Usuários</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.USERS} loggedUserType={loggedUserType}>
-        <div style={{ width: '100%', textAlign: 'end', marginBottom: 32 }}>
+      <BasicPage pageKey={PageKey.USERS} loggedUserType={loggedUserType}>
+        <div style={{ textAlign: 'end', marginBottom: 32 }}>
           <Button type="primary" onClick={() => Router.push('/usuarios/cadastrar')}>
             Novo Usuário
           </Button>

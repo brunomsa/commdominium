@@ -20,7 +20,7 @@ import { findNoticeTypeById, NoticeType, NoticeTypes } from '../services/noticeT
 import { Payment } from '../services/payment';
 import { User } from '../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../services/userType';
-import { pageKey } from '../utils/types';
+import { PageKey } from '../utils/types';
 
 interface Props {
   loggedUserType?: UserTypes;
@@ -94,7 +94,7 @@ function Home({
         <title>Início</title>
       </Head>
 
-      <BasicPage pageKey={pageKey.HOME} loggedUserType={loggedUserType}>
+      <BasicPage pageKey={PageKey.HOME} loggedUserType={loggedUserType}>
         <h1 style={{ marginBottom: 32 }}>Olá, {user?.fullname.split(' ')[0]}!</h1>
 
         {recentBill?.billArchive && (

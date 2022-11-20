@@ -1,4 +1,4 @@
-export enum pageKey {
+export enum PageKey {
   HOME = 'home',
   PAYMENT = 'payment',
   NOTICES = 'notices',
@@ -7,3 +7,8 @@ export enum pageKey {
   CONDOMINIUMS = 'condominiums',
   USERS = 'users',
 }
+
+export type MenuOptionsType = {
+  key: PageKey;
+  label: string;
+};
