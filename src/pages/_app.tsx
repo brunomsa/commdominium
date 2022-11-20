@@ -18,7 +18,6 @@ import { AuthProvider } from '../contexts/AuthContext';
 
 import GlobalStyle from '../styles/global';
 import theme from '../styles/theme';
-import ErrorBoundary from '../components/ErrorBoundary';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [loading, setLoading] = useState(false);
@@ -39,7 +38,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   });
 
   return (
-    <ErrorBoundary>
+    <>
       {loading && <PageLoader />}
       <ThemeProvider theme={theme}>
         <AuthProvider>
@@ -49,7 +48,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
           </ConfigProvider>
         </AuthProvider>
       </ThemeProvider>
-    </ErrorBoundary>
+    </>
   );
 };
 
