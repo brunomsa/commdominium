@@ -21,6 +21,7 @@ import EmptyState from '../EmptyState';
 
 import theme from '../../styles/theme';
 import * as styled from './styles';
+import Link from 'next/link';
 
 const profileMenuOptions = [
   { key: 'myProfile', label: 'Editar perfil', icon: <SettingOutlined /> },
@@ -75,10 +76,17 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
         <Menu
           theme="dark"
           mode="inline"
-          items={profileMenuOptions}
+          // items={profileMenuOptions}
           style={{ marginTop: 8 }}
-          onClick={({ key }) => onProfileMenuClick[key]()}
-        />
+          // onClick={({ key }) => onProfileMenuClick[key]()}
+        >
+          <Menu.Item>
+            <Link href="/meu-perfil">Editar perfil</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link href="/login">Sair</Link>
+          </Menu.Item>
+        </Menu>
       </styled.ProfileSettings>
     );
   }, [onProfileMenuClick, profileMenuOptions, context?.user]);
