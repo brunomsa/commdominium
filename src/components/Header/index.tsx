@@ -38,7 +38,8 @@ interface Props {
 }
 
 function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Props) {
-  const { user, signOut } = useContext(AuthContext);
+  const context = useContext(AuthContext);
+  console.log(context);
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -56,18 +57,21 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
     ];
   }, [loggedUserType]);
 
-  const onProfileMenuClick: Record<string, () => void> = {
-    myProfile: () => Router.push('/meu-perfil'),
-    myCond: () => console.log('myCond'),
-    changePassword: () => console.log('changePassword'),
-    logout: () => signOut(),
-  };
+  const onProfileMenuClick: Record<string, () => void> = useMemo(
+    () => ({
+      myProfile: () => Router.push('/meu-perfil'),
+      myCond: () => console.log('myCond'),
+      changePassword: () => console.log('changePassword'),
+      logout: () => context?.signOut(),
+    }),
+    [context]
+  );
 
   const profileSettings = useMemo(() => {
     return (
       <styled.ProfileSettings>
-        <h3>{user?.fullname}</h3>
-        <div className="email">{user?.email}</div>
+        <h3>{context?.user?.fullname}</h3>
+        <div className="email">{context?.user?.email}</div>
         <Menu
           theme="dark"
           mode="inline"
@@ -77,7 +81,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
         />
       </styled.ProfileSettings>
     );
-  }, [onProfileMenuClick, profileMenuOptions, user]);
+  }, [onProfileMenuClick, profileMenuOptions, context?.user]);
 
   return (
     <styled.Header>
