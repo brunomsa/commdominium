@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/plugin-transform-react-jsx-source": "^7.19.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.38.0",
     "axios": "^0.27.2",
@@ -38,7 +39,6 @@
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^8.3.4",
     "antd": "^4.23.2",
-    "babel-plugin-inline-react-svg": "^2.0.1",
     "eslint": "^8.0.1",
     "eslint-config-next": "12.3.1",
     "eslint-config-prettier": "^8.5.0",
