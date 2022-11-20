@@ -12,6 +12,7 @@ export const FormSettings = styled.div`
   }
 
   .form {
+    margin-top: 2rem;
     width: 40%;
 
     .ant-form-item {
