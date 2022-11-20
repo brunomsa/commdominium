@@ -39,7 +39,7 @@ interface Props {
 
 function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Props) {
   const context = useContext(AuthContext);
-  console.log('context', context);
+  console.log(context);
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -62,7 +62,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
       myProfile: () => Router.push('/meu-perfil'),
       myCond: () => console.log('myCond'),
       changePassword: () => console.log('changePassword'),
-      logout: () => console.log('singOut'),
+      logout: async () => await context?.signOut(),
     }),
     [context]
   );

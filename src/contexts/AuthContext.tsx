@@ -15,7 +15,7 @@ type AuthContextType = {
   user?: User;
   setUser: Dispatch<SetStateAction<User | undefined>>;
   signIn: (data: SignInData) => Promise<{ ok: boolean; error: string }>;
-  signOut: () => void;
+  signOut: () => Promise<void>;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -58,11 +58,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return { ok, error: undefined };
   }
 
-  function signOut() {
+  async function signOut() {
     console.log(user);
     // destroyCookie(undefined, 'commdominium.token');
     setUser(undefined);
-    // Router.push('/login');
+    await Router.push('/login');
   }
 
   return (
