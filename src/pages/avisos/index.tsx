@@ -93,7 +93,7 @@ function Notices({
       const noticeData: Notice = {
         ...values,
         id: noticeSelected.id,
-        eventDay: values.eventDay.format('YYYY-MM-DD'),
+        eventDay: values.eventDay?.format('YYYY-MM-DD'),
       };
 
       const { ok, error } = await updateNotice(noticeData);
@@ -202,7 +202,7 @@ function Notices({
                 content={
                   <>
                     <h2>{notice.title}</h2>
-                    {notice.eventDay && <p>Dia: {moment(notice.eventDay).utcOffset(3).format(DATE_FORMAT_STRING)}</p>}
+                    {notice.eventDay && <p>Dia: {moment(notice.eventDay).utcOffset(3)?.format(DATE_FORMAT_STRING)}</p>}
                     <p>{notice.message}</p>
                   </>
                 }
