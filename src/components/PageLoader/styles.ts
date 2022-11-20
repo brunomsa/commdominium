@@ -8,7 +8,8 @@ export const PageLoader = styled.div`
     height: 100%;
     background-color: ${theme.colors.BACKGROUND};
     opacity: 80%;
-    z-index: 10;
+    z-index: 1000;
+    overflow: none;
 
     .ant-spin {
       position: absolute;
