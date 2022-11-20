@@ -33,7 +33,6 @@ const BasicPage = ({ pageKey, loggedUserType, children }: PropsWithChildren<Prop
       loggedUserType === UserTypes.ADMIN && { key: PageKey.USERS, label: 'Usuários' },
     ];
   }, [loggedUserType]);
-  console.log(menuOptions);
 
   const goTo = useCallback((key: string) => {
     const navigate: Record<PageKey, string> = {
