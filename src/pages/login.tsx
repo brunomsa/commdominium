@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
 
+import Head from 'next/head';
+
 import { Form, Input } from 'antd';
 import { ExclamationCircleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 
@@ -25,6 +27,10 @@ function Login() {
 
   return (
     <styled.Login>
+      <Head>
+        <title>Login</title>
+      </Head>
+
       <header>
         <img src="/logo.png" />
         <h1>Commdominium</h1>
