@@ -58,9 +58,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return { ok, error: undefined };
   }
 
-  function signOut() {
+  async function signOut() {
+    await Router.push('/login');
     destroyCookie(undefined, 'commdominium.token');
-    Router.push('/login');
   }
 
   return (
