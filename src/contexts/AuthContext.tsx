@@ -1,6 +1,6 @@
 import { createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { setCookie, parseCookies, destroyCookie } from 'nookies';
 
 import { message } from 'antd';
@@ -22,6 +22,7 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User>();
+  const router = useRouter();
 
   const isAuthenticated = !!user;
 
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     setUser(data.user);
 
-    Router.push('/');
+    router.push('/');
 
     return { ok, error: undefined };
   }
@@ -62,7 +63,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     console.log(user);
     // destroyCookie(undefined, 'commdominium.token');
     setUser(undefined);
-    await Router.push('/login');
+    await router.push('/login');
   }
 
   return (
