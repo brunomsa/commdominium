@@ -76,7 +76,7 @@ function MyProfile({ loggedUserType, ok, messageError }: Props) {
         >
           <h1 style={{ minWidth: 'max-content' }}>Meu Perfil</h1>
 
-          <div style={{ textAlign: 'end' }}>
+          <div style={{ textAlign: 'end', zIndex: 1 }}>
             <Button type="primary" onClick={() => Router.push('/')}>
               Voltar para o início
             </Button>
