@@ -11,10 +11,6 @@ export const FormSettings = styled.div`
     z-index: 0;
   }
 
-  h1 {
-    margin-bottom: 32px;
-  }
-
   .form {
     width: 40%;
 

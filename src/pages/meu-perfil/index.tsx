@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import Router from 'next/router';
 import { parseCookies } from 'nookies';
 
-import { message } from 'antd';
+import { Button, message } from 'antd';
 
 import { BasicPage, UserSettings } from '../../components';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -64,7 +65,23 @@ function MyProfile({ loggedUserType, ok, messageError }: Props) {
       </Head>
 
       <BasicPage loggedUserType={loggedUserType}>
-        <h1>Meu Perfil</h1>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            marginBottom: 32,
+          }}
+        >
+          <h1 style={{ minWidth: 'max-content' }}>Meu Perfil</h1>
+
+          <div style={{ textAlign: 'end' }}>
+            <Button type="primary" onClick={() => Router.push('/')}>
+              Voltar para o início
+            </Button>
+          </div>
+        </div>
         <UserSettings initialValues={loggedUser} loading={loading} onSubmit={handleSubmit} adminMode={false} />
       </BasicPage>
     </styled.FormSettings>

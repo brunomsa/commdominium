@@ -24,7 +24,7 @@ import * as styled from './styles';
 
 const profileMenuOptions = [
   { key: 'myProfile', label: 'Editar perfil', icon: <SettingOutlined /> },
-  { key: 'myCond', label: 'Meu condomínio', icon: <HomeOutlined /> },
+  { key: 'myCondominium', label: 'Meu condomínio', icon: <HomeOutlined /> },
   { key: 'changePassword', label: 'Alterar a senha', icon: <LockOutlined /> },
   { key: 'logout', label: 'Sair', icon: <LogoutOutlined /> },
 ];
@@ -58,7 +58,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
 
   const onProfileMenuClick: Record<string, () => void> = {
     myProfile: () => Router.push('/meu-perfil'),
-    myCond: () => console.log('myCond'),
+    myCondominium: () => Router.push('/meu-condominio'),
     changePassword: () => console.log('changePassword'),
     logout: signOut,
   };
@@ -70,7 +70,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
         <div className="email">{user?.email}</div>
         <div className="profile-menu">
           {profileMenuOptions.map((op) => (
-            <div onClick={() => onProfileMenuClick[op.key]()}>
+            <div key={op.key} onClick={() => onProfileMenuClick[op.key]()}>
               {op.icon}
               <a>{op.label}</a>
             </div>
