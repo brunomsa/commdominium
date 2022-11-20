@@ -6,6 +6,8 @@ export enum PageKey {
   RESIDENTS = 'residents',
   CONDOMINIUMS = 'condominiums',
   USERS = 'users',
+  LOGIN = 'login',
+  MY_PROFILE = 'myProfile',
 }
 
 export type MenuOptionsType = {

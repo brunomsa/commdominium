@@ -43,6 +43,8 @@ const BasicPage = ({ pageKey, loggedUserType, children }: PropsWithChildren<Prop
       residents: '/moradores',
       condominiums: '/condominios',
       users: '/usuarios',
+      login: '/login',
+      myProfile: '/meu-perfil',
     };
     Router.push(navigate[key]);
   }, []);

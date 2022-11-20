@@ -26,7 +26,7 @@ const profileMenuOptions = [
   { key: 'myProfile', label: 'Editar perfil', icon: <SettingOutlined /> },
   { key: 'myCond', label: 'Meu condomínio', icon: <HomeOutlined /> },
   { key: 'changePassword', label: 'Alterar a senha', icon: <LockOutlined /> },
-  { key: 'logout', label: 'Sair', icon: <LogoutOutlined /> },
+  { key: 'login', label: 'Sair', icon: <LogoutOutlined /> },
 ];
 
 interface Props {
@@ -56,12 +56,12 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
     ];
   }, [loggedUserType]);
 
-  const onProfileMenuClick: Record<string, () => void> = {
-    myProfile: () => Router.push('/meu-perfil'),
-    myCond: () => console.log('myCond'),
-    changePassword: () => console.log('changePassword'),
-    logout: signOut,
-  };
+  // const onProfileMenuClick: Record<string, () => void> = {
+  //   myProfile: () => Router.push('/meu-perfil'),
+  //   myCond: () => console.log('myCond'),
+  //   changePassword: () => console.log('changePassword'),
+  //   logout: signOut,
+  // };
 
   const profileSettings = useMemo(() => {
     return (
@@ -73,11 +73,11 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
           mode="inline"
           items={profileMenuOptions}
           style={{ marginTop: 8 }}
-          onClick={({ key }) => onProfileMenuClick[key]()}
-        />
+          onClick={({ key }) => onChange(key)}
+        ></Menu>
       </styled.ProfileSettings>
     );
-  }, [onProfileMenuClick, profileMenuOptions, user]);
+  }, [profileMenuOptions, user]);
 
   return (
     <styled.Header>
