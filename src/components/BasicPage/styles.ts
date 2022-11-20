@@ -17,9 +17,9 @@ export const BasicPage = styled.div`
     padding: 2rem ${theme.main.PADDING_X}px;
   }
 
-  @media screen and (max-width: 950px) {
+  @media screen and (max-width: 1080px) {
     main {
-      padding: 2rem 1rem;
+      padding: 2rem;
     }
   } ;
 `;

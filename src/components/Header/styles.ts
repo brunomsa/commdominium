@@ -76,8 +76,8 @@ export const Header = styled.header`
     }
   }
 
-  @media screen and (max-width: 950px) {
-    padding: 0 1rem;
+  @media screen and (max-width: 1080px) {
+    padding: 0 2rem;
     .nav-btn {
       display: block;
     }

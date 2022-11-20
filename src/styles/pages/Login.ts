@@ -29,9 +29,9 @@ export const Login = styled.div`
     }
   }
 
-  @media (max-width: 1080px) {
+  @media screen and (max-width: 1080px) {
     flex-direction: column;
-    gap: 50px;
+    gap: 20px;
     justify-content: center;
 
     h1 {
@@ -41,6 +41,24 @@ export const Login = styled.div`
     p {
       font-size: 25px;
       text-align: center;
+    }
+
+    header {
+      img {
+        width: 120px;
+      }
+
+      h1 {
+        font-size: 40px;
+        margin-top: 20px;
+      }
+
+      p {
+        font-size: 24px;
+      }
+    }
+
+    form {
     }
   }
 `;
@@ -75,8 +93,9 @@ export const LoginForm = styled(Form)`
     }
   }
 
-  @media (max-width: 1080px) {
-    width: 400px;
+  @media screen and (max-width: 1080px) {
+    width: 80%;
+    max-width: 400px;
     height: 400px;
   }
 `;

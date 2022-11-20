@@ -31,4 +31,14 @@ export const FormSettings = styled.div`
       }
     }
   }
+
+  @media screen and (max-width: 1080px) {
+    img.background-image {
+      display: none;
+    }
+
+    .form {
+      width: 100%;
+    }
+  }
 `;

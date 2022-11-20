@@ -22,6 +22,8 @@ import { User } from '../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../services/userType';
 import { PageKey } from '../utils/types';
 
+import * as styled from '../styles/pages/Home';
+
 interface Props {
   loggedUserType?: UserTypes;
   condominium?: Condominium;
@@ -89,7 +91,7 @@ function Home({
   }, []);
 
   return (
-    <>
+    <styled.Home>
       <Head>
         <title>Início</title>
       </Head>
@@ -99,7 +101,7 @@ function Home({
 
         {recentBill?.billArchive && (
           <Alert
-            message={<h2 style={{ fontSize: 20, lineHeight: '20px', marginBottom: 16 }}>Boleto disponível</h2>}
+            message={<h2 className="alertTitle">Boleto disponível</h2>}
             description={
               <p>
                 Clique
@@ -116,7 +118,7 @@ function Home({
           />
         )}
 
-        <div style={{ display: 'flex', flexGrow: 1, gap: 40 }}>
+        <div className="cards">
           <SwitchCard<Notice>
             itens={filteredNotices}
             headerTitle="Avisos recentes"
@@ -139,7 +141,7 @@ function Home({
           />
         </div>
       </BasicPage>
-    </>
+    </styled.Home>
   );
 }
 
