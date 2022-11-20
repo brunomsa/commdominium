@@ -57,7 +57,7 @@ function SwitchCard<T>({
           <List.Item>
             <Comment
               author={condominiumName ?? item.fullname}
-              avatar={<Avatar icon={<UserOutlined />} />}
+              avatar={<Avatar icon={<UserOutlined />} src={avatarAssigneeUrl ?? item.avatarArchive ?? undefined} />}
               content={<p>{item.message}</p>}
               datetime={<span>{toDayjs(item.updatedAt).fromNow()}</span>}
             />

@@ -102,6 +102,25 @@ export const ProfileSettings = styled.div`
     opacity: 0.3;
   }
 
+  .profile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 16px;
+
+    > div {
+      opacity: 0.7;
+      :hover * {
+        color: ${theme.colors.PRIMARY};
+      }
+
+      a {
+        color: ${theme.colors.TEXT};
+        margin-left: 12px;
+      }
+    }
+  }
+
   li.ant-menu-item {
     padding: 0 !important;
     background-color: transparent !important;

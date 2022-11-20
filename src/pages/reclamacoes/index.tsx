@@ -91,7 +91,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
       setComplaints((prev) => [newComplaint, ...prev]);
       setShowComplaintSettings(false);
       setLoading(false);
-      message.success('Aviso criado com sucesso!');
+      message.success('Reclamação criada com sucesso!');
     },
     [user]
   );

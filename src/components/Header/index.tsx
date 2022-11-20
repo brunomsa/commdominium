@@ -2,7 +2,7 @@ import React, { SetStateAction, useContext, useMemo, useState } from 'react';
 
 import Router from 'next/router';
 
-import { Avatar, Badge, Button, Menu, Popover } from 'antd';
+import { Avatar, Badge, Button, Popover } from 'antd';
 import {
   BellOutlined,
   HomeOutlined,
@@ -68,13 +68,14 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
       <styled.ProfileSettings>
         <h3>{user?.fullname}</h3>
         <div className="email">{user?.email}</div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          items={profileMenuOptions}
-          style={{ marginTop: 8 }}
-          onClick={({ key }) => onProfileMenuClick[key]()}
-        />
+        <div className="profile-menu">
+          {profileMenuOptions.map((op) => (
+            <div onClick={() => onProfileMenuClick[op.key]()}>
+              {op.icon}
+              <a>{op.label}</a>
+            </div>
+          ))}
+        </div>
       </styled.ProfileSettings>
     );
   }, [onProfileMenuClick, profileMenuOptions, user]);
@@ -120,7 +121,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
           open={showProfile}
           onOpenChange={(visible) => setShowProfile(visible)}
         >
-          <Avatar size={40} icon={<UserOutlined />} />
+          <Avatar size={40} icon={<UserOutlined />} src={user?.avatarArchive} />
         </Popover>
         <Button className="nav-btn" icon={<MenuOutlined />} onClick={() => setMenuVisibility(true)} />
       </div>
