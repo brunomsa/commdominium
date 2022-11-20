@@ -2,20 +2,21 @@ import styled from 'styled-components';
 
 export const Home = styled.div`
   .alertTitle {
-    font-size: 20;
+    font-size: 20px;
     line-height: 20px;
-    margin-bottom: 16;
+    margin-bottom: 16px;
   }
 
   .cards {
     display: flex;
     flex-grow: 1;
-    gap: 40;
+    gap: 40px;
   }
 
   @media screen and (max-width: 1080px) {
     .cards {
       flex-direction: column;
+      gap: 20px;
     }
   }
 `;
