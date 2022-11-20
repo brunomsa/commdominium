@@ -89,7 +89,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
         </Menu>
       </styled.ProfileSettings>
     );
-  }, [onProfileMenuClick, profileMenuOptions, context?.user]);
+  }, [profileMenuOptions, context?.user]);
 
   return (
     <styled.Header>

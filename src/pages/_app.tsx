@@ -39,7 +39,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <>
-      {loading && <PageLoader />}
+      {/* {loading && <PageLoader />} */}
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <ConfigProvider renderEmpty={() => <EmptyState />}>
