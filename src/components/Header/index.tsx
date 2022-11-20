@@ -60,7 +60,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
     myProfile: () => Router.push('/meu-perfil'),
     myCond: () => console.log('myCond'),
     changePassword: () => console.log('changePassword'),
-    logout: signOut,
+    logout: () => signOut(),
   };
 
   const profileSettings = useMemo(() => {

@@ -59,9 +59,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   function signOut() {
-    // destroyCookie(undefined, 'commdominium.token');
+    destroyCookie(undefined, 'commdominium.token');
     setUser(undefined);
-    Router.push('/login');
+    // Router.push('/login');
   }
 
   return (
