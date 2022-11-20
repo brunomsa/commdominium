@@ -59,7 +59,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   function signOut() {
-    destroyCookie(undefined, 'commdominium.token');
+    console.log(user);
+    // destroyCookie(undefined, 'commdominium.token');
     setUser(undefined);
     // Router.push('/login');
   }
