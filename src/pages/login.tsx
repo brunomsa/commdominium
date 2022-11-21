@@ -28,7 +28,7 @@ function Login() {
   return (
     <styled.Login>
       <Head>
-        <title>Login</title>
+        <title>Commdominium</title>
       </Head>
 
       <header>

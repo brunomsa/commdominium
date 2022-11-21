@@ -93,7 +93,7 @@ function Home({
   return (
     <styled.Home>
       <Head>
-        <title>Início</title>
+        <title>Commdominium</title>
       </Head>
 
       <BasicPage pageKey={PageKey.HOME} loggedUserType={loggedUserType}>
