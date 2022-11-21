@@ -6,7 +6,6 @@ import { Avatar, Badge, Button, Popover } from 'antd';
 import {
   BellOutlined,
   HomeOutlined,
-  LockOutlined,
   LogoutOutlined,
   MenuOutlined,
   SettingOutlined,
@@ -25,7 +24,7 @@ import * as styled from './styles';
 const profileMenuOptions = [
   { key: 'myProfile', label: 'Editar perfil', icon: <SettingOutlined /> },
   { key: 'myCondominium', label: 'Meu condomínio', icon: <HomeOutlined /> },
-  { key: 'changePassword', label: 'Alterar a senha', icon: <LockOutlined /> },
+  // { key: 'changePassword', label: 'Alterar a senha', icon: <LockOutlined /> },
   { key: 'logout', label: 'Sair', icon: <LogoutOutlined /> },
 ];
 
@@ -47,10 +46,10 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
   const menuOptions = useMemo(() => {
     return [
       { key: PageKey.HOME, label: 'Início' },
-      loggedUserType !== UserTypes.RESIDENT && { key: PageKey.PAYMENT, label: 'Financeiro' },
+      loggedUserType === UserTypes.ASSIGNEE && { key: PageKey.PAYMENT, label: 'Financeiro' },
       { key: PageKey.NOTICES, label: 'Avisos' },
       { key: PageKey.COMPLAINTS, label: 'Reclamações' },
-      loggedUserType !== UserTypes.RESIDENT && { key: PageKey.RESIDENTS, label: 'Moradores' },
+      loggedUserType === UserTypes.ASSIGNEE && { key: PageKey.RESIDENTS, label: 'Moradores' },
       loggedUserType === UserTypes.ADMIN && { key: PageKey.CONDOMINIUMS, label: 'Condomínios' },
       loggedUserType === UserTypes.ADMIN && { key: PageKey.USERS, label: 'Usuários' },
     ];
@@ -59,7 +58,7 @@ function Header({ selectedKey, loggedUserType, onChange, setMenuVisibility }: Pr
   const onProfileMenuClick: Record<string, () => void> = {
     myProfile: () => Router.push('/meu-perfil'),
     myCondominium: () => Router.push('/meu-condominio'),
-    changePassword: () => console.log('changePassword'),
+    // changePassword: () => console.log('changePassword'),
     logout: signOut,
   };
 

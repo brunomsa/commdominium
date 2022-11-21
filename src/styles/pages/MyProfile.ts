@@ -8,6 +8,7 @@ export const MyProfile = styled.div`
     flex-wrap: wrap;
     margin-bottom: 32px;
     width: 40%;
+    min-width: 350px;
 
     h1 {
       min-width: max-content;
