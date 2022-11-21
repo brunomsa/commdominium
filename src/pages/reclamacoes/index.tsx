@@ -35,6 +35,7 @@ import { PageKey } from '../../utils/types';
 import { toDayjs } from '../../utils/toDayjs';
 
 import theme from '../../styles/theme';
+import * as styled from '../../styles/pages/Complaints';
 
 interface Props {
   loggedUserType?: UserTypes;
@@ -175,24 +176,16 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
   };
 
   return (
-    <>
+    <styled.Complaints>
       <Head>
         <title>Reclamações</title>
       </Head>
 
       <BasicPage pageKey={PageKey.COMPLAINTS} loggedUserType={loggedUserType}>
         {loggedUserType !== UserTypes.ASSIGNEE && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              marginBottom: 32,
-            }}
-          >
-            {loggedUserType === UserTypes.RESIDENT && <h1 style={{ minWidth: 'max-content' }}>Minhas Reclamações</h1>}
-            <div style={{ flex: 1, textAlign: 'end' }}>
+          <div className="title">
+            {loggedUserType === UserTypes.RESIDENT && <h1>Minhas Reclamações</h1>}
+            <div>
               <Button type="primary" onClick={() => setShowComplaintSettings(true)}>
                 Criar Reclamação
               </Button>
@@ -294,7 +287,7 @@ function Complaints({ loggedUserType, complaints: initialComplaints, ok, message
           />
         </Modal>
       </BasicPage>
-    </>
+    </styled.Complaints>
   );
 }
 

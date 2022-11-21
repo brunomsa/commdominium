@@ -17,7 +17,7 @@ export const Home = styled.div`
     }
   }
 
-  @media screen and (max-width: 1080px) {
+  @media screen and (max-width: 720px) {
     .cards {
       flex-direction: column;
       gap: 20px;

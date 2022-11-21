@@ -29,13 +29,17 @@ export const FormSettings = styled.div`
     }
   }
 
-  @media screen and (max-width: 1080px) {
+  @media screen and (max-width: 720px) {
     img.background-image {
       display: none;
     }
 
     .form {
       width: 100%;
+
+      .ant-form-item {
+        min-width: 100%;
+      }
     }
   }
 `;

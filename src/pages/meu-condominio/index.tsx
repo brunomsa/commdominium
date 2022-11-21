@@ -49,7 +49,7 @@ function MyCondominium({ loggedUserType, condominium, assignee, ok, messageError
         </div>
         <div style={{ textAlign: 'end' }}>
           <Button type="primary" onClick={() => Router.push('/')}>
-            Voltar para o início
+            Voltar
           </Button>
         </div>
       </BasicPage>

@@ -97,5 +97,6 @@ export const LoginForm = styled(Form)`
     width: 80%;
     max-width: 400px;
     height: 400px;
+    padding: 32px;
   }
 `;

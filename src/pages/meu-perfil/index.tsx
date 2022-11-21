@@ -15,7 +15,8 @@ import { catchPageError, getApiClient } from '../../services/axios';
 import { updateUser, UserForm } from '../../services/user';
 import { findUserTypeById, UserType, UserTypes } from '../../services/userType';
 
-import * as styled from '../../styles/pages/FormSettings';
+import * as styled from '../../styles/pages/MyProfile';
+import { FormSettings } from '../../styles/pages/FormSettings';
 import theme from '../../styles/theme';
 
 interface Props {
@@ -59,32 +60,26 @@ function MyProfile({ loggedUserType, ok, messageError }: Props) {
   };
 
   return (
-    <styled.FormSettings>
-      <Head>
-        <title>Meu Perfil</title>
-      </Head>
+    <styled.MyProfile>
+      <FormSettings>
+        <Head>
+          <title>Meu Perfil</title>
+        </Head>
 
-      <BasicPage loggedUserType={loggedUserType}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            marginBottom: 32,
-          }}
-        >
-          <h1 style={{ minWidth: 'max-content' }}>Meu Perfil</h1>
+        <BasicPage loggedUserType={loggedUserType}>
+          <div className="title">
+            <h1>Meu Perfil</h1>
 
-          <div style={{ textAlign: 'end', zIndex: 1 }}>
-            <Button type="primary" onClick={() => Router.push('/')}>
-              Voltar para o início
-            </Button>
+            <div>
+              <Button type="primary" onClick={() => Router.push('/')}>
+                Voltar
+              </Button>
+            </div>
           </div>
-        </div>
-        <UserSettings initialValues={loggedUser} loading={loading} onSubmit={handleSubmit} adminMode={false} />
-      </BasicPage>
-    </styled.FormSettings>
+          <UserSettings initialValues={loggedUser} loading={loading} onSubmit={handleSubmit} adminMode={false} />
+        </BasicPage>
+      </FormSettings>
+    </styled.MyProfile>
   );
 }
 
